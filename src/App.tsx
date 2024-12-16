@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
-import { useAppDispatch } from './redux/hooks';
-import { logProto } from './redux/proto';
-import './App.css';
+import { useAppDispatch } from '@/redux/hooks';
+import { logProto } from '@/redux/proto';
+import '@/App.css';
 
 function App() {
   const [count, setCount] = useState(0);
