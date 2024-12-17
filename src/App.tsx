@@ -1,11 +1,8 @@
 import '@/App.css';
+import { Routing } from '@/components/Routing';
 
 function App() {
-  return (
-    <div className='flex h-screen items-center justify-center'>
-      <h1 className='font-bold text-5xl '>Graphic Editor Project</h1>
-    </div>
-  );
+  return <Routing />;
 }
 
 export default App;
