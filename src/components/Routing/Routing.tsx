@@ -1,3 +1,4 @@
+import { EditorPageTemp } from '@/pages/EditorPageTemp';
 import { AppRoutes } from '@/types/appRoutes';
 import { Route, Routes } from 'react-router-dom';
 
@@ -15,6 +16,10 @@ export function Routing() {
       <Route
         path={AppRoutes.CurrentProject}
         element={<h1 className='text-4xl'>Current project Page</h1>}
+      />
+      <Route
+        path={AppRoutes.CurrentProjectTemp}
+        element={<EditorPageTemp/>}
       />
     </Routes>
   );
