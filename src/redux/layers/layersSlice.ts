@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type Layer = {
   id: number;
@@ -29,6 +29,9 @@ export const layersSlice = createSlice({
         visible: true,
       };
       state.push(newLayer);
+    },
+    removeLayer: (state, action: PayloadAction<number>) => {
+      state.splice(action.payload, 1);
     },
   },
 });
