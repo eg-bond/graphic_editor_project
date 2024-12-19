@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { protoReducer } from './proto';
+import { layersReducer } from './layers';
 
 export const store = configureStore({
   // TODO: remove protoReducer later
-  reducer: { proto: protoReducer },
+  reducer: { proto: protoReducer, layers: layersReducer },
+
   devTools: true,
 });
 
