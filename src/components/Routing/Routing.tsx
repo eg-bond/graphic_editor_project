@@ -17,10 +17,7 @@ export function Routing() {
         path={AppRoutes.CurrentProject}
         element={<h1 className='text-4xl'>Current project Page</h1>}
       />
-      <Route
-        path={AppRoutes.CurrentProjectTemp}
-        element={<EditorPageTemp/>}
-      />
+      <Route path={AppRoutes.CurrentProjectTemp} element={<EditorPageTemp />} />
     </Routes>
   );
 }
