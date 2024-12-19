@@ -14,8 +14,21 @@ const initialState: Array<Layer> = [
   { id: 3, name: 'Слой 4', opacity: 0, visible: true },
 ];
 
+const NEW_LAYER_NAME = 'Cлой ';
+
 export const layersSlice = createSlice({
   name: 'layers',
   initialState,
-  reducers: {},
+  reducers: {
+    addLayer: state => {
+      const newtLayerId = state.length + 1;
+      const newLayer: Layer = {
+        id: newtLayerId,
+        name: NEW_LAYER_NAME + String(newtLayerId),
+        opacity: 0,
+        visible: true,
+      };
+      state.push(newLayer);
+    },
+  },
 });
