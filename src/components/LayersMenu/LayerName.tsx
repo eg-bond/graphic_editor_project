@@ -1,7 +1,6 @@
 import { useAppDispatch } from '@/redux/hooks';
 import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
-import { Button } from 'antd';
 import { ChangeEvent, FormEvent, useRef } from 'react';
 
 type ILayerName = {
