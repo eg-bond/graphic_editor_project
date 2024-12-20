@@ -1,5 +1,9 @@
 import { useAppDispatch } from '@/redux/hooks';
-import { activateLayer, removeLayer } from '@/redux/layers';
+import {
+  activateLayer,
+  changeLayerVisibility,
+  removeLayer,
+} from '@/redux/layers';
 import { Button, Dropdown, MenuProps } from 'antd';
 import type { LayerT } from '@/redux/layers/layersSlice';
 
@@ -7,9 +11,10 @@ interface ILayerProps {
   id: LayerT['id'];
   name: LayerT['name'];
   active: LayerT['active'];
+  visible: LayerT['visible'];
 }
 
-export function Layer({ id, name, active }: ILayerProps) {
+export function Layer({ id, name, active, visible }: ILayerProps) {
   const d = useAppDispatch();
 
   const items: MenuProps['items'] = [
@@ -32,7 +37,11 @@ export function Layer({ id, name, active }: ILayerProps) {
       </Button>
       {active && <span>Active</span>}
       <div className='flex gap-2'>
-        <Button>Скрыть</Button>
+        {visible ? (
+          <Button onClick={() => d(changeLayerVisibility(id))}>Виден</Button>
+        ) : (
+          <Button onClick={() => d(changeLayerVisibility(id))}>Скрыт</Button>
+        )}
         <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
           <Button>...</Button>
         </Dropdown>

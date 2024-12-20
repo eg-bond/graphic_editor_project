@@ -15,6 +15,7 @@ export function LayersList({ layers }: ILayersListProps) {
             id={layer.id}
             name={layer.name}
             active={layer.active}
+            visible={layer.visible}
           />
         ))}
       </div>
