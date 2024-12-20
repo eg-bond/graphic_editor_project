@@ -17,7 +17,7 @@ export function OpacitySlider() {
     <div className='m-2'>
       <h2 className='text-center'>Непрозрачность</h2>
 
-      <div className='flex justify-between items-center'>
+      <div className='flex gap-2 justify-between items-center'>
         <Slider
           className='flex-grow'
           min={0}

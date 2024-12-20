@@ -4,7 +4,7 @@ import { OpacitySlider } from './OpacitySlider';
 import { AddLayerButton } from './AddLayerButton';
 
 export function LayersMenu() {
-  const layersList = useAppSelector(state => state.layers.layersList);
+  const layersList = useAppSelector(state => state.layers.list);
 
   return (
     <div className='h-1/2'>
