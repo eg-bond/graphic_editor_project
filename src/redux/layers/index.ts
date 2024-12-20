@@ -8,4 +8,5 @@ export const {
   activateLayer,
   changeOpacity,
   changeLayerVisibility,
+  changeLayerName,
 } = layersSlice.actions;

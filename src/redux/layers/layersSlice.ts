@@ -59,5 +59,11 @@ export const layersSlice = createSlice({
     changeLayerVisibility: (state, action: PayloadAction<number>) => {
       state[action.payload].visible = !state[action.payload].visible;
     },
+    changeLayerName: (
+      state,
+      action: PayloadAction<{ id: number; name: string }>
+    ) => {
+      state[action.payload.id].name = action.payload.name;
+    },
   },
 });
