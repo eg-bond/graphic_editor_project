@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type HistoryT = {
   id: number;
@@ -30,5 +30,21 @@ const initialState: Array<HistoryT> = [
 export const historySlice = createSlice({
   name: 'history',
   initialState,
-  reducers: {},
+  reducers: {
+    activateHistoryItem: (state, action: PayloadAction<number>) => {
+      const prevActiveItemId = state.findIndex(item => item.active === true);
+      const newActiveItemId = state.findIndex(
+        item => item.id === action.payload
+      );
+
+      if (prevActiveItemId === newActiveItemId) return;
+
+      if (prevActiveItemId === -1) {
+        state[newActiveItemId].active = true;
+        return;
+      }
+      state[prevActiveItemId].active = false;
+      state[newActiveItemId].active = true;
+    },
+  },
 });
