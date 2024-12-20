@@ -15,7 +15,7 @@ export function HistoryList({ historyList }: IHistoryListProps) {
           key={item.id}
           onClick={() => d(activateHistoryItem(item.id))}
           className={`flex justify-around p-3 border-b-2 first:border-t-2
-            border-gray-500 hover:bg-slate-400 cursor-pointer
+            border-gray-500 hover: cursor-pointer
            ${item.active ? 'bg-slate-400' : ''}`}>
           <span className='basis-1/4'>{item.type}</span>
           <span className='basis-3/4 flex justify-center'>{item.name}</span>

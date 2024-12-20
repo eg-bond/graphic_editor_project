@@ -14,9 +14,9 @@ export function OpacitySlider() {
   };
 
   return (
-    <div>
-      <h2>Непрозрачность</h2>
-      <Divider className='m-0' />
+    <div className='m-2'>
+      <h2 className='text-center'>Непрозрачность</h2>
+
       <div className='flex justify-between items-center'>
         <Slider
           className='flex-grow'
