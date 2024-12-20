@@ -1,5 +1,4 @@
 import { useAppSelector } from '@/redux/hooks';
-import { Divider } from 'antd';
 import { HistoryList } from './HistoryList';
 
 export function HistoryMenu() {
@@ -7,9 +6,10 @@ export function HistoryMenu() {
 
   return (
     <div className='h-1/2'>
-      <h1>History Menu</h1>
-      <Divider className='m-0' />
-      <HistoryList historyList={historyList} />
+      <div className='h-full rounded-lg border-2 flex flex-col'>
+        <h1 className='m-3 text-2xl text-center'>History Menu</h1>
+        <HistoryList historyList={historyList} />
+      </div>
     </div>
   );
 }
