@@ -6,15 +6,15 @@ interface IHistoryListProps {
 
 export function HistoryList({ historyList }: IHistoryListProps) {
   return (
-    <div className='history'>
-      <div className='flex flex-col justify-between'>
-        {historyList.map(item => (
-          <div key={item.id}>
-            <span>{item.type}</span>
-            <span>{item.name}</span>
-          </div>
-        ))}
-      </div>
+    <div className='overflow-y-auto'>
+      {historyList.map(item => (
+        <div
+          key={item.id}
+          className='flex justify-around p-3 border-b-2 first:border-t-2 border-gray-500'>
+          <span className='basis-1/4'>{item.type}</span>
+          <span className='basis-3/4 flex justify-center'>{item.name}</span>
+        </div>
+      ))}
     </div>
   );
 }
