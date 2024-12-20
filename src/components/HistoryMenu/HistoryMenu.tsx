@@ -1,6 +1,10 @@
+import { useAppSelector } from '@/redux/hooks';
 import { Divider } from 'antd';
 
 export function HistoryMenu() {
+  const history = useAppSelector(state => state.history);
+  console.log(history);
+
   return (
     <div className='h-1/2'>
       <h1>History Menu</h1>
