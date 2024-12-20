@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { changeOpacity } from '@/redux/layers';
 import { selectActiveLayer } from '@/redux/layers/selectors';
-import { Divider, InputNumber, InputNumberProps, Slider } from 'antd';
+import { InputNumber, InputNumberProps, Slider } from 'antd';
 
 export function OpacitySlider() {
   const activeLayer = useAppSelector(selectActiveLayer);

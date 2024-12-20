@@ -8,12 +8,15 @@ export type LayerT = {
   active: boolean;
 };
 
-const initialState: Array<LayerT> = [
-  { id: 0, name: 'Слой 1', opacity: 10, visible: true, active: false },
-  { id: 1, name: 'Слой 2', opacity: 20, visible: true, active: false },
-  { id: 2, name: 'Слой 3', opacity: 30, visible: true, active: false },
-  { id: 3, name: 'Слой 4', opacity: 40, visible: true, active: false },
-];
+type InitialStateT = {
+  layersList: Array<LayerT>;
+  layerIdCount: number;
+};
+
+const initialState: InitialStateT = {
+  layersList: [],
+  layerIdCount: 0,
+};
 
 const NEW_LAYER_NAME = 'Cлой ';
 
@@ -22,48 +25,63 @@ export const layersSlice = createSlice({
   initialState,
   reducers: {
     addLayer: state => {
-      const newtLayerId = state.length + 1;
       const newLayer: LayerT = {
-        id: newtLayerId,
-        name: NEW_LAYER_NAME + String(newtLayerId),
+        id: state.layerIdCount,
+        name: NEW_LAYER_NAME + String(state.layerIdCount),
         opacity: 0,
         visible: true,
         active: false,
       };
-      state.push(newLayer);
+      state.layerIdCount++;
+      state.layersList.push(newLayer);
     },
     removeLayer: (state, action: PayloadAction<number>) => {
-      state.splice(action.payload, 1);
+      const layerIndex = state.layersList.findIndex(
+        layer => layer.id === action.payload
+      );
+      state.layersList.splice(layerIndex, 1);
     },
     activateLayer: (state, action: PayloadAction<number>) => {
-      const prevActiveLayerId = state.findIndex(layer => layer.active === true);
-      const newActiveLayerId = state.findIndex(
+      const prevActiveLayerId = state.layersList.findIndex(
+        layer => layer.active === true
+      );
+      const newActiveLayerId = state.layersList.findIndex(
         layer => layer.id === action.payload
       );
 
       if (prevActiveLayerId === newActiveLayerId) return;
 
       if (prevActiveLayerId === -1) {
-        state[newActiveLayerId].active = true;
+        state.layersList[newActiveLayerId].active = true;
         return;
       }
-      state[prevActiveLayerId].active = false;
-      state[newActiveLayerId].active = true;
+      state.layersList[prevActiveLayerId].active = false;
+      state.layersList[newActiveLayerId].active = true;
     },
     changeOpacity: (
       state,
       action: PayloadAction<{ id: number; opacity: number }>
     ) => {
-      state[action.payload.id].opacity = action.payload.opacity;
+      const layerIndex = state.layersList.findIndex(
+        layer => layer.id === action.payload.id
+      );
+      state.layersList[layerIndex].opacity = action.payload.opacity;
     },
     changeLayerVisibility: (state, action: PayloadAction<number>) => {
-      state[action.payload].visible = !state[action.payload].visible;
+      const layerIndex = state.layersList.findIndex(
+        layer => layer.id === action.payload
+      );
+      state.layersList[layerIndex].visible =
+        !state.layersList[layerIndex].visible;
     },
     changeLayerName: (
       state,
       action: PayloadAction<{ id: number; name: string }>
     ) => {
-      state[action.payload.id].name = action.payload.name;
+      const layerIndex = state.layersList.findIndex(
+        layer => layer.id === action.payload.id
+      );
+      state.layersList[layerIndex].name = action.payload.name;
     },
   },
 });
