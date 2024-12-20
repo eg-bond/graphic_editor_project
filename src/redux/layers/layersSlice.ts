@@ -56,5 +56,8 @@ export const layersSlice = createSlice({
     ) => {
       state[action.payload.id].opacity = action.payload.opacity;
     },
+    changeLayerVisibility: (state, action: PayloadAction<number>) => {
+      state[action.payload].visible = !state[action.payload].visible;
+    },
   },
 });
