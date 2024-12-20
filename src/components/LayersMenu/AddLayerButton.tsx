@@ -4,5 +4,9 @@ import { Button } from 'antd';
 
 export function AddLayerButton() {
   const d = useAppDispatch();
-  return <Button onClick={() => d(addLayer())}>Add layer</Button>;
+  return (
+    <Button className='m-2' onClick={() => d(addLayer())}>
+      Add layer
+    </Button>
+  );
 }

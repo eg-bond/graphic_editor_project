@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/redux/hooks';
-import { activateLayer, changeLayerName } from '@/redux/layers';
+import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
 import { Button } from 'antd';
 import { ChangeEvent, FormEvent, useRef } from 'react';
@@ -9,6 +9,7 @@ type ILayerName = {
   name: LayerT['name'];
   isInputVisible: boolean;
   setIsInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick: () => void;
 };
 
 export default function LayerName({
@@ -16,6 +17,7 @@ export default function LayerName({
   name,
   isInputVisible,
   setIsInputVisible,
+  onClick,
 }: ILayerName) {
   const d = useAppDispatch();
 
@@ -36,7 +38,7 @@ export default function LayerName({
   };
 
   return (
-    <>
+    <div onClick={onClick}>
       {isInputVisible && (
         <form onSubmit={handleSubmit} onChange={handleChange}>
           <input
@@ -49,11 +51,7 @@ export default function LayerName({
           />
         </form>
       )}
-      {!isInputVisible && (
-        <Button className='flex-grow' onClick={() => d(activateLayer(id))}>
-          {name}
-        </Button>
-      )}
-    </>
+      {!isInputVisible && <span className='flex-grow'>{name}</span>}
+    </div>
   );
 }

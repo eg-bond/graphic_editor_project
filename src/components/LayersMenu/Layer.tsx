@@ -1,5 +1,9 @@
 import { useAppDispatch } from '@/redux/hooks';
-import { changeLayerVisibility, removeLayer } from '@/redux/layers';
+import {
+  activateLayer,
+  changeLayerVisibility,
+  removeLayer,
+} from '@/redux/layers';
 import { Button, Dropdown, MenuProps } from 'antd';
 import type { LayerT } from '@/redux/layers/layersSlice';
 import { useState } from 'react';
@@ -31,16 +35,26 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
     },
   ];
 
+  const handleLayerClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (e.target === e.currentTarget) {
+      d(activateLayer(id));
+    }
+  };
+
   return (
-    <div className='flex justify-between items-center gap-2'>
+    <div
+      className={`flex justify-between items-center gap-2 p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer
+      ${active ? 'bg-slate-400' : ''}`}
+      onClick={e => handleLayerClick(e)}>
       <LayerName
         id={id}
         name={name}
         isInputVisible={isInputVisible}
         setIsInputVisible={setIsInputVisible}
+        onClick={() => d(activateLayer(id))}
       />
-
-      {active && <span>Active</span>}
 
       <div className='flex gap-2'>
         {visible ? (
