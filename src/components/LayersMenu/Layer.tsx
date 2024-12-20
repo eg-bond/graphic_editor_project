@@ -1,14 +1,15 @@
 import { useAppDispatch } from '@/redux/hooks';
-import { removeLayer } from '@/redux/layers';
+import { activateLayer, removeLayer } from '@/redux/layers';
 import { Button, Dropdown, MenuProps } from 'antd';
 import type { LayerT } from '@/redux/layers/layersSlice';
 
 interface ILayerProps {
   id: LayerT['id'];
   name: LayerT['name'];
+  active: LayerT['active'];
 }
 
-export function Layer({ id, name }: ILayerProps) {
+export function Layer({ id, name, active }: ILayerProps) {
   const d = useAppDispatch();
 
   const items: MenuProps['items'] = [
@@ -25,12 +26,17 @@ export function Layer({ id, name }: ILayerProps) {
   ];
 
   return (
-    <div key={id}>
-      <span>{name}</span>
-      <button>Скрыть</button>
-      <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
-        <Button>...</Button>
-      </Dropdown>
+    <div className='flex justify-between items-center'>
+      <Button className='flex-grow' onClick={() => d(activateLayer(id))}>
+        {name}
+      </Button>
+      {active && <span>Active</span>}
+      <div className='flex gap-2'>
+        <Button>Скрыть</Button>
+        <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
+          <Button>...</Button>
+        </Dropdown>
+      </div>
     </div>
   );
 }
