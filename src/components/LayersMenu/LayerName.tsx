@@ -43,6 +43,7 @@ export default function LayerName({
             name='change_layer_name'
             type='text'
             className='flex-grow'
+            // TODO: fix type
             onBlur={handleSubmit}
             autoFocus
           />
