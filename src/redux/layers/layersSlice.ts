@@ -35,5 +35,20 @@ export const layersSlice = createSlice({
     removeLayer: (state, action: PayloadAction<number>) => {
       state.splice(action.payload, 1);
     },
+    activateLayer: (state, action: PayloadAction<number>) => {
+      const prevActiveLayerId = state.findIndex(layer => layer.active === true);
+      const newActiveLayerId = state.findIndex(
+        layer => layer.id === action.payload
+      );
+
+      if (prevActiveLayerId === newActiveLayerId) return;
+
+      if (prevActiveLayerId === -1) {
+        state[newActiveLayerId].active = true;
+        return;
+      }
+      state[prevActiveLayerId].active = false;
+      state[newActiveLayerId].active = true;
+    },
   },
 });

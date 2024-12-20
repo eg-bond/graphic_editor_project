@@ -10,7 +10,12 @@ export function LayersList({ layers }: ILayersListProps) {
     <div className='layers'>
       <div className='flex flex-col justify-between'>
         {layers.map(layer => (
-          <Layer id={layer.id} name={layer.name} />
+          <Layer
+            key={layer.id}
+            id={layer.id}
+            name={layer.name}
+            active={layer.active}
+          />
         ))}
       </div>
     </div>
