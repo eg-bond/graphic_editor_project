@@ -50,5 +50,11 @@ export const layersSlice = createSlice({
       state[prevActiveLayerId].active = false;
       state[newActiveLayerId].active = true;
     },
+    changeOpacity: (
+      state,
+      action: PayloadAction<{ id: number; opacity: number }>
+    ) => {
+      state[action.payload.id].opacity = action.payload.opacity;
+    },
   },
 });

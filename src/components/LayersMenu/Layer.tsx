@@ -26,7 +26,7 @@ export function Layer({ id, name, active }: ILayerProps) {
   ];
 
   return (
-    <div className='flex justify-between items-center'>
+    <div className='flex justify-between items-center gap-2'>
       <Button className='flex-grow' onClick={() => d(activateLayer(id))}>
         {name}
       </Button>
