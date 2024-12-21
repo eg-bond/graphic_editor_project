@@ -24,8 +24,7 @@ export function EditorPage() {
         </div>
 
         {/* Right vertical menu */}
-        <div className='w-1/6 bg-green-500'>
-          {/* <div className='fixed right-0 top-0 h-screen w-[300px] flex flex-col bg-slate-200'> */}
+        <div className='w-1/6 h-[95vh] flex flex-col bg-slate-200'>
           <LayersMenu />
           <HistoryMenu />
         </div>
