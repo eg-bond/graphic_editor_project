@@ -20,6 +20,6 @@ describe('Routing tests', () => {
         <Routing />
       </MemoryRouter>
     );
-    expect(screen.getByText(/Editor Page/i)).toBeInTheDocument();
+    expect(screen.getByText(/Основная часть/i)).toBeInTheDocument();
   });
 });
