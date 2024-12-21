@@ -1,13 +1,14 @@
 import { EditorPage } from '@/pages/EditorPage';
 import { AppRoutes } from '@/types/appRoutes';
 import { Route, Routes } from 'react-router-dom';
+import { MainPage } from '@/pages/MainPage';
 
 export function Routing() {
   return (
     <Routes>
       <Route
         path={AppRoutes.Main}
-        element={<h1 className='text-4xl'>Main Page</h1>}
+        element={<MainPage />}
       />
       <Route
         path={AppRoutes.Projects}
