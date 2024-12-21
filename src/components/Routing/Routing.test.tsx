@@ -14,12 +14,12 @@ describe('Routing tests', () => {
     expect(screen.getByText(/Main Page/i)).toBeInTheDocument();
   });
 
-  it('renders Current project page when path is /projects/:id', () => {
+  it('renders editor page when path is /projects/:id', () => {
     render(
       <MemoryRouter initialEntries={[`/${AppRoutes.CurrentProject}`]}>
         <Routing />
       </MemoryRouter>
     );
-    expect(screen.getByText(/Current project Page/i)).toBeInTheDocument();
+    expect(screen.getByText(/Editor Page/i)).toBeInTheDocument();
   });
 });
