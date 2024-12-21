@@ -1,4 +1,6 @@
-import { Navigation } from "@/components/Navigation";
+import { Navigation } from '@/components/Navigation';
+import { HistoryMenu } from '@/components/HistoryMenu';
+import { LayersMenu } from '@/components/LayersMenu';
 
 export function EditorPage() {
   return (
@@ -23,7 +25,9 @@ export function EditorPage() {
 
         {/* Right vertical menu */}
         <div className='w-1/6 bg-green-500'>
-          <h2 className='text-2xl'>Правое меню (Слои и История)</h2>
+          {/* <div className='fixed right-0 top-0 h-screen w-[300px] flex flex-col bg-slate-200'> */}
+          <LayersMenu />
+          <HistoryMenu />
         </div>
       </div>
     </div>
