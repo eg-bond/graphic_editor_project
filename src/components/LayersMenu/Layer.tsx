@@ -8,6 +8,11 @@ import { Button, Dropdown, MenuProps } from 'antd';
 import type { LayerT } from '@/redux/layers/layersSlice';
 import { useState } from 'react';
 import LayerName from './LayerName';
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  MenuOutlined,
+} from '@ant-design/icons';
 
 interface ILayerProps {
   id: LayerT['id'];
@@ -58,12 +63,16 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
 
       <div className='flex gap-2'>
         {visible ? (
-          <Button onClick={() => d(changeLayerVisibility(id))}>Виден</Button>
+          <Button
+            icon={<EyeOutlined />}
+            onClick={() => d(changeLayerVisibility(id))}></Button>
         ) : (
-          <Button onClick={() => d(changeLayerVisibility(id))}>Скрыт</Button>
+          <Button
+            icon={<EyeInvisibleOutlined />}
+            onClick={() => d(changeLayerVisibility(id))}></Button>
         )}
         <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
-          <Button>...</Button>
+          <Button icon={<MenuOutlined />}></Button>
         </Dropdown>
       </div>
     </div>
