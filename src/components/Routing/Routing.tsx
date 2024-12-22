@@ -6,10 +6,7 @@ import { MainPage } from '@/pages/MainPage';
 export function Routing() {
   return (
     <Routes>
-      <Route
-        path={AppRoutes.Main}
-        element={<MainPage />}
-      />
+      <Route path={AppRoutes.Main} element={<MainPage />} />
       <Route
         path={AppRoutes.Projects}
         element={<h1 className='text-4xl'>Projects Page</h1>}
