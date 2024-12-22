@@ -1,16 +1,9 @@
 import { FC, memo, MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Card, Col, Form, Input, InputNumber, Modal, Popconfirm, Row, Typography } from 'antd';
+import { Button, Card, Col, Form, Popconfirm, Row, Typography } from 'antd';
 import { Gutter } from 'antd/es/grid/row';
-import { formatInteger } from '@/utils/formatInteger.ts';
 import { getUid } from '@/utils/getUid.ts';
 import { Link, useNavigate } from 'react-router-dom';
-
-interface Project {
-  id: string;
-  name: string;
-  width: number;
-  height: number;
-}
+import { CreateProjectModal, Project } from '@/components/CreateProjectModal';
 
 const PROJECTS_KEY = 'graphic-projects';
 
@@ -103,63 +96,7 @@ const MainPage1: FC = () => {
         ))}
       </Row>
 
-      <Modal open={open} onCancel={onClose} footer={null} width={750} forceRender>
-        <Typography.Title level={3}>
-          Новый проект
-        </Typography.Title>
-
-        <Form layout="vertical" form={form} onFinish={handleSubmit}>
-          <Row gutter={gutter}>
-            <Col span={8}>
-              <Form.Item
-                name="name"
-                required
-                rules={[{ required: true, message: 'Это поле обязательно' }]}
-                label="Название"
-              >
-                <Input placeholder="Введите название" />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                name="width"
-                required
-                rules={[
-                  { required: true, message: 'Это поле обязательно' },
-                  { min: 1, type: 'number', transform: v => +v, message: 'Минимальное значение 1 px', },
-                  { max: 5000, type: 'number', transform: v => +v, message: 'Максимальное значение 5000 px', }
-                ]}
-                label="Ширина"
-                normalize={formatInteger}
-              >
-                <InputNumber placeholder="px" type="number" />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                name="height"
-                required
-                rules={[
-                  { required: true, message: 'Это поле обязательно' },
-                  { min: 1, type: 'number', transform: v => +v, message: 'Минимальное значение 1 px', },
-                  { max: 5000, type: 'number', transform: v => +v, message: 'Максимальное значение 5000 px', }
-                ]}
-                label="Высота"
-                normalize={formatInteger}
-              >
-                <InputNumber placeholder="px" type="number" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <div className="flex justify-end">
-            <Button onClick={onOpen} htmlType="submit" className="!bg-green-500" type="primary" size="large">
-              Добавить
-            </Button>
-          </div>
-
-        </Form>
-      </Modal>
+      <CreateProjectModal open={open} onClose={onClose} form={form} handleSubmit={handleSubmit} />
     </main>
   );
 }
