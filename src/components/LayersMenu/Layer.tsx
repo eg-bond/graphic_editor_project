@@ -23,7 +23,6 @@ interface ILayerProps {
 
 export function Layer({ id, name, active, visible }: ILayerProps) {
   const d = useAppDispatch();
-
   const [isInputVisible, setIsInputVisible] = useState(false);
 
   const items: MenuProps['items'] = [
@@ -61,7 +60,7 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
         onClick={() => d(activateLayer(id))}
       />
 
-      <div className='flex gap-2'>
+      <div className='flex-[0.25] flex gap-2'>
         {visible ? (
           <Button
             icon={<EyeOutlined />}

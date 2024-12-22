@@ -1,7 +1,8 @@
 import { useAppDispatch } from '@/redux/hooks';
 import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
-import { ChangeEvent, FormEvent, useRef } from 'react';
+import { Form, Input } from 'antd';
+import { ChangeEvent, FocusEventHandler, FormEvent, useRef } from 'react';
 
 type ILayerName = {
   id: LayerT['id'];
@@ -11,6 +12,10 @@ type ILayerName = {
   onClick: () => void;
 };
 
+type EventsTypes = ChangeEvent<HTMLInputElement> &
+  FormEvent<HTMLFormElement> &
+  FocusEventHandler<HTMLInputElement>;
+
 export default function LayerName({
   id,
   name,
@@ -19,38 +24,33 @@ export default function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
+  const inputValue = useRef('');
 
-  const input = useRef('');
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement> & FormEvent<HTMLFormElement>
-  ) => {
-    input.current = e.target.value;
+  const handleChange = (e: EventsTypes) => {
+    inputValue.current = e.target.value;
   };
 
-  const handleSubmit = (
-    e: ChangeEvent<HTMLInputElement> & FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = (e: EventsTypes) => {
     e.preventDefault();
-    d(changeLayerName({ id, name: input.current }));
+    d(changeLayerName({ id, name: inputValue.current }));
     setIsInputVisible(false);
   };
 
   return (
-    <div onClick={onClick}>
+    <div className='flex-[0.75]' onClick={onClick}>
       {isInputVisible && (
-        <form onSubmit={handleSubmit} onChange={handleChange}>
-          <input
+        <Form onSubmitCapture={handleSubmit} onChange={handleChange}>
+          <Input
             name='change_layer_name'
             type='text'
-            className='flex-grow'
-            // TODO: fix type
+            maxLength={12}
+            //@ts-expect-error: don't know how to type the right way
             onBlur={handleSubmit}
             autoFocus
           />
-        </form>
+        </Form>
       )}
-      {!isInputVisible && <span className='flex-grow'>{name}</span>}
+      {!isInputVisible && <span>{name}</span>}
     </div>
   );
 }
