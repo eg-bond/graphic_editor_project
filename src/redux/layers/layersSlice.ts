@@ -58,8 +58,10 @@ export const layersSlice = createSlice({
     },
     changeOpacity: (
       state,
-      action: PayloadAction<{ id: number; opacity: number }>
+      action: PayloadAction<{ id: number | undefined; opacity: number }>
     ) => {
+      if (action.payload.id === undefined) return;
+      if (action.payload.opacity === null) return;
       const layerIndex = findLayerIndex(state.list, action.payload.id);
       state.list[layerIndex].opacity = action.payload.opacity;
     },

@@ -8,9 +8,8 @@ export function OpacitySlider() {
   const d = useAppDispatch();
 
   // TODO: make debounce or somth
-  // TODO: make proper types
   const onChange: InputNumberProps['onChange'] = newValue => {
-    d(changeOpacity({ id: activeLayer.id, opacity: newValue }));
+    d(changeOpacity({ id: activeLayer?.id, opacity: Number(newValue) }));
   };
 
   return (

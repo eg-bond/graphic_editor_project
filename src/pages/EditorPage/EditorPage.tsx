@@ -6,11 +6,9 @@ export function EditorPage() {
   return (
     <div className='h-screen w-full flex flex-col'>
       {/* Top section */}
-      {/* <div className='h-[5vh] w-full bg-gray-300'>
-        <h2 className='text-2xl'>Верхнее меню</h2>
-        
-      </div> */}
-      <Navigation />
+      <div className='h-[5vh] w-full'>
+        <Navigation />
+      </div>
 
       {/* Main content area with right sidebar */}
       <div className='flex flex-1'>
