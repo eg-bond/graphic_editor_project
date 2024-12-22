@@ -60,7 +60,7 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
         onClick={() => d(activateLayer(id))}
       />
 
-      <div className='flex-[0.25] flex gap-2'>
+      <div className='flex-[0.25] flex justify-end gap-2'>
         <Button
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           onClick={() => d(changeLayerVisibility(id))}
