@@ -1,6 +1,6 @@
 import { Navigation } from '@/components/Navigation';
-import { HistoryMenu } from '@/components/HistoryMenu';
 import { LayersMenu } from '@/components/LayersMenu';
+import { HistoryMenu } from '@/components/HistoryMenu';
 
 export function EditorPage() {
   return (
