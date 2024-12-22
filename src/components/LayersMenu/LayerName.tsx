@@ -8,7 +8,7 @@ type ILayerName = {
   id: LayerT['id'];
   name: LayerT['name'];
   renameInputVisible: boolean;
-  setIsInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClick: () => void;
 };
 
@@ -16,7 +16,7 @@ export function LayerName({
   id,
   name,
   renameInputVisible,
-  setIsInputVisible,
+  setRenameInputVisible,
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
@@ -30,7 +30,7 @@ export function LayerName({
 
   const handleSubmit = () => {
     d(changeLayerName({ id, name: inputValue.current }));
-    setIsInputVisible(false);
+    setRenameInputVisible(false);
   };
 
   return (
