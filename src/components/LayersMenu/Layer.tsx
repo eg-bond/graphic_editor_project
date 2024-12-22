@@ -7,13 +7,13 @@ import {
 import { Button, Dropdown, MenuProps } from 'antd';
 import type { LayerT } from '@/redux/layers/layersSlice';
 import { useState } from 'react';
-
 import {
   EyeInvisibleOutlined,
   EyeOutlined,
   MenuOutlined,
 } from '@ant-design/icons';
 import { LayerName } from './LayerName';
+
 interface ILayerProps {
   id: LayerT['id'];
   name: LayerT['name'];
@@ -23,13 +23,13 @@ interface ILayerProps {
 
 export function Layer({ id, name, active, visible }: ILayerProps) {
   const d = useAppDispatch();
-  const [isInputVisible, setIsInputVisible] = useState(false);
+  const [renameInputVisible, setRenameInputVisible] = useState(false);
 
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: 'Переименовать',
-      onClick: () => setIsInputVisible(true),
+      onClick: () => setRenameInputVisible(true),
     },
     {
       key: '2',
@@ -47,24 +47,30 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
     }
   };
 
+  const staticClasses =
+    'flex justify-between items-center gap-2 p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
+  const dynamicClasses = (isActive: boolean) =>
+    isActive ? 'bg-slate-400' : '';
+
   return (
     <div
-      className={`flex justify-between items-center gap-2 p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer
-      ${active ? 'bg-slate-400' : ''}`}
+      className={`${staticClasses} ${dynamicClasses(active)}`}
       onClick={e => handleLayerClick(e)}>
       <LayerName
         id={id}
         name={name}
-        isInputVisible={isInputVisible}
-        setIsInputVisible={setIsInputVisible}
+        renameInputVisible={renameInputVisible}
+        setIsInputVisible={setRenameInputVisible}
         onClick={() => d(activateLayer(id))}
       />
 
       <div className='flex-[0.25] flex justify-end gap-2'>
+        {/* Hide layer button */}
         <Button
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           onClick={() => d(changeLayerVisibility(id))}
         />
+        {/* Menu button with 'rename' and 'delete' options */}
         <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
           <Button icon={<MenuOutlined />}></Button>
         </Dropdown>
