@@ -1,14 +1,14 @@
-import { Navigation } from "@/components/Navigation";
+import { Navigation } from '@/components/Navigation';
+import { LayersMenu } from '@/components/LayersMenu';
+import { HistoryMenu } from '@/components/HistoryMenu';
 
 export function EditorPage() {
   return (
     <div className='h-screen w-full flex flex-col'>
       {/* Top section */}
-      {/* <div className='h-[5vh] w-full bg-gray-300'>
-        <h2 className='text-2xl'>Верхнее меню</h2>
-        
-      </div> */}
-      <Navigation />
+      <div className='h-[5vh] w-full'>
+        <Navigation />
+      </div>
 
       {/* Main content area with right sidebar */}
       <div className='flex flex-1'>
@@ -22,8 +22,9 @@ export function EditorPage() {
         </div>
 
         {/* Right vertical menu */}
-        <div className='w-1/6 bg-green-500'>
-          <h2 className='text-2xl'>Правое меню (Слои и История)</h2>
+        <div className='w-1/6 h-[95vh] flex flex-col bg-slate-200'>
+          <LayersMenu />
+          <HistoryMenu />
         </div>
       </div>
     </div>
