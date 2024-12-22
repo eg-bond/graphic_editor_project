@@ -4,6 +4,10 @@ import { LayerT } from '@/redux/layers/layersSlice';
 import { Form, Input } from 'antd';
 import { ChangeEvent, FocusEventHandler, FormEvent, useRef } from 'react';
 
+type EventsTypes = ChangeEvent<HTMLInputElement> &
+  FormEvent<HTMLFormElement> &
+  FocusEventHandler<HTMLInputElement>;
+
 type ILayerName = {
   id: LayerT['id'];
   name: LayerT['name'];
@@ -12,11 +16,7 @@ type ILayerName = {
   onClick: () => void;
 };
 
-type EventsTypes = ChangeEvent<HTMLInputElement> &
-  FormEvent<HTMLFormElement> &
-  FocusEventHandler<HTMLInputElement>;
-
-export default function LayerName({
+export function LayerName({
   id,
   name,
   isInputVisible,
