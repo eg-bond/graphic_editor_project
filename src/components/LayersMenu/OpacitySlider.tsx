@@ -19,7 +19,7 @@ export function OpacitySlider() {
 
       <div className='flex gap-2 justify-between items-center'>
         <Slider
-          className='flex-grow'
+          className='flex-[0.75]'
           min={0}
           max={100}
           onChange={onChange}
@@ -27,6 +27,7 @@ export function OpacitySlider() {
           disabled={!activeLayer}
         />
         <InputNumber
+          className='flex-[0.25]'
           min={0}
           max={100}
           value={activeLayer?.opacity || 0}
