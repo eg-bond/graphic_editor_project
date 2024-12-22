@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { DropDownNav, MenuItem } from "../DropDownNav";
+import { DropDownNav, MenuItem } from "./DropDownNav";
 
-const Navigation = () => {
+export const Navigation = () => {
   const files: MenuItem[] = [
     {
       label: (
@@ -55,5 +55,3 @@ const Navigation = () => {
     </nav>
   )
 }
-
-export default Navigation

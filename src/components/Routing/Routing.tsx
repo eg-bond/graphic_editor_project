@@ -1,12 +1,9 @@
 import { EditorPage } from '@/pages/EditorPage';
 import { AppRoutes } from '@/types/appRoutes';
 import { Route, Routes } from 'react-router-dom';
-import Navigation from './Navigation';
 
 export function Routing() {
   return (
-    <>
-      <Navigation />
       <Routes>
         <Route
           path={AppRoutes.Main}
@@ -18,6 +15,5 @@ export function Routing() {
         />
         <Route path={AppRoutes.CurrentProject} element={<EditorPage />} />
       </Routes>
-    </>
   );
 }
