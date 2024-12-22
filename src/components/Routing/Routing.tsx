@@ -12,10 +12,6 @@ export function Routing() {
         element={<h1 className='text-4xl'>Projects Page</h1>}
       />
       <Route path={AppRoutes.CurrentProject} element={<EditorPage />} />
-      <Route
-        path={AppRoutes.CurrentProject}
-        element={<h1 className='text-4xl'>Current project Page</h1>}
-      />
     </Routes>
   );
 }
