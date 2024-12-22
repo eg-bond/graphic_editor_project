@@ -37,7 +37,7 @@ export function LayerName({
     <div className='flex-[0.75]' onClick={onClick}>
       {/* Input for renaming layer */}
       {renameInputVisible && (
-        <Form onSubmitCapture={handleSubmit} onChange={handleChange}>
+        <Form onFinish={handleSubmit} onChange={handleChange}>
           <Input
             name='change_layer_name'
             type='text'
