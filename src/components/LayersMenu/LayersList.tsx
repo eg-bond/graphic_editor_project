@@ -1,14 +1,12 @@
-import { LayerT } from '@/redux/layers/layersSlice';
 import { Layer } from './Layer';
+import { useAppSelector } from '@/redux/hooks';
 
-interface ILayersListProps {
-  layers: Array<LayerT>;
-}
+export function LayersList() {
+  const layersList = useAppSelector(state => state.layers.list);
 
-export function LayersList({ layers }: ILayersListProps) {
   return (
     <div className='flex flex-col justify-between overflow-y-auto'>
-      {layers.map(layer => (
+      {layersList.map(layer => (
         <Layer
           key={layer.id}
           id={layer.id}

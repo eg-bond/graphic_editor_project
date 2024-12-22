@@ -6,10 +6,11 @@ import { Button } from 'antd';
 export function AddLayerButton() {
   const d = useAppDispatch();
   return (
-    <Button
-      className='m-2'
-      icon={<PlusOutlined />}
-      block
-      onClick={() => d(addLayer())}></Button>
+    <div className='m-2'>
+      <Button
+        icon={<PlusOutlined />}
+        block
+        onClick={() => d(addLayer())}></Button>
+    </div>
   );
 }
