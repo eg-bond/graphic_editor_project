@@ -1,8 +1,8 @@
 import { addNewHistoryItem } from '@/redux/history';
-import { LayerHistoryActions } from '@/redux/history/historySlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
+import { LayerHistoryActions } from '@/types/historyTypes';
 import { Form, Input } from 'antd';
 import { ChangeEvent, FormEvent, useRef } from 'react';
 

@@ -6,7 +6,7 @@ import { addLayer } from '@/redux/layers';
 import { Button } from 'antd';
 import { useCallback } from 'react';
 import { addNewHistoryItem } from '@/redux/history';
-import { LayerHistoryActions } from '@/redux/history/historySlice';
+import { LayerHistoryActions } from '@/types/historyTypes';
 
 export function LayersMenu() {
   const d = useAppDispatch();

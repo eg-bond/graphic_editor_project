@@ -1,8 +1,8 @@
 import { addNewHistoryItem } from '@/redux/history';
-import { LayerHistoryActions } from '@/redux/history/historySlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { changeOpacity } from '@/redux/layers';
 import { selectActiveLayer } from '@/redux/layers/selectors';
+import { LayerHistoryActions } from '@/types/historyTypes';
 import { InputNumber, InputNumberProps, Slider } from 'antd';
 
 enum InputRanges {

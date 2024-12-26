@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/layers/layersSlice';
 import { addNewHistoryItem } from '@/redux/history';
-import { LayerHistoryActions } from '@/redux/history/historySlice';
+import { LayerHistoryActions } from '@/types/historyTypes';
 
 interface ILayerProps {
   id: LayerT['id'];

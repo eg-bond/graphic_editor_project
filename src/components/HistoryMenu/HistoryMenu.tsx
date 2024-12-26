@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
-import { getHistoryName } from '@/redux/history/historySlice';
+
+import { ActionIcon } from '../ActionIcon';
+import { getHistoryName } from '@/utils/getHistoryName';
 
 export function HistoryMenu() {
   const historyList = useAppSelector(state => state.history.items);
@@ -28,7 +30,9 @@ export function HistoryMenu() {
               className={`${staticClasses} ${dynamicClasses(
                 activeItemIndex === i
               )}`}>
-              <span className='basis-1/4'>{item.type}</span>
+              {/* Action icon of history item */}
+              <ActionIcon type={item.type} />
+              {/* Name of history item */}
               <span className='basis-3/4 flex justify-end'>
                 {getHistoryName(item.type)}
               </span>
