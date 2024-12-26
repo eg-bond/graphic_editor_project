@@ -41,8 +41,12 @@ export const historySlice = createSlice({
         type: action.payload.type,
         layersList: action.payload.layersList,
       };
-
       state.historyIdCount++;
+
+      // if active item is not last - all items after active should be removed
+      if (state.activeItemIndex !== state.items.length - 1) {
+        state.items = state.items.slice(0, state.activeItemIndex + 1);
+      }
       state.items.push(newItem);
       state.activeItemIndex = state.items.length - 1;
     },
