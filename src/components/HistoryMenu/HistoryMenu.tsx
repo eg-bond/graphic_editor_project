@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
+import { getHistoryName } from '@/redux/history/historySlice';
 
 export function HistoryMenu() {
   const historyList = useAppSelector(state => state.history.items);
@@ -28,7 +29,9 @@ export function HistoryMenu() {
                 activeItemIndex === i
               )}`}>
               <span className='basis-1/4'>{item.type}</span>
-              <span className='basis-3/4 flex justify-end'>{item.name}</span>
+              <span className='basis-3/4 flex justify-end'>
+                {getHistoryName(item.type)}
+              </span>
             </div>
           ))}
         </div>

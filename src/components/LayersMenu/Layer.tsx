@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { Button, Dropdown, MenuProps } from 'antd';
 import {
@@ -13,6 +13,8 @@ import {
   MenuOutlined,
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/layers/layersSlice';
+import { addNewHistoryItem } from '@/redux/history';
+import { LayerHistoryActions } from '@/redux/history/historySlice';
 
 interface ILayerProps {
   id: LayerT['id'];
@@ -22,9 +24,32 @@ interface ILayerProps {
 }
 
 // Single layer
-export function Layer({ id, name, active, visible }: ILayerProps) {
+export const Layer = memo<ILayerProps>(function Layer({
+  id,
+  name,
+  active,
+  visible,
+}: ILayerProps) {
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
+
+  const handleLayerClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (e.target === e.currentTarget) {
+      d(activateLayer(id));
+    }
+  };
+
+  const handleChangeVisibility = useCallback((id: number) => {
+    d(changeLayerVisibility(id));
+    d(addNewHistoryItem(LayerHistoryActions.ChangeVisibility));
+  }, []);
+
+  const handleRemoveLayer = useCallback((id: number) => {
+    d(removeLayer(id));
+    d(addNewHistoryItem(LayerHistoryActions.Remove));
+  }, []);
 
   const items: MenuProps['items'] = [
     {
@@ -36,17 +61,9 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
       key: '2',
       label: 'Удалить',
       danger: true,
-      onClick: () => d(removeLayer(id)),
+      onClick: () => handleRemoveLayer(id),
     },
   ];
-
-  const handleLayerClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    if (e.target === e.currentTarget) {
-      d(activateLayer(id));
-    }
-  };
 
   const staticClasses =
     'flex justify-between items-center gap-2 p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
@@ -70,7 +87,7 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
         {/* Hide layer button */}
         <Button
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-          onClick={() => d(changeLayerVisibility(id))}
+          onClick={() => handleChangeVisibility(id)}
         />
         {/* Menu button with 'rename' and 'delete' options */}
         <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
@@ -79,4 +96,4 @@ export function Layer({ id, name, active, visible }: ILayerProps) {
       </div>
     </div>
   );
-}
+});

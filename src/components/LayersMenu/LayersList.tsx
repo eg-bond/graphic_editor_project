@@ -1,8 +1,9 @@
 import { useAppSelector } from '@/redux/hooks';
 import { Layer } from './Layer';
+import { memo } from 'react';
 
 // List of all layers
-export function LayersList() {
+export const LayersList = memo(function LayersList() {
   const layersList = useAppSelector(state => state.layers.list);
 
   return (
@@ -18,4 +19,4 @@ export function LayersList() {
       ))}
     </div>
   );
-}
+});

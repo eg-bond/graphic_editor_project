@@ -1,21 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export enum LayerHistoryActions {
-  Add = 'ADD_LAYER',
-  Remove = 'REMOVE_LAYER',
-  // Изменение прозрачности (0-100)
-  Rename = 'RENAME_LAYER',
-  // Изменение видимости (true/false)
-  ChangeOpacity = 'CHANGE_OPACITY',
-  // Изменение порядка слоев
-  ChangeVisibilidy = 'CHANGE_VISIBILITY',
-  ChangeOrder = 'CHANGE_ORDER',
+  Add,
+  Remove,
+  Rename,
+  ChangeOpacity,
+  ChangeVisibility,
+  ChangeOrder,
+}
+
+export function getHistoryName(action: LayerHistoryActions): string {
+  switch (action) {
+    case LayerHistoryActions.Add:
+      return 'Новый слой';
+    case LayerHistoryActions.Remove:
+      return 'Удаление слоя';
+    case LayerHistoryActions.Rename:
+      return 'Переименование слоя';
+    case LayerHistoryActions.ChangeOpacity:
+      return 'Непрозрачность слоя';
+    case LayerHistoryActions.ChangeVisibility:
+      return 'Видимость слоя';
+    case LayerHistoryActions.ChangeOrder:
+      return 'Порядок слоев';
+    default:
+      return '';
+  }
 }
 
 export type HistoryT = {
   id: number;
   name: string;
-  type: string;
+  type: LayerHistoryActions;
 };
 
 export type HistorySliceStateT = {
