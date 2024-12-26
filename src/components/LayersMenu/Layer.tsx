@@ -35,23 +35,34 @@ export const Layer = memo<ILayerProps>(function Layer({
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
 
+  const handleActivateLayer = useCallback(() => {
+    if (activeLayerIndex === i) return;
+    d(activateLayer(i));
+  }, [d, activeLayerIndex, i]);
+
   const handleLayerClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (e.target === e.currentTarget) {
-      d(activateLayer(i));
+      handleActivateLayer();
     }
   };
 
-  const handleChangeVisibility = useCallback((i: number) => {
-    d(changeLayerVisibility(i));
-    d(addNewHistoryItemThunk(LayerHistoryActions.ChangeVisibility));
-  }, []);
+  const handleChangeVisibility = useCallback(
+    (i: number) => {
+      d(changeLayerVisibility(i));
+      d(addNewHistoryItemThunk(LayerHistoryActions.ChangeVisibility));
+    },
+    [d]
+  );
 
-  const handleRemoveLayer = useCallback((i: number) => {
-    d(removeLayer(i));
-    d(addNewHistoryItemThunk(LayerHistoryActions.Remove));
-  }, []);
+  const handleRemoveLayer = useCallback(
+    (i: number) => {
+      d(removeLayer(i));
+      d(addNewHistoryItemThunk(LayerHistoryActions.Remove));
+    },
+    [d]
+  );
 
   const items: MenuProps['items'] = [
     {
@@ -82,7 +93,7 @@ export const Layer = memo<ILayerProps>(function Layer({
         name={name}
         renameInputVisible={renameInputVisible}
         setRenameInputVisible={setRenameInputVisible}
-        onClick={() => d(activateLayer(i))}
+        onClick={() => handleActivateLayer()}
       />
 
       <div className='flex-[0.25] flex justify-end gap-2'>

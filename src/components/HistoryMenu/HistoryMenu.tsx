@@ -14,10 +14,11 @@ export function HistoryMenu() {
 
   const handleActivateHistoryItem = useCallback(
     (index: number) => {
+      if (index === activeItemIndex) return;
       d(activateHistoryItem(index));
       d(setCurrentHistoryState(historyList[index].layersList));
     },
-    [d, historyList]
+    [d, historyList, activeItemIndex]
   );
 
   const staticClasses =
