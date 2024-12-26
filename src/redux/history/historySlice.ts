@@ -1,36 +1,53 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export enum LayerHistoryActions {
+  Add = 'ADD_LAYER',
+  Remove = 'REMOVE_LAYER',
+  // Изменение прозрачности (0-100)
+  Rename = 'RENAME_LAYER',
+  // Изменение видимости (true/false)
+  ChangeOpacity = 'CHANGE_OPACITY',
+  // Изменение порядка слоев
+  ChangeVisibilidy = 'CHANGE_VISIBILITY',
+  ChangeOrder = 'CHANGE_ORDER',
+}
+
 export type HistoryT = {
   id: number;
   name: string;
   type: string;
-  active: boolean;
 };
 
-const initialState: Array<HistoryT> = [
-  { id: 0, name: 'Действие 1', type: 'pen', active: false },
-  { id: 1, name: 'Действие 2', type: 'circle', active: false },
-  { id: 2, name: 'Действие 3', type: 'brush', active: false },
-];
+export type HistorySliceStateT = {
+  items: Array<HistoryT>;
+  historyIdCount: number;
+  activeItemIndex: number;
+  maxHistoryLength: number;
+};
+
+const initialState: HistorySliceStateT = {
+  items: [],
+  historyIdCount: 0,
+  activeItemIndex: -1,
+  maxHistoryLength: 50,
+};
 
 export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
     activateHistoryItem: (state, action: PayloadAction<number>) => {
-      const prevActiveItemId = state.findIndex(item => item.active === true);
-      const newActiveItemId = state.findIndex(
-        item => item.id === action.payload
-      );
-
-      if (prevActiveItemId === newActiveItemId) return;
-
-      if (prevActiveItemId === -1) {
-        state[newActiveItemId].active = true;
-        return;
-      }
-      state[prevActiveItemId].active = false;
-      state[newActiveItemId].active = true;
+      state.activeItemIndex = action.payload;
+    },
+    addNewHistoryItem: (state, action: PayloadAction<LayerHistoryActions>) => {
+      const newAction: HistoryT = {
+        id: state.historyIdCount,
+        name: 'Новое действие',
+        type: action.payload,
+      };
+      state.historyIdCount++;
+      state.items.push(newAction);
+      state.activeItemIndex = state.items.length - 1;
     },
   },
 });
