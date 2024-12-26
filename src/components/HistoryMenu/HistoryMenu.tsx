@@ -21,13 +21,16 @@ export function HistoryMenu() {
   );
 
   const staticClasses =
-    'flex justify-between p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
-  const dynamicClasses = (isActive: boolean) =>
-    isActive ? 'bg-slate-400' : '';
+    'flex justify-between p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
+  const dynamicClasses = (activeItemIndex: number, i: number) => {
+    const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
+    const disabledCl = activeItemIndex < i ? 'text-gray-500' : '';
+    return activeCl + ' ' + disabledCl;
+  };
 
   return (
     <div className='h-1/2'>
-      <div className='h-full flex flex-col'>
+      <div className='h-full flex flex-col '>
         <h1 className='m-2 text-2xl text-center'>История</h1>
         {/* List of history items */}
         <div className='overflow-y-auto'>
@@ -36,7 +39,8 @@ export function HistoryMenu() {
               key={item.id}
               onClick={() => handleActivateHistoryItem(i)}
               className={`${staticClasses} ${dynamicClasses(
-                activeItemIndex === i
+                activeItemIndex,
+                i
               )}`}>
               {/* Action icon of history item */}
               <ActionIcon type={item.type} />
