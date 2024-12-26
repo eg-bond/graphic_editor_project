@@ -1,4 +1,4 @@
-import { addNewHistoryItem } from '@/redux/history';
+import { addNewHistoryItemThunk } from '@/redux/history';
 import { useAppDispatch } from '@/redux/hooks';
 import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
@@ -32,7 +32,7 @@ export function LayerName({
 
   const handleSubmit = () => {
     d(changeLayerName({ id, name: inputValue.current }));
-    d(addNewHistoryItem(LayerHistoryActions.Rename));
+    d(addNewHistoryItemThunk(LayerHistoryActions.Rename));
     setRenameInputVisible(false);
   };
 

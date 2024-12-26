@@ -13,7 +13,7 @@ import {
   MenuOutlined,
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/layers/layersSlice';
-import { addNewHistoryItem } from '@/redux/history';
+import { addNewHistoryItemThunk } from '@/redux/history';
 import { LayerHistoryActions } from '@/types/historyTypes';
 
 interface ILayerProps {
@@ -43,12 +43,12 @@ export const Layer = memo<ILayerProps>(function Layer({
 
   const handleChangeVisibility = useCallback((id: number) => {
     d(changeLayerVisibility(id));
-    d(addNewHistoryItem(LayerHistoryActions.ChangeVisibility));
+    d(addNewHistoryItemThunk(LayerHistoryActions.ChangeVisibility));
   }, []);
 
   const handleRemoveLayer = useCallback((id: number) => {
     d(removeLayer(id));
-    d(addNewHistoryItem(LayerHistoryActions.Remove));
+    d(addNewHistoryItemThunk(LayerHistoryActions.Remove));
   }, []);
 
   const items: MenuProps['items'] = [

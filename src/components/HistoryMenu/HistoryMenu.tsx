@@ -3,14 +3,19 @@ import { activateHistoryItem } from '@/redux/history';
 
 import { ActionIcon } from '../ActionIcon';
 import { getHistoryName } from '@/utils/getHistoryName';
+import { useCallback } from 'react';
 
 export function HistoryMenu() {
   const historyList = useAppSelector(state => state.history.items);
+  // const layersList = useAppSelector(state => state.layers.list);
   const activeItemIndex = useAppSelector(
     state => state.history.activeItemIndex
   );
-
   const d = useAppDispatch();
+
+  const handleActivateHistoryItem = useCallback((index: number) => {
+    d(activateHistoryItem({ index }));
+  }, []);
 
   const staticClasses =
     'flex justify-between p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
@@ -26,7 +31,7 @@ export function HistoryMenu() {
           {historyList.map((item, i) => (
             <div
               key={item.id}
-              onClick={() => d(activateHistoryItem(i))}
+              onClick={() => handleActivateHistoryItem(i)}
               className={`${staticClasses} ${dynamicClasses(
                 activeItemIndex === i
               )}`}>

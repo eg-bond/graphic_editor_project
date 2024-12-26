@@ -1,4 +1,4 @@
-import { addNewHistoryItem } from '@/redux/history';
+import { addNewHistoryItemThunk } from '@/redux/history';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { changeOpacity } from '@/redux/layers';
 import { selectActiveLayer } from '@/redux/layers/selectors';
@@ -17,7 +17,7 @@ export function OpacitySlider() {
   // TODO: make debounce or somth
   const onChange: InputNumberProps['onChange'] = newValue => {
     d(changeOpacity({ id: activeLayer?.id, opacity: Number(newValue) }));
-    d(addNewHistoryItem(LayerHistoryActions.ChangeOpacity));
+    d(addNewHistoryItemThunk(LayerHistoryActions.ChangeOpacity));
   };
 
   return (

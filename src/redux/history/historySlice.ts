@@ -1,9 +1,11 @@
 import { LayerHistoryActions } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { LayerT } from '../layers/layersSlice';
 
 export type HistoryT = {
   id: number;
   type: LayerHistoryActions;
+  layersList: Array<LayerT>;
 };
 
 export type HistorySliceStateT = {
@@ -24,16 +26,24 @@ export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    activateHistoryItem: (state, action: PayloadAction<number>) => {
-      state.activeItemIndex = action.payload;
+    activateHistoryItem: (state, action: PayloadAction<{ index: number }>) => {
+      state.activeItemIndex = action.payload.index;
     },
-    addNewHistoryItem: (state, action: PayloadAction<LayerHistoryActions>) => {
-      const newAction: HistoryT = {
+    addNewHistoryItem: (
+      state,
+      action: PayloadAction<{
+        type: LayerHistoryActions;
+        layersList: Array<LayerT>;
+      }>
+    ) => {
+      const newItem: HistoryT = {
         id: state.historyIdCount,
-        type: action.payload,
+        type: action.payload.type,
+        layersList: action.payload.layersList,
       };
+
       state.historyIdCount++;
-      state.items.push(newAction);
+      state.items.push(newItem);
       state.activeItemIndex = state.items.length - 1;
     },
   },

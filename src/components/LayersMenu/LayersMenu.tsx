@@ -5,15 +5,15 @@ import { PlusOutlined } from '@ant-design/icons';
 import { addLayer } from '@/redux/layers';
 import { Button } from 'antd';
 import { useCallback } from 'react';
-import { addNewHistoryItem } from '@/redux/history';
 import { LayerHistoryActions } from '@/types/historyTypes';
+import { addNewHistoryItemThunk } from '@/redux/history';
 
 export function LayersMenu() {
   const d = useAppDispatch();
 
   const handleAddLayer = useCallback(() => {
     d(addLayer());
-    d(addNewHistoryItem(LayerHistoryActions.Add));
+    d(addNewHistoryItemThunk(LayerHistoryActions.Add));
   }, []);
 
   return (
