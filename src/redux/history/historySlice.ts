@@ -19,7 +19,7 @@ const initialState: HistorySliceStateT = {
   items: [],
   historyIdCount: 0,
   activeItemIndex: -1,
-  maxHistoryLength: 50,
+  maxHistoryLength: 20,
 };
 
 export const historySlice = createSlice({
@@ -42,6 +42,11 @@ export const historySlice = createSlice({
         layersList: action.payload.layersList,
       };
       state.historyIdCount++;
+
+      // if history length is more than max length - remove first item
+      if (state.items.length >= state.maxHistoryLength) {
+        state.items.shift();
+      }
 
       // if active item is not last - all items after active should be removed
       if (state.activeItemIndex !== state.items.length - 1) {
