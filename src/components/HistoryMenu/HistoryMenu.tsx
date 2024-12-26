@@ -1,21 +1,24 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
-
 import { ActionIcon } from '../ActionIcon';
 import { getHistoryName } from '@/utils/getHistoryName';
 import { useCallback } from 'react';
+import { setCurrentHistoryState } from '@/redux/layers';
 
 export function HistoryMenu() {
   const historyList = useAppSelector(state => state.history.items);
-  // const layersList = useAppSelector(state => state.layers.list);
   const activeItemIndex = useAppSelector(
     state => state.history.activeItemIndex
   );
   const d = useAppDispatch();
 
-  const handleActivateHistoryItem = useCallback((index: number) => {
-    d(activateHistoryItem({ index }));
-  }, []);
+  const handleActivateHistoryItem = useCallback(
+    (index: number) => {
+      d(activateHistoryItem(index));
+      d(setCurrentHistoryState(historyList[index].layersList));
+    },
+    [d, historyList]
+  );
 
   const staticClasses =
     'flex justify-between p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';

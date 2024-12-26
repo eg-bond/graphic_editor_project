@@ -9,4 +9,5 @@ export const {
   changeOpacity,
   changeLayerVisibility,
   changeLayerName,
+  setCurrentHistoryState,
 } = layersSlice.actions;

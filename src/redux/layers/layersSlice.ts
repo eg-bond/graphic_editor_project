@@ -28,6 +28,9 @@ export const layersSlice = createSlice({
   name: 'layers',
   initialState,
   reducers: {
+    setCurrentHistoryState: (state, action: PayloadAction<Array<LayerT>>) => {
+      state.list = action.payload;
+    },
     addLayer: state => {
       const newLayer: LayerT = {
         id: state.layerIdCount,

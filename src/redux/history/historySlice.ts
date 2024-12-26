@@ -26,8 +26,8 @@ export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    activateHistoryItem: (state, action: PayloadAction<{ index: number }>) => {
-      state.activeItemIndex = action.payload.index;
+    activateHistoryItem: (state, action: PayloadAction<number>) => {
+      state.activeItemIndex = action.payload;
     },
     addNewHistoryItem: (
       state,
