@@ -17,17 +17,19 @@ import { addNewHistoryItemThunk } from '@/redux/history';
 import { LayerHistoryActions } from '@/types/historyTypes';
 
 interface ILayerProps {
+  i: number;
   id: LayerT['id'];
   name: LayerT['name'];
-  active: LayerT['active'];
+  activeLayerIndex: number;
   visible: LayerT['visible'];
 }
 
 // Single layer
 export const Layer = memo<ILayerProps>(function Layer({
+  i,
   id,
   name,
-  active,
+  activeLayerIndex,
   visible,
 }: ILayerProps) {
   const d = useAppDispatch();
@@ -37,17 +39,17 @@ export const Layer = memo<ILayerProps>(function Layer({
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (e.target === e.currentTarget) {
-      d(activateLayer(id));
+      d(activateLayer(i));
     }
   };
 
-  const handleChangeVisibility = useCallback((id: number) => {
-    d(changeLayerVisibility(id));
+  const handleChangeVisibility = useCallback((i: number) => {
+    d(changeLayerVisibility(i));
     d(addNewHistoryItemThunk(LayerHistoryActions.ChangeVisibility));
   }, []);
 
-  const handleRemoveLayer = useCallback((id: number) => {
-    d(removeLayer(id));
+  const handleRemoveLayer = useCallback((i: number) => {
+    d(removeLayer(i));
     d(addNewHistoryItemThunk(LayerHistoryActions.Remove));
   }, []);
 
@@ -72,22 +74,22 @@ export const Layer = memo<ILayerProps>(function Layer({
 
   return (
     <div
-      className={`${staticClasses} ${dynamicClasses(active)}`}
+      className={`${staticClasses} ${dynamicClasses(activeLayerIndex === i)}`}
       onClick={e => handleLayerClick(e)}>
       {/* Layer name component */}
       <LayerName
-        id={id}
+        i={i}
         name={name}
         renameInputVisible={renameInputVisible}
         setRenameInputVisible={setRenameInputVisible}
-        onClick={() => d(activateLayer(id))}
+        onClick={() => d(activateLayer(i))}
       />
 
       <div className='flex-[0.25] flex justify-end gap-2'>
         {/* Hide layer button */}
         <Button
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-          onClick={() => handleChangeVisibility(id)}
+          onClick={() => handleChangeVisibility(i)}
         />
         {/* Menu button with 'rename' and 'delete' options */}
         <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>

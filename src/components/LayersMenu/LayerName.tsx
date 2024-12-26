@@ -7,7 +7,7 @@ import { Form, Input } from 'antd';
 import { ChangeEvent, FormEvent, useRef } from 'react';
 
 type ILayerName = {
-  id: LayerT['id'];
+  i: number;
   name: LayerT['name'];
   renameInputVisible: boolean;
   setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +15,7 @@ type ILayerName = {
 };
 
 export function LayerName({
-  id,
+  i,
   name,
   renameInputVisible,
   setRenameInputVisible,
@@ -31,7 +31,7 @@ export function LayerName({
   };
 
   const handleSubmit = () => {
-    d(changeLayerName({ id, name: inputValue.current }));
+    d(changeLayerName({ i, name: inputValue.current }));
     d(addNewHistoryItemThunk(LayerHistoryActions.Rename));
     setRenameInputVisible(false);
   };
