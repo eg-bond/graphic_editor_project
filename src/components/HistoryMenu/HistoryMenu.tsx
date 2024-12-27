@@ -21,12 +21,13 @@ export function HistoryMenu() {
     [d, historyList, activeItemIndex]
   );
 
+  // Tailwind classes for history item
   const staticClasses =
     'flex justify-between p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
-  const dynamicClasses = (activeItemIndex: number, i: number) => {
+  const dynamicClasses = (i: number) => {
     const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
-    const disabledCl = activeItemIndex < i ? 'text-gray-500' : '';
-    return activeCl + ' ' + disabledCl;
+    const futureCl = activeItemIndex < i ? 'text-gray-500' : '';
+    return `${activeCl} ${futureCl}`;
   };
 
   return (
@@ -39,10 +40,7 @@ export function HistoryMenu() {
             <div
               key={item.id}
               onClick={() => handleActivateHistoryItem(i)}
-              className={`${staticClasses} ${dynamicClasses(
-                activeItemIndex,
-                i
-              )}`}>
+              className={`${staticClasses} ${dynamicClasses(i)}`}>
               {/* Action icon of history item */}
               <ActionIcon kind={item.kind} />
               {/* Name of history item */}

@@ -1,5 +1,5 @@
 import { memo, useCallback, useState } from 'react';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Button, Dropdown, MenuProps } from 'antd';
 import {
   activateLayer,
@@ -20,7 +20,6 @@ interface ILayerProps {
   i: number;
   id: LayerT['id'];
   name: LayerT['name'];
-  activeLayerIndex: number;
   visible: LayerT['visible'];
 }
 
@@ -29,9 +28,11 @@ export const Layer = memo<ILayerProps>(function Layer({
   i,
   id,
   name,
-  activeLayerIndex,
   visible,
 }: ILayerProps) {
+  const activeLayerIndex = useAppSelector(
+    state => state.layers.activeLayerIndex
+  );
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
 
