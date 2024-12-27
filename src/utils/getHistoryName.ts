@@ -1,18 +1,18 @@
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 
-export function getHistoryName(action: LayerHistoryActions): string {
+export function getHistoryItemName(action: HistoryItemKinds): string {
   switch (action) {
-    case LayerHistoryActions.Add:
+    case HistoryItemKinds.Add:
       return 'Новый слой';
-    case LayerHistoryActions.Remove:
+    case HistoryItemKinds.Remove:
       return 'Удаление слоя';
-    case LayerHistoryActions.Rename:
+    case HistoryItemKinds.Rename:
       return 'Переименование слоя';
-    case LayerHistoryActions.ChangeOpacity:
+    case HistoryItemKinds.Opacity:
       return 'Непрозрачность слоя';
-    case LayerHistoryActions.ChangeVisibility:
+    case HistoryItemKinds.Visibility:
       return 'Видимость слоя';
-    case LayerHistoryActions.ChangeOrder:
+    case HistoryItemKinds.Order:
       return 'Порядок слоев';
     default:
       return '';

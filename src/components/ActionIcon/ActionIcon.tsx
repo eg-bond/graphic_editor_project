@@ -1,4 +1,4 @@
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 import {
   DeleteOutlined,
   EyeOutlined,
@@ -8,19 +8,23 @@ import {
   VerticalAlignMiddleOutlined,
 } from '@ant-design/icons';
 
-export function ActionIcon({ type }: { type: LayerHistoryActions }) {
-  switch (type) {
-    case LayerHistoryActions.Add:
+interface IActionIconProps {
+  kind: HistoryItemKinds;
+}
+
+export function ActionIcon({ kind }: IActionIconProps) {
+  switch (kind) {
+    case HistoryItemKinds.Add:
       return <FileAddOutlined />;
-    case LayerHistoryActions.Remove:
+    case HistoryItemKinds.Remove:
       return <DeleteOutlined />;
-    case LayerHistoryActions.Rename:
+    case HistoryItemKinds.Rename:
       return <FontSizeOutlined />;
-    case LayerHistoryActions.ChangeOpacity:
+    case HistoryItemKinds.Opacity:
       return <SmallDashOutlined />;
-    case LayerHistoryActions.ChangeVisibility:
+    case HistoryItemKinds.Visibility:
       return <EyeOutlined />;
-    case LayerHistoryActions.ChangeOrder:
+    case HistoryItemKinds.Order:
       return <VerticalAlignMiddleOutlined />;
     default:
       return <FileAddOutlined />;

@@ -1,15 +1,14 @@
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 import { AppThunk } from '../store';
-import { historySlice } from './historySlice';
+import { addNewHistoryItem } from '.';
 
-export const addNewHistoryItemThunk = (
-  actionType: LayerHistoryActions
-): AppThunk => {
+// This thunk needed only to get layersList from layersSlice ..
+// .. and pass it to historySlice 'addNewHistoryItem' action
+export const addNewHistoryItemThunk = (kind: HistoryItemKinds): AppThunk => {
   return (d, getState) => {
     const state = getState();
-    // current layersList (after action)
     const layersList = state.layers.list;
 
-    d(historySlice.actions.addNewHistoryItem({ type: actionType, layersList }));
+    d(addNewHistoryItem({ kind, layersList }));
   };
 };

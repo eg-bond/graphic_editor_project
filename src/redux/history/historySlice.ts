@@ -1,10 +1,10 @@
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LayerT } from '../layers/layersSlice';
 
 export type HistoryItemT = {
   id: number;
-  type: LayerHistoryActions;
+  kind: HistoryItemKinds;
   layersList: Array<LayerT>;
 };
 
@@ -34,7 +34,7 @@ export const historySlice = createSlice({
     addNewHistoryItem: (
       state,
       action: PayloadAction<{
-        type: LayerHistoryActions;
+        kind: HistoryItemKinds;
         layersList: Array<LayerT>;
       }>
     ) => {
@@ -49,7 +49,7 @@ export const historySlice = createSlice({
       // Add new history item
       const newItem: HistoryItemT = {
         id: state.historyIdCount,
-        type: action.payload.type,
+        kind: action.payload.kind,
         layersList: action.payload.layersList,
       };
       state.historyIdCount++;

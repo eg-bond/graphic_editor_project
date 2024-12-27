@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
 import { ActionIcon } from '../ActionIcon';
-import { getHistoryName } from '@/utils/getHistoryName';
+import { getHistoryItemName } from '@/utils/getHistoryName';
 import { useCallback } from 'react';
 import { setStateFromHistory } from '@/redux/layers';
 
@@ -44,10 +44,10 @@ export function HistoryMenu() {
                 i
               )}`}>
               {/* Action icon of history item */}
-              <ActionIcon type={item.type} />
+              <ActionIcon kind={item.kind} />
               {/* Name of history item */}
               <span className='basis-3/4 flex justify-end'>
-                {getHistoryName(item.type)}
+                {getHistoryItemName(item.kind)}
               </span>
             </div>
           ))}

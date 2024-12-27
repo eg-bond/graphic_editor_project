@@ -2,7 +2,7 @@ import { addNewHistoryItemThunk } from '@/redux/history';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { changeOpacity } from '@/redux/layers';
 import { selectActiveLayer } from '@/redux/layers/selectors';
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 import { InputNumber, InputNumberProps, Slider } from 'antd';
 
 enum InputRanges {
@@ -20,7 +20,7 @@ export function OpacitySlider() {
   // TODO: make debounce or somth
   const onChange: InputNumberProps['onChange'] = newValue => {
     d(changeOpacity({ activeLayerIndex, opacity: Number(newValue) }));
-    d(addNewHistoryItemThunk(LayerHistoryActions.ChangeOpacity));
+    d(addNewHistoryItemThunk(HistoryItemKinds.Opacity));
   };
 
   return (

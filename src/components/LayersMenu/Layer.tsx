@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/layers/layersSlice';
 import { addNewHistoryItemThunk } from '@/redux/history';
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 
 interface ILayerProps {
   i: number;
@@ -51,7 +51,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   const handleChangeVisibility = useCallback(
     (i: number) => {
       d(changeLayerVisibility({ index: i }));
-      d(addNewHistoryItemThunk(LayerHistoryActions.ChangeVisibility));
+      d(addNewHistoryItemThunk(HistoryItemKinds.Visibility));
     },
     [d]
   );
@@ -59,7 +59,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   const handleRemoveLayer = useCallback(
     (i: number) => {
       d(removeLayer({ index: i }));
-      d(addNewHistoryItemThunk(LayerHistoryActions.Remove));
+      d(addNewHistoryItemThunk(HistoryItemKinds.Remove));
     },
     [d]
   );

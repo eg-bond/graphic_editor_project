@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { addLayer } from '@/redux/layers';
 import { Button } from 'antd';
 import { useCallback } from 'react';
-import { LayerHistoryActions } from '@/types/historyTypes';
+import { HistoryItemKinds } from '@/types/historyTypes';
 import { addNewHistoryItemThunk } from '@/redux/history';
 
 export function LayersMenu() {
@@ -13,8 +13,8 @@ export function LayersMenu() {
 
   const handleAddLayer = useCallback(() => {
     d(addLayer());
-    d(addNewHistoryItemThunk(LayerHistoryActions.Add));
-  }, []);
+    d(addNewHistoryItemThunk(HistoryItemKinds.Add));
+  }, [d]);
 
   return (
     <div className='h-1/2'>
