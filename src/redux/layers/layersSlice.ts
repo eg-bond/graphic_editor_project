@@ -1,3 +1,4 @@
+import { swapArrayElements } from '@/utils/swapArrayElements';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type LayerT = {
@@ -58,7 +59,7 @@ export const layersSlice = createSlice({
       state,
       action: PayloadAction<{ index: number }>
     ) => {
-      const index = action.payload.index;
+      const { index } = action.payload;
       state.list[index].visible = !state.list[index].visible;
     },
     changeLayerName: (
@@ -66,6 +67,22 @@ export const layersSlice = createSlice({
       action: PayloadAction<{ index: number; name: string }>
     ) => {
       state.list[action.payload.index].name = action.payload.name;
+    },
+    moveLayerUp: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      if (index <= 0) return;
+      if (state.activeLayerIndex === index) {
+        state.activeLayerIndex = index - 1;
+      }
+      swapArrayElements(state.list, index, index - 1);
+    },
+    moveLayerDown: (state, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      if (index >= state.list.length - 1) return;
+      if (state.activeLayerIndex === index) {
+        state.activeLayerIndex = index + 1;
+      }
+      swapArrayElements(state.list, index, index + 1);
     },
   },
 });

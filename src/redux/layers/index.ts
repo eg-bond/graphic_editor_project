@@ -10,4 +10,6 @@ export const {
   changeLayerVisibility,
   changeLayerName,
   setStateFromHistory,
+  moveLayerUp,
+  moveLayerDown,
 } = layersSlice.actions;

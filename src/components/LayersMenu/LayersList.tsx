@@ -12,7 +12,7 @@ export const LayersList = memo(function LayersList() {
         <Layer
           key={layer.id}
           i={i}
-          id={layer.id}
+          lastElementIndex={layersList.length - 1}
           name={layer.name}
           visible={layer.visible}
         />

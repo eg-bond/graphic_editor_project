@@ -23,7 +23,7 @@ export function HistoryMenu() {
 
   // Tailwind classes for history item
   const staticClasses =
-    'flex justify-between p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
+    'flex justify-between p-2 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
   const dynamicClasses = (i: number) => {
     const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
     const futureCl = activeItemIndex < i ? 'text-gray-500' : '';

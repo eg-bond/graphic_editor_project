@@ -4,13 +4,17 @@ import { Button, Dropdown, MenuProps } from 'antd';
 import {
   activateLayer,
   changeLayerVisibility,
+  moveLayerDown,
+  moveLayerUp,
   removeLayer,
 } from '@/redux/layers';
 import { LayerName } from './LayerName';
 import {
+  DownOutlined,
   EyeInvisibleOutlined,
   EyeOutlined,
   MenuOutlined,
+  UpOutlined,
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/layers/layersSlice';
 import { addNewHistoryItemThunk } from '@/redux/history';
@@ -18,7 +22,7 @@ import { HistoryItemKinds } from '@/types/historyTypes';
 
 interface ILayerProps {
   i: number;
-  id: LayerT['id'];
+  lastElementIndex: number;
   name: LayerT['name'];
   visible: LayerT['visible'];
 }
@@ -26,7 +30,7 @@ interface ILayerProps {
 // Single layer
 export const Layer = memo<ILayerProps>(function Layer({
   i,
-  id,
+  lastElementIndex,
   name,
   visible,
 }: ILayerProps) {
@@ -49,21 +53,27 @@ export const Layer = memo<ILayerProps>(function Layer({
     }
   };
 
-  const handleChangeVisibility = useCallback(
-    (i: number) => {
-      d(changeLayerVisibility({ index: i }));
-      d(addNewHistoryItemThunk(HistoryItemKinds.Visibility));
-    },
-    [d]
-  );
+  const handleChangeVisibility = useCallback(() => {
+    d(changeLayerVisibility({ index: i }));
+    d(addNewHistoryItemThunk(HistoryItemKinds.Visibility));
+  }, [d, i]);
 
-  const handleRemoveLayer = useCallback(
-    (i: number) => {
-      d(removeLayer({ index: i }));
-      d(addNewHistoryItemThunk(HistoryItemKinds.Remove));
-    },
-    [d]
-  );
+  const handleRemoveLayer = useCallback(() => {
+    d(removeLayer({ index: i }));
+    d(addNewHistoryItemThunk(HistoryItemKinds.Remove));
+  }, [d, i]);
+
+  const handleMoveLayerUp = useCallback(() => {
+    if (i === 0) return;
+    d(moveLayerUp({ index: i }));
+    d(addNewHistoryItemThunk(HistoryItemKinds.Order));
+  }, [d, i]);
+
+  const handleMoveLayerDown = useCallback(() => {
+    if (i === lastElementIndex) return;
+    d(moveLayerDown({ index: i }));
+    d(addNewHistoryItemThunk(HistoryItemKinds.Order));
+  }, [d, i, lastElementIndex]);
 
   const items: MenuProps['items'] = [
     {
@@ -75,12 +85,12 @@ export const Layer = memo<ILayerProps>(function Layer({
       key: '2',
       label: 'Удалить',
       danger: true,
-      onClick: () => handleRemoveLayer(id),
+      onClick: () => handleRemoveLayer(),
     },
   ];
 
   const staticClasses =
-    'flex justify-between items-center gap-2 p-3 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
+    'flex justify-between items-center gap-2 px-2 py-1 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
   const dynamicClasses = (isActive: boolean) =>
     isActive ? 'bg-slate-400' : '';
 
@@ -88,6 +98,15 @@ export const Layer = memo<ILayerProps>(function Layer({
     <div
       className={`${staticClasses} ${dynamicClasses(activeLayerIndex === i)}`}
       onClick={e => handleLayerClick(e)}>
+      {/* Buttons for moving layers up and down */}
+      <div className='flex flex-col gap-1 mr-2'>
+        <Button
+          onClick={() => handleMoveLayerUp()}
+          icon={<UpOutlined />}></Button>
+        <Button
+          onClick={() => handleMoveLayerDown()}
+          icon={<DownOutlined />}></Button>
+      </div>
       {/* Layer name component */}
       <LayerName
         i={i}
@@ -96,12 +115,11 @@ export const Layer = memo<ILayerProps>(function Layer({
         setRenameInputVisible={setRenameInputVisible}
         onClick={() => handleActivateLayer()}
       />
-
       <div className='flex-[0.25] flex justify-end gap-2'>
         {/* Hide layer button */}
         <Button
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
-          onClick={() => handleChangeVisibility(i)}
+          onClick={() => handleChangeVisibility()}
         />
         {/* Menu button with 'rename' and 'delete' options */}
         <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
