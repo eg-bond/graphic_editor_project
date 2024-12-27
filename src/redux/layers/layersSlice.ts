@@ -7,26 +7,29 @@ export type LayerT = {
   visible: boolean;
 };
 
-type InitialStateT = {
+type LayersSliceStateT = {
   list: Array<LayerT>;
   layerIdCount: number;
   activeLayerIndex: number;
 };
 
-const initialState: InitialStateT = {
+const NEW_LAYER_NAME = 'Cлой ';
+
+const initialState: LayersSliceStateT = {
   list: [],
   layerIdCount: 0,
   activeLayerIndex: -1,
 };
 
-const NEW_LAYER_NAME = 'Cлой ';
-
 export const layersSlice = createSlice({
   name: 'layers',
   initialState,
   reducers: {
-    setCurrentHistoryState: (state, action: PayloadAction<Array<LayerT>>) => {
-      state.list = action.payload;
+    setStateFromHistory: (
+      state,
+      action: PayloadAction<{ layersList: Array<LayerT> }>
+    ) => {
+      state.list = action.payload.layersList;
     },
     addLayer: state => {
       const newLayer: LayerT = {
@@ -38,28 +41,31 @@ export const layersSlice = createSlice({
       state.layerIdCount++;
       state.list.push(newLayer);
     },
-    removeLayer: (state, action: PayloadAction<number>) => {
-      state.list.splice(action.payload, 1);
+    removeLayer: (state, action: PayloadAction<{ index: number }>) => {
+      state.list.splice(action.payload.index, 1);
     },
-    activateLayer: (state, action: PayloadAction<number>) => {
-      state.activeLayerIndex = action.payload;
+    activateLayer: (state, action: PayloadAction<{ index: number }>) => {
+      state.activeLayerIndex = action.payload.index;
     },
     changeOpacity: (
       state,
       action: PayloadAction<{ activeLayerIndex: number; opacity: number }>
     ) => {
-      if (action.payload.opacity === null) return;
-      const i = action.payload.activeLayerIndex;
-      state.list[i].opacity = action.payload.opacity;
+      const index = action.payload.activeLayerIndex;
+      state.list[index].opacity = action.payload.opacity;
     },
-    changeLayerVisibility: (state, action: PayloadAction<number>) => {
-      state.list[action.payload].visible = !state.list[action.payload].visible;
+    changeLayerVisibility: (
+      state,
+      action: PayloadAction<{ index: number }>
+    ) => {
+      const index = action.payload.index;
+      state.list[index].visible = !state.list[index].visible;
     },
     changeLayerName: (
       state,
-      action: PayloadAction<{ i: number; name: string }>
+      action: PayloadAction<{ index: number; name: string }>
     ) => {
-      state.list[action.payload.i].name = action.payload.name;
+      state.list[action.payload.index].name = action.payload.name;
     },
   },
 });

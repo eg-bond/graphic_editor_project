@@ -37,7 +37,7 @@ export const Layer = memo<ILayerProps>(function Layer({
 
   const handleActivateLayer = useCallback(() => {
     if (activeLayerIndex === i) return;
-    d(activateLayer(i));
+    d(activateLayer({ index: i }));
   }, [d, activeLayerIndex, i]);
 
   const handleLayerClick = (
@@ -50,7 +50,7 @@ export const Layer = memo<ILayerProps>(function Layer({
 
   const handleChangeVisibility = useCallback(
     (i: number) => {
-      d(changeLayerVisibility(i));
+      d(changeLayerVisibility({ index: i }));
       d(addNewHistoryItemThunk(LayerHistoryActions.ChangeVisibility));
     },
     [d]
@@ -58,7 +58,7 @@ export const Layer = memo<ILayerProps>(function Layer({
 
   const handleRemoveLayer = useCallback(
     (i: number) => {
-      d(removeLayer(i));
+      d(removeLayer({ index: i }));
       d(addNewHistoryItemThunk(LayerHistoryActions.Remove));
     },
     [d]

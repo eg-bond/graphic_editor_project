@@ -31,7 +31,7 @@ export function LayerName({
   };
 
   const handleSubmit = () => {
-    d(changeLayerName({ i, name: inputValue.current }));
+    d(changeLayerName({ index: i, name: inputValue.current }));
     d(addNewHistoryItemThunk(LayerHistoryActions.Rename));
     setRenameInputVisible(false);
   };
