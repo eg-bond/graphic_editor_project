@@ -1,11 +1,13 @@
+import { addNewHistoryItemThunk } from '@/redux/history';
 import { useAppDispatch } from '@/redux/hooks';
 import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
+import { HistoryItemKinds } from '@/types/historyTypes';
 import { Form, Input } from 'antd';
 import { ChangeEvent, FormEvent, useRef } from 'react';
 
 type ILayerName = {
-  id: LayerT['id'];
+  i: number;
   name: LayerT['name'];
   renameInputVisible: boolean;
   setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +15,7 @@ type ILayerName = {
 };
 
 export function LayerName({
-  id,
+  i,
   name,
   renameInputVisible,
   setRenameInputVisible,
@@ -29,7 +31,8 @@ export function LayerName({
   };
 
   const handleSubmit = () => {
-    d(changeLayerName({ id, name: inputValue.current }));
+    d(changeLayerName({ index: i, name: inputValue.current }));
+    d(addNewHistoryItemThunk(HistoryItemKinds.Rename));
     setRenameInputVisible(false);
   };
 

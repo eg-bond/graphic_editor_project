@@ -1,36 +1,60 @@
+import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { LayerT } from '../layers/layersSlice';
 
-export type HistoryT = {
+export type HistoryItemT = {
   id: number;
-  name: string;
-  type: string;
-  active: boolean;
+  kind: HistoryItemKinds;
+  layersList: Array<LayerT>;
 };
 
-const initialState: Array<HistoryT> = [
-  { id: 0, name: 'Действие 1', type: 'pen', active: false },
-  { id: 1, name: 'Действие 2', type: 'circle', active: false },
-  { id: 2, name: 'Действие 3', type: 'brush', active: false },
-];
+export type HistorySliceStateT = {
+  items: Array<HistoryItemT>;
+  historyIdCount: number;
+  activeItemIndex: number;
+  maxHistoryLength: number;
+};
+
+const HISTORY_MAX_LENGTH = 20;
+
+const initialState: HistorySliceStateT = {
+  items: [],
+  historyIdCount: 0,
+  activeItemIndex: -1,
+  maxHistoryLength: HISTORY_MAX_LENGTH,
+};
 
 export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    activateHistoryItem: (state, action: PayloadAction<number>) => {
-      const prevActiveItemId = state.findIndex(item => item.active === true);
-      const newActiveItemId = state.findIndex(
-        item => item.id === action.payload
-      );
-
-      if (prevActiveItemId === newActiveItemId) return;
-
-      if (prevActiveItemId === -1) {
-        state[newActiveItemId].active = true;
-        return;
+    activateHistoryItem: (state, action: PayloadAction<{ index: number }>) => {
+      state.activeItemIndex = action.payload.index;
+    },
+    addNewHistoryItem: (
+      state,
+      action: PayloadAction<{
+        kind: HistoryItemKinds;
+        layersList: Array<LayerT>;
+      }>
+    ) => {
+      // Manage history size
+      if (state.items.length >= state.maxHistoryLength) {
+        state.items.shift();
       }
-      state[prevActiveItemId].active = false;
-      state[newActiveItemId].active = true;
+      // Remove future history if we're not at the end
+      if (state.activeItemIndex !== state.items.length - 1) {
+        state.items = state.items.slice(0, state.activeItemIndex + 1);
+      }
+      // Add new history item
+      const newItem: HistoryItemT = {
+        id: state.historyIdCount,
+        kind: action.payload.kind,
+        layersList: action.payload.layersList,
+      };
+      state.historyIdCount++;
+      state.items.push(newItem);
+      state.activeItemIndex = state.items.length - 1;
     },
   },
 });

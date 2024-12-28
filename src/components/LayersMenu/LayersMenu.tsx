@@ -4,9 +4,17 @@ import { useAppDispatch } from '@/redux/hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import { addLayer } from '@/redux/layers';
 import { Button } from 'antd';
+import { useCallback } from 'react';
+import { HistoryItemKinds } from '@/types/historyTypes';
+import { addNewHistoryItemThunk } from '@/redux/history';
 
 export function LayersMenu() {
   const d = useAppDispatch();
+
+  const handleAddLayer = useCallback(() => {
+    d(addLayer());
+    d(addNewHistoryItemThunk(HistoryItemKinds.Add));
+  }, [d]);
 
   return (
     <div className='h-1/2'>
@@ -17,7 +25,7 @@ export function LayersMenu() {
           <Button
             icon={<PlusOutlined />}
             block
-            onClick={() => d(addLayer())}></Button>
+            onClick={() => handleAddLayer()}></Button>
         </div>
 
         <OpacitySlider />
