@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
 import { Dropdown, MenuProps, Space } from "antd";
 export interface MenuItem {
   key: string;
-  label: React.ReactNode;
+  label: ReactNode;
 }
 
 export interface MyMenuProps extends MenuProps {
@@ -12,7 +13,7 @@ export interface MyMenuProps extends MenuProps {
 export const DropDownNav = ({ title, items }: MyMenuProps) => {
 
   return (
-    <Dropdown menu={{ items }}>
+    <Dropdown menu={{ items }} className="cursor-pointer">
       <Space>{title}</Space>
     </Dropdown>
   )
