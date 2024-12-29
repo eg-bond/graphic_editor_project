@@ -3,9 +3,10 @@ import { Button, Card, Col, Form, Popconfirm, Row, Typography } from 'antd';
 import { Gutter } from 'antd/es/grid/row';
 import { getUid } from '@/utils/getUid.ts';
 import { Link, useNavigate } from 'react-router-dom';
-import { CreateProjectModal, Project } from '@/components/CreateProjectModal';
+import { CreateProjectModal, ProjectFormData } from '@/components/CreateProjectModal';
 import { useModal } from '@/hooks/useModal.tsx';
 import { PROJECTS_KEY } from '@/utils/constants.ts';
+import { Project } from '@/redux/history';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
@@ -23,7 +24,7 @@ const MainPage1: FC = () => {
   const [projects, setProjects] = useState<Project[]>(getInitialProjects);
 
 
-  const handleSubmit = useCallback((values: Omit<Project, 'id'>) => {
+  const handleSubmit = useCallback((values: ProjectFormData) => {
     setProjects(p => {
       const newProjects = [{ id: getUid(), height: +values.height, width: +values.width, name: values.name }, ...p];
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));

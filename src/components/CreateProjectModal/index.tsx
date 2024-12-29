@@ -2,8 +2,7 @@ import { FC, memo } from 'react';
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Typography, FormInstance } from 'antd';
 import { formatInteger } from '@/utils/formatInteger.ts';
 
-export interface Project {
-  id: string;
+export interface ProjectFormData {
   name: string;
   width: number;
   height: number;
@@ -12,8 +11,8 @@ export interface Project {
 interface CreateProjectModalProps {
   open: boolean;
   onClose: () => void;
-  form: FormInstance<Project>;
-  handleSubmit: (data: Omit<Project, 'id'>) => void;
+  form: FormInstance<ProjectFormData>;
+  handleSubmit: (data: ProjectFormData) => void;
 }
 
 const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form, handleSubmit }) => {
@@ -24,7 +23,7 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
         Новый проект
       </Typography.Title>
 
-      <Form<Project> layout="vertical" form={form} onFinish={handleSubmit}>
+      <Form<ProjectFormData> layout="vertical" form={form} onFinish={handleSubmit}>
         <Row gutter={[20,20]}>
           <Col span={8}>
             <Form.Item
