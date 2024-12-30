@@ -8,16 +8,10 @@ export type LayerT = {
   visible: boolean;
 };
 
-type RenameStateT = {
-  inputValue: string;
-  error: string | null;
-};
-
 type LayersSliceStateT = {
   list: Array<LayerT>;
   layerIdCount: number;
   activeLayerIndex: number;
-  renameState: RenameStateT;
 };
 
 const NEW_LAYER_NAME = "Слой ";
@@ -25,11 +19,7 @@ const NEW_LAYER_NAME = "Слой ";
 const initialState: LayersSliceStateT = {
   list: [],
   layerIdCount: 0,
-  activeLayerIndex: -1,
-  renameState: {
-    inputValue: "",
-    error: null
-  }
+  activeLayerIndex: -1
 };
 
 export const layersSlice = createSlice({
@@ -101,18 +91,6 @@ export const layersSlice = createSlice({
         state.activeLayerIndex = index + 1;
       }
       swapArrayElements(state.list, index, index + 1);
-    },
-
-    setRenameInputValue: (state, action: PayloadAction<string>) => {
-      state.renameState.inputValue = action.payload;
-    },
-
-    setRenameError: (state, action: PayloadAction<string | null>) => {
-      state.renameState.error = action.payload;
-    },
-
-    resetRenameState: state => {
-      state.renameState = { inputValue: "", error: null };
     }
   }
 });

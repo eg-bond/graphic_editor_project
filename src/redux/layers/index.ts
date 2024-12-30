@@ -11,8 +11,5 @@ export const {
   changeLayerName,
   setStateFromHistory,
   moveLayerUp,
-  moveLayerDown,
-  setRenameInputValue,
-  setRenameError,
-  resetRenameState
+  moveLayerDown
 } = layersSlice.actions;
