@@ -1,5 +1,5 @@
-import { swapArrayElements } from '@/utils/swapArrayElements';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { swapArrayElements } from "@/utils/swapArrayElements";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type LayerT = {
   id: number;
@@ -8,22 +8,32 @@ export type LayerT = {
   visible: boolean;
 };
 
+type RenameStateT = {
+  inputValue: string;
+  error: string | null;
+};
+
 type LayersSliceStateT = {
   list: Array<LayerT>;
   layerIdCount: number;
   activeLayerIndex: number;
+  renameState: RenameStateT;
 };
 
-const NEW_LAYER_NAME = 'Cлой ';
+const NEW_LAYER_NAME = "Слой ";
 
 const initialState: LayersSliceStateT = {
   list: [],
   layerIdCount: 0,
   activeLayerIndex: -1,
+  renameState: {
+    inputValue: "",
+    error: null
+  }
 };
 
 export const layersSlice = createSlice({
-  name: 'layers',
+  name: "layers",
   initialState,
   reducers: {
     setStateFromHistory: (
@@ -32,22 +42,26 @@ export const layersSlice = createSlice({
     ) => {
       state.list = action.payload.layersList;
     },
+
     addLayer: state => {
       const newLayer: LayerT = {
         id: state.layerIdCount,
         name: NEW_LAYER_NAME + String(state.layerIdCount),
         opacity: 100,
-        visible: true,
+        visible: true
       };
       state.layerIdCount++;
       state.list.push(newLayer);
     },
+
     removeLayer: (state, action: PayloadAction<{ index: number }>) => {
       state.list.splice(action.payload.index, 1);
     },
+
     activateLayer: (state, action: PayloadAction<{ index: number }>) => {
       state.activeLayerIndex = action.payload.index;
     },
+
     changeOpacity: (
       state,
       action: PayloadAction<{ activeLayerIndex: number; opacity: number }>
@@ -55,6 +69,7 @@ export const layersSlice = createSlice({
       const index = action.payload.activeLayerIndex;
       state.list[index].opacity = action.payload.opacity;
     },
+
     changeLayerVisibility: (
       state,
       action: PayloadAction<{ index: number }>
@@ -62,12 +77,14 @@ export const layersSlice = createSlice({
       const { index } = action.payload;
       state.list[index].visible = !state.list[index].visible;
     },
+
     changeLayerName: (
       state,
       action: PayloadAction<{ index: number; name: string }>
     ) => {
       state.list[action.payload.index].name = action.payload.name;
     },
+
     moveLayerUp: (state, action: PayloadAction<{ index: number }>) => {
       const { index } = action.payload;
       if (index <= 0) return;
@@ -76,6 +93,7 @@ export const layersSlice = createSlice({
       }
       swapArrayElements(state.list, index, index - 1);
     },
+
     moveLayerDown: (state, action: PayloadAction<{ index: number }>) => {
       const { index } = action.payload;
       if (index >= state.list.length - 1) return;
@@ -84,5 +102,17 @@ export const layersSlice = createSlice({
       }
       swapArrayElements(state.list, index, index + 1);
     },
-  },
+
+    setRenameInputValue: (state, action: PayloadAction<string>) => {
+      state.renameState.inputValue = action.payload;
+    },
+
+    setRenameError: (state, action: PayloadAction<string | null>) => {
+      state.renameState.error = action.payload;
+    },
+
+    resetRenameState: state => {
+      state.renameState = { inputValue: "", error: null };
+    }
+  }
 });
