@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { DropDownNav, MenuItem } from './DropDownNav';
+import { CreateProjectButton } from '@/components/Navigation/CreateProjectButton.tsx';
 
 export const Navigation = () => {
   const files: MenuItem[] = [
     {
-      label: <Link to={'/'}>Новый проект</Link>,
+      label: <CreateProjectButton />,
       key: '0',
     },
     {
@@ -31,7 +32,7 @@ export const Navigation = () => {
     <nav className='flex items-center gap-4 w-full border-b h-full px-2'>
       <DropDownNav title={'Файл'} items={files} />
       <DropDownNav title={'Правка'} items={edits} />
-      <Link to={'/projects'}>Все проекты</Link>
+      <Link to="/">Все проекты</Link>
     </nav>
   );
 };

@@ -4,8 +4,8 @@ import { Gutter } from 'antd/es/grid/row';
 import { getUid } from '@/utils/getUid.ts';
 import { Link, useNavigate } from 'react-router-dom';
 import { CreateProjectModal, Project } from '@/components/CreateProjectModal';
-
-const PROJECTS_KEY = 'graphic-projects';
+import { useModal } from '@/hooks/useModal.tsx';
+import { PROJECTS_KEY } from '@/utils/constants.ts';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
@@ -19,16 +19,9 @@ const gutter: [Gutter, Gutter] = [20, 20];
 const MainPage1: FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [open, setOpen] = useState<boolean>(false);
+  const { open, onOpen, onClose } = useModal();
   const [projects, setProjects] = useState<Project[]>(getInitialProjects);
 
-  const onClose = useCallback(() => {
-    setOpen(false);
-  }, []);
-
-  const onOpen = useCallback(() => {
-    setOpen(true);
-  }, []);
 
   const handleSubmit = useCallback((values: Omit<Project, 'id'>) => {
     setProjects(p => {
@@ -38,8 +31,8 @@ const MainPage1: FC = () => {
     });
 
     form.resetFields();
-    setOpen(false);
-  }, [form]);
+    onClose();
+  }, [form, onClose]);
 
   const handleDelete = (id: string) => {
     setProjects(prevState => {
