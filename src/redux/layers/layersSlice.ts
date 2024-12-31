@@ -14,7 +14,7 @@ type LayersSliceStateT = {
   activeLayerIndex: number;
 };
 
-const NEW_LAYER_NAME = 'Cлой ';
+const NEW_LAYER_NAME = 'Слой ';
 
 const initialState: LayersSliceStateT = {
   list: [],
@@ -32,6 +32,7 @@ export const layersSlice = createSlice({
     ) => {
       state.list = action.payload.layersList;
     },
+
     addLayer: state => {
       const newLayer: LayerT = {
         id: state.layerIdCount,
@@ -42,12 +43,15 @@ export const layersSlice = createSlice({
       state.layerIdCount++;
       state.list.push(newLayer);
     },
+
     removeLayer: (state, action: PayloadAction<{ index: number }>) => {
       state.list.splice(action.payload.index, 1);
     },
+
     activateLayer: (state, action: PayloadAction<{ index: number }>) => {
       state.activeLayerIndex = action.payload.index;
     },
+
     changeOpacity: (
       state,
       action: PayloadAction<{ activeLayerIndex: number; opacity: number }>
@@ -55,6 +59,7 @@ export const layersSlice = createSlice({
       const index = action.payload.activeLayerIndex;
       state.list[index].opacity = action.payload.opacity;
     },
+
     changeLayerVisibility: (
       state,
       action: PayloadAction<{ index: number }>
@@ -62,12 +67,14 @@ export const layersSlice = createSlice({
       const { index } = action.payload;
       state.list[index].visible = !state.list[index].visible;
     },
+
     changeLayerName: (
       state,
       action: PayloadAction<{ index: number; name: string }>
     ) => {
       state.list[action.payload.index].name = action.payload.name;
     },
+
     moveLayerUp: (state, action: PayloadAction<{ index: number }>) => {
       const { index } = action.payload;
       if (index <= 0) return;
@@ -76,6 +83,7 @@ export const layersSlice = createSlice({
       }
       swapArrayElements(state.list, index, index - 1);
     },
+
     moveLayerDown: (state, action: PayloadAction<{ index: number }>) => {
       const { index } = action.payload;
       if (index >= state.list.length - 1) return;

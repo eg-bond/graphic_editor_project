@@ -1,10 +1,11 @@
 import { addNewHistoryItemThunk } from '@/redux/history';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { changeLayerName } from '@/redux/layers';
 import { LayerT } from '@/redux/layers/layersSlice';
 import { HistoryItemKinds } from '@/types/historyTypes';
-import { Form, Input } from 'antd';
-import { ChangeEvent, FormEvent, useRef } from 'react';
+import { validateLayerName } from '@/utils/validateLayerName';
+import { Form, Input, InputRef } from 'antd';
+import { ChangeEvent, useRef, useState, useEffect } from 'react';
 
 type ILayerName = {
   i: number;
@@ -22,35 +23,63 @@ export function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
-  const inputValue = useRef('');
+  const layersList = useAppSelector(state => state.layers.list);
+  const existingNames = layersList.map(layer => layer.name);
+  const inputRef = useRef<InputRef | null>(null);
+  const [inputValue, setInputValue] = useState<string>(name);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement> & FormEvent<HTMLFormElement>
-  ) => {
-    inputValue.current = e.target.value;
+  useEffect(() => {
+    if (renameInputVisible) {
+      setInputValue(name);
+    }
+  }, [renameInputVisible, name]);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    if (error) setError(null);
   };
 
   const handleSubmit = () => {
-    d(changeLayerName({ index: i, name: inputValue.current }));
+    const trimmedName = inputValue.trim();
+
+    if (!trimmedName) {
+      setError('Поле не может быть пустым');
+      inputRef.current?.focus();
+      return;
+    }
+
+    const validationError = validateLayerName(trimmedName, existingNames);
+    if (validationError) {
+      setError(validationError);
+      inputRef.current?.focus();
+      return;
+    }
+
+    d(changeLayerName({ index: i, name: trimmedName }));
     d(addNewHistoryItemThunk(HistoryItemKinds.Rename));
     setRenameInputVisible(false);
   };
 
   return (
     <div className='flex-[0.75]' onClick={onClick}>
-      {/* Input for renaming layer */}
       {renameInputVisible && (
-        <Form onFinish={handleSubmit} onChange={handleChange}>
+        <Form onFinish={handleSubmit}>
           <Input
+            ref={inputRef}
             name='change_layer_name'
             type='text'
             maxLength={12}
+            value={inputValue}
+            onChange={handleChange}
             onBlur={handleSubmit}
             autoFocus
           />
+
+          {error && <span className='text-red-500 text-sm'>{error}</span>}
         </Form>
       )}
-      {/* Current layer name */}
+
       {!renameInputVisible && <span>{name}</span>}
     </div>
   );
