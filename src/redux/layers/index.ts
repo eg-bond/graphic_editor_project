@@ -1,4 +1,4 @@
-import { layersSlice } from "./layersSlice";
+import { layersSlice } from './layersSlice';
 
 export const layersReducer = layersSlice.reducer;
 
@@ -11,5 +11,5 @@ export const {
   changeLayerName,
   setStateFromHistory,
   moveLayerUp,
-  moveLayerDown
+  moveLayerDown,
 } = layersSlice.actions;

@@ -1,5 +1,5 @@
-import { swapArrayElements } from "@/utils/swapArrayElements";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { swapArrayElements } from '@/utils/swapArrayElements';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type LayerT = {
   id: number;
@@ -14,16 +14,16 @@ type LayersSliceStateT = {
   activeLayerIndex: number;
 };
 
-const NEW_LAYER_NAME = "Слой ";
+const NEW_LAYER_NAME = 'Слой ';
 
 const initialState: LayersSliceStateT = {
   list: [],
   layerIdCount: 0,
-  activeLayerIndex: -1
+  activeLayerIndex: -1,
 };
 
 export const layersSlice = createSlice({
-  name: "layers",
+  name: 'layers',
   initialState,
   reducers: {
     setStateFromHistory: (
@@ -38,7 +38,7 @@ export const layersSlice = createSlice({
         id: state.layerIdCount,
         name: NEW_LAYER_NAME + String(state.layerIdCount),
         opacity: 100,
-        visible: true
+        visible: true,
       };
       state.layerIdCount++;
       state.list.push(newLayer);
@@ -91,6 +91,6 @@ export const layersSlice = createSlice({
         state.activeLayerIndex = index + 1;
       }
       swapArrayElements(state.list, index, index + 1);
-    }
-  }
+    },
+  },
 });

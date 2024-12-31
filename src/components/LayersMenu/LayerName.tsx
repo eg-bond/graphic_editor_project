@@ -1,15 +1,15 @@
-import { addNewHistoryItemThunk } from "@/redux/history";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { changeLayerName } from "@/redux/layers";
-import { LayerT } from "@/redux/layers/layersSlice";
-import { HistoryItemKinds } from "@/types/historyTypes";
-import { validateLayerName } from "@/utils/validateLayerName";
-import { Form, Input, InputRef } from "antd";
-import { ChangeEvent, useRef, useState, useEffect } from "react";
+import { addNewHistoryItemThunk } from '@/redux/history';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { changeLayerName } from '@/redux/layers';
+import { LayerT } from '@/redux/layers/layersSlice';
+import { HistoryItemKinds } from '@/types/historyTypes';
+import { validateLayerName } from '@/utils/validateLayerName';
+import { Form, Input, InputRef } from 'antd';
+import { ChangeEvent, useRef, useState, useEffect } from 'react';
 
 type ILayerName = {
   i: number;
-  name: LayerT["name"];
+  name: LayerT['name'];
   renameInputVisible: boolean;
   setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClick: () => void;
@@ -20,7 +20,7 @@ export function LayerName({
   name,
   renameInputVisible,
   setRenameInputVisible,
-  onClick
+  onClick,
 }: ILayerName) {
   const d = useAppDispatch();
   const layersList = useAppSelector(state => state.layers.list);
@@ -44,7 +44,7 @@ export function LayerName({
     const trimmedName = inputValue.trim();
 
     if (!trimmedName) {
-      setError("Поле не может быть пустым");
+      setError('Поле не может быть пустым');
       inputRef.current?.focus();
       return;
     }
