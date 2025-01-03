@@ -4,6 +4,7 @@ import { changeOpacity } from '@/redux/layers';
 import { selectActiveLayer } from '@/redux/layers/selectors';
 import { HistoryItemKinds } from '@/types/historyTypes';
 import { InputNumber, InputNumberProps, Slider } from 'antd';
+import { useEffect, useState } from 'react';
 
 enum InputRanges {
   MIN = 0,
@@ -12,16 +13,18 @@ enum InputRanges {
 
 export function OpacitySlider() {
   const activeLayer = useAppSelector(selectActiveLayer);
-  const activeLayerIndex = useAppSelector(
-    state => state.layers.activeLayerIndex
-  );
   const d = useAppDispatch();
 
-  // TODO: make debounce or somth
-  const onChange: InputNumberProps['onChange'] = newValue => {
-    d(changeOpacity({ activeLayerIndex, opacity: Number(newValue) }));
+  const [value, setValue] = useState(InputRanges.MAX);
+
+  const onChangeComplete: InputNumberProps['onChange'] = newValue => {
+    d(changeOpacity({ opacity: Number(newValue) }));
     d(addNewHistoryItemThunk(HistoryItemKinds.Opacity));
   };
+
+  useEffect(() => {
+    setValue(activeLayer?.opacity || InputRanges.MAX);
+  }, [activeLayer]);
 
   return (
     <div className='m-2'>
@@ -32,18 +35,13 @@ export function OpacitySlider() {
           className='flex-[0.75]'
           min={InputRanges.MIN}
           max={InputRanges.MAX}
-          onChange={onChange}
-          value={activeLayer?.opacity || 0}
+          onChange={setValue}
+          onChangeComplete={onChangeComplete}
+          value={value}
+          tooltip={{ open: false }}
           disabled={!activeLayer}
         />
-        <InputNumber
-          className='flex-[0.25]'
-          min={InputRanges.MIN}
-          max={InputRanges.MAX}
-          value={activeLayer?.opacity || 0}
-          onChange={onChange}
-          disabled={!activeLayer}
-        />
+        <InputNumber className='flex-[0.25]' value={value} readOnly />
       </div>
     </div>
   );
