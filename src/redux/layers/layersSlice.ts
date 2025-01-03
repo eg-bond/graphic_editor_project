@@ -52,12 +52,8 @@ export const layersSlice = createSlice({
       state.activeLayerIndex = action.payload.index;
     },
 
-    changeOpacity: (
-      state,
-      action: PayloadAction<{ activeLayerIndex: number; opacity: number }>
-    ) => {
-      const index = action.payload.activeLayerIndex;
-      state.list[index].opacity = action.payload.opacity;
+    changeOpacity: (state, action: PayloadAction<{ opacity: number }>) => {
+      state.list[state.activeLayerIndex].opacity = action.payload.opacity;
     },
 
     changeLayerVisibility: (
