@@ -101,6 +101,34 @@ export default tseslint.config(
         'error',
         { after: true, before: false },
       ],
+      //  // Commas
+      // 'comma-dangle': ['error', {
+      //   'arrays': 'always-multiline',
+      //   'objects': 'always-multiline',
+      //   'imports': 'always-multiline',
+      //   'exports': 'always-multiline',
+      //   'functions': 'never'
+      // }],
+      // 'comma-style': ['error', 'last'],
+      
+      // // Objects
+      // 'object-curly-newline': ['error', {
+      //   'ObjectExpression': { 'multiline': true, 'consistent': true },
+      //   'ObjectPattern': { 'multiline': true, 'consistent': true }
+      // }],
+      // 'object-property-newline': ['error', {
+      //   'allowAllPropertiesOnSameLine': true
+      // }],
+      
+      // // Arrays
+      // 'array-bracket-newline': ['error', 'consistent'],
+      // 'array-element-newline': ['error', 'consistent'],
+      
+      // // Other formatting
+      // 'arrow-spacing': ['error', { 'before': true, 'after': true }],
+      // 'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
+      // 'no-trailing-spaces': 'error',
+      // 'padded-blocks': ['error', 'never'],
     },
   }
 );
