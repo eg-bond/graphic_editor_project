@@ -59,7 +59,7 @@ export default tseslint.config(
           maxBOF: 0,
         },
       ],
-      '@stylistic/js/eol-last': ['error', 'always'],      
+      '@stylistic/js/eol-last': ['error', 'always'],
       // Line breaks
       '@stylistic/js/operator-linebreak': [
         'error',
@@ -74,6 +74,7 @@ export default tseslint.config(
       // String concatenation
       'prefer-template': 'error',
       'no-multi-str': 'error',
+
       // Spacing
       '@stylistic/js/no-multi-spaces': 'error',
       '@stylistic/js/template-curly-spacing': ['error', 'never'],
@@ -101,34 +102,48 @@ export default tseslint.config(
         'error',
         { after: true, before: false },
       ],
-      //  // Commas
-      // 'comma-dangle': ['error', {
-      //   'arrays': 'always-multiline',
-      //   'objects': 'always-multiline',
-      //   'imports': 'always-multiline',
-      //   'exports': 'always-multiline',
-      //   'functions': 'never'
-      // }],
-      // 'comma-style': ['error', 'last'],
-      
-      // // Objects
-      // 'object-curly-newline': ['error', {
-      //   'ObjectExpression': { 'multiline': true, 'consistent': true },
-      //   'ObjectPattern': { 'multiline': true, 'consistent': true }
-      // }],
-      // 'object-property-newline': ['error', {
-      //   'allowAllPropertiesOnSameLine': true
-      // }],
-      
-      // // Arrays
-      // 'array-bracket-newline': ['error', 'consistent'],
-      // 'array-element-newline': ['error', 'consistent'],
-      
-      // // Other formatting
-      // 'arrow-spacing': ['error', { 'before': true, 'after': true }],
-      // 'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
-      // 'no-trailing-spaces': 'error',
-      // 'padded-blocks': ['error', 'never'],
+      // Commas
+      '@stylistic/js/comma-dangle': [
+        'error',
+        {
+          arrays: 'always-multiline',
+          objects: 'always-multiline',
+          imports: 'always-multiline',
+          exports: 'always-multiline',
+          functions: 'never',
+        },
+      ],
+      '@stylistic/js/comma-style': ['error', 'last'],
+
+      // Objects
+      // Новая строка для {} объекта.
+      '@stylistic/js/object-curly-newline': [
+        'error',
+        {
+          ObjectExpression: { multiline: true, consistent: true },
+          ObjectPattern: { multiline: true, consistent: true },
+          ExportDeclaration: { multiline: true, consistent: true },
+        },
+      ],
+      // Новая строка для свойств объекта
+      '@stylistic/js/object-property-newline': [
+        'error',
+        {
+          allowAllPropertiesOnSameLine: true,
+        },
+      ],
+
+      // Arrays
+      // Новая строка для [] массива.
+      '@stylistic/js/array-bracket-newline': ['error', 'consistent'],
+      // Новая строка для элементов массива
+      '@stylistic/js/array-element-newline': ['error', 'consistent'],
+
+      // Other formatting
+      '@stylistic/js/arrow-spacing': ['error', { before: true, after: true }],      
+      '@stylistic/js/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+      '@stylistic/js/no-trailing-spaces': 'error',
+      '@stylistic/js/padded-blocks': ['error', 'never', { allowSingleLineBlocks: false }],
     },
   }
 );
