@@ -4,14 +4,14 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import stylisticJs from '@stylistic/eslint-plugin-js';
-import stylisticTs from '@stylistic/eslint-plugin-ts'
-import newLineDest from 'eslint-plugin-newline-destructuring'
+import stylisticTs from '@stylistic/eslint-plugin-ts';
+import newLineDest from 'eslint-plugin-newline-destructuring';
 
 export default tseslint.config(
   { ignores: ['dist'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx}', 'eslint.config.js'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -21,7 +21,7 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
       '@stylistic/js': stylisticJs,
       '@stylistic/ts': stylisticTs,
-      'newline-destructuring': newLineDest
+      'newline-destructuring': newLineDest,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -29,7 +29,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      // Indent
+      // Indent ------------------------------------------------------------
       '@stylistic/ts/indent': [
         'error',
         2,
@@ -37,17 +37,20 @@ export default tseslint.config(
           SwitchCase: 1,
         },
       ],
-      // Semicolons
+
+      // Semicolons ---------------------------------------------------------
       '@stylistic/ts/semi': ['error', 'always'],
       '@stylistic/ts/no-extra-semi': 'error',
-      // Quotes
+
+      // Quotes -------------------------------------------------------------
       '@stylistic/ts/quotes': [
         'error',
         'single',
         { allowTemplateLiterals: true },
       ],
       '@stylistic/ts/quote-props': ['error', 'consistent-as-needed'],
-      // Lines
+
+      // Lines ---------------------------------------------------------------
       '@stylistic/js/max-len': [
         'warn',
         {
@@ -66,7 +69,8 @@ export default tseslint.config(
         },
       ],
       '@stylistic/js/eol-last': ['error', 'always'],
-      // Line breaks
+
+      // Line breaks ---------------------------------------------------------
       '@stylistic/js/operator-linebreak': [
         'error',
         'after',
@@ -77,21 +81,31 @@ export default tseslint.config(
           },
         },
       ],
-      // String concatenation
+
+      // String concatenation -------------------------------------------------
       'prefer-template': 'error',
       'no-multi-str': 'error',
 
-      // Spacing
+      // Spacing --------------------------------------------------------------
       '@stylistic/js/no-multi-spaces': 'error',
       '@stylistic/js/template-curly-spacing': ['error', 'never'],
       '@stylistic/js/array-bracket-spacing': ['error', 'never'],
       '@stylistic/ts/object-curly-spacing': ['error', 'always'],
-      '@stylistic/ts/comma-spacing': ['error', { before: false, after: true }],
+      '@stylistic/ts/comma-spacing': ['error', {
+        before: false,
+        after: true,
+      }],
       '@stylistic/ts/key-spacing': [
         'error',
-        { beforeColon: false, afterColon: true },
+        {
+          beforeColon: false,
+          afterColon: true,
+        },
       ],
-      '@stylistic/ts/keyword-spacing': ['error', { before: true, after: true }],
+      '@stylistic/ts/keyword-spacing': ['error', {
+        before: true,
+        after: true,
+      }],
       '@stylistic/ts/space-before-blocks': ['error', 'always'],
       '@stylistic/ts/space-before-function-paren': [
         'error',
@@ -107,9 +121,13 @@ export default tseslint.config(
       '@stylistic/js/spaced-comment': ['warn', 'always'],
       '@stylistic/js/switch-colon-spacing': [
         'error',
-        { after: true, before: false },
+        {
+          after: true,
+          before: false,
+        },
       ],
-      // Commas
+
+      // Commas ---------------------------------------------------------------
       '@stylistic/ts/comma-dangle': [
         'error',
         {
@@ -122,16 +140,25 @@ export default tseslint.config(
       ],
       '@stylistic/js/comma-style': ['error', 'last'],
 
-      // Objects
+      // Objects -------------------------------------------------------------
       // Новая строка для {} объекта.
       '@stylistic/ts/object-curly-newline': [
         'error',
-        {          
-          ObjectExpression: { multiline: true, consistent: true },
-          ObjectPattern: { multiline: true, consistent: true },
-          ExportDeclaration: { multiline: true, consistent: true },          
-          TSInterfaceBody: { multiline: true },
-          TSTypeLiteral: { multiline: true }
+        {
+          ObjectExpression: {
+            multiline: true,
+            consistent: true,
+          },
+          ObjectPattern: {
+            multiline: true,
+            consistent: true,
+          },
+          ExportDeclaration: {
+            multiline: true,
+            consistent: true,
+          },
+          TSInterfaceBody: 'always',
+          TSTypeLiteral: 'always',
         },
       ],
       // Новая строка для свойств объекта
@@ -139,23 +166,24 @@ export default tseslint.config(
         'error',
         // !!!!!!!! Убрать??
         {
-          allowAllPropertiesOnSameLine: true
+          allowAllPropertiesOnSameLine: true,
         },
       ],
       // Тоже что и object-property-newline но для деструктуризации
       'newline-destructuring/newline': 'error',
-      // Types
+
+      // Typescript specific -------------------------------------------------
       '@stylistic/ts/member-delimiter-style': ['error', {
-        'multiline': {
-          'delimiter': 'comma',
-          'requireLast': true
+        multiline: {
+          delimiter: 'comma',
+          requireLast: true,
         },
-        'singleline': {
-          'delimiter': 'comma',
-          'requireLast': false
+        singleline: {
+          delimiter: 'comma',
+          requireLast: false,
         },
-        'multilineDetection': 'last-member'
-      }],      
+        multilineDetection: 'last-member',
+      }],
       '@stylistic/ts/type-annotation-spacing': [
         'error',
         {
@@ -173,17 +201,25 @@ export default tseslint.config(
           },
         },
       ],
-      // Arrays
+
+      // Arrays ----------------------------------------------------------------
       // Новая строка для [] массива.
       '@stylistic/js/array-bracket-newline': ['error', 'consistent'],
       // Новая строка для элементов массива
       '@stylistic/js/array-element-newline': ['error', 'consistent'],
 
-      // Other formatting
-      '@stylistic/js/arrow-spacing': ['error', { before: true, after: true }],      
+      // Other formatting ------------------------------------------------------
+      '@stylistic/js/arrow-spacing': ['error', {
+        before: true,
+        after: true,
+      }],
       '@stylistic/ts/brace-style': ['error', '1tbs', { allowSingleLine: true }],
       '@stylistic/js/no-trailing-spaces': 'error',
-      '@stylistic/js/padded-blocks': ['error', 'never', { allowSingleLineBlocks: false }],
+      '@stylistic/js/padded-blocks': [
+        'error',
+        'never',
+        { allowSingleLineBlocks: false },
+      ],
 
       // @stylistic/ts/no-extra-parens???
     },
