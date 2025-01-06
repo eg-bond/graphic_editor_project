@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import stylisticJs from '@stylistic/eslint-plugin-js';
 import stylisticTs from '@stylistic/eslint-plugin-ts'
+import newLineDest from 'eslint-plugin-newline-destructuring'
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -19,7 +20,8 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       '@stylistic/js': stylisticJs,
-      '@stylistic/ts': stylisticTs
+      '@stylistic/ts': stylisticTs,
+      'newline-destructuring': newLineDest
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -124,10 +126,10 @@ export default tseslint.config(
       // Новая строка для {} объекта.
       '@stylistic/ts/object-curly-newline': [
         'error',
-        {
+        {          
           ObjectExpression: { multiline: true, consistent: true },
           ObjectPattern: { multiline: true, consistent: true },
-          ExportDeclaration: { multiline: true, consistent: true },
+          ExportDeclaration: { multiline: true, consistent: true },          
           TSInterfaceBody: { multiline: true },
           TSTypeLiteral: { multiline: true }
         },
@@ -137,9 +139,11 @@ export default tseslint.config(
         'error',
         // !!!!!!!! Убрать??
         {
-          allowAllPropertiesOnSameLine: true,
+          allowAllPropertiesOnSameLine: true
         },
       ],
+      // Тоже что и object-property-newline но для деструктуризации
+      'newline-destructuring/newline': 'error',
       // Types
       '@stylistic/ts/member-delimiter-style': ['error', {
         'multiline': {
