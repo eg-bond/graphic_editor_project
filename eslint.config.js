@@ -11,7 +11,6 @@ export default tseslint.config(
   {
     extends: [
       stylistic.configs.customize({
-        // the following options are the default values
         indent: 2,
         quotes: 'single',
         semi: true,
@@ -100,6 +99,19 @@ export default tseslint.config(
       '@stylistic/array-bracket-newline': ['error', 'consistent'],
       // Новая строка для элементов массива
       '@stylistic/array-element-newline': ['error', 'consistent'],
+
+      // JSX ------------------------------------------------------
+      // Максимальное количество пропсов компоненты в одной строке
+      '@stylistic/jsx-max-props-per-line': ['error', {
+        maximum: { single: 3, multi: 1 },
+      }],
+      // Сортировка по алфавиту
+      // '@stylistic/jsx-sort-props': ['error', {
+      //   callbacksLast: true,
+      //   shorthandFirst: true,
+      //   multiline: 'last',
+      //   locale: 'auto',
+      // }],
     },
   },
 );
