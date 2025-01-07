@@ -1,8 +1,17 @@
-import { Navigation } from '@/components/Navigation';
-import { LayersMenu } from '@/components/LayersMenu';
-import { HistoryMenu } from '@/components/HistoryMenu';
+import { Navigation } from "@/components/Navigation";
+import { LayersMenu } from "@/components/LayersMenu";
+import { HistoryMenu } from "@/components/HistoryMenu";
+import { useLocation } from "react-router-dom";
+import { Canvas } from "@/components/Canvas";
 
 export function EditorPage() {
+  const location = useLocation();
+  const project = location.state;
+
+  if (!project) {
+    return <p className='text-center mt-32'>Проект не найден</p>;
+  }
+
   return (
     <div className='h-screen w-full flex flex-col'>
       {/* Top section */}
@@ -16,8 +25,8 @@ export function EditorPage() {
           <div className='h-[40vh] w-[5vw] m-4 bg-purple-500 absolute top-0 left-0'>
             <h2 className='text-2xl text-center'>Левое меню (Инструменты)</h2>
           </div>
-          <div className='h-[95vh] bg-blue-300'>
-            <h2 className='text-2xl text-center'>Основная часть</h2>
+          <div className='h-[95vh] bg-blue-300 flex justify-center items-center'>
+            <Canvas width={project.width} height={project.height} />
           </div>
         </div>
 
