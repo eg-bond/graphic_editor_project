@@ -35,7 +35,8 @@ export function HistoryMenu() {
             <div
               key={item.id}
               onClick={() => handleActivateHistoryItem(i)}
-              className={`${staticClasses} ${dynamicClasses(i)}`}>
+              className={`${staticClasses} ${dynamicClasses(i)}`}
+            >
               {/* Action icon of history item */}
               <ActionIcon kind={item.kind} />
               {/* Name of history item */}
