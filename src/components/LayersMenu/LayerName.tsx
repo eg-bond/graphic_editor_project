@@ -6,11 +6,11 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { validateLayerName } from '@/utils/validateLayerName.ts';
 
 type ILayerName = {
-  i: number;
-  name: LayerT['name'];
-  renameInputVisible: boolean;
-  setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onClick: () => void;
+  i: number,
+  name: LayerT['name'],
+  renameInputVisible: boolean,
+  setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>,
+  onClick: () => void,
 };
 
 export function LayerName({
@@ -59,13 +59,13 @@ export function LayerName({
   };
 
   return (
-    <div className='flex-[0.75]' onClick={onClick}>
+    <div className="flex-[0.75]" onClick={onClick}>
       {renameInputVisible && (
         <Form onFinish={handleSubmit}>
           <Input
             ref={inputRef}
-            name='change_layer_name'
-            type='text'
+            name="change_layer_name"
+            type="text"
             maxLength={12}
             value={inputValue}
             onChange={handleChange}
@@ -73,7 +73,7 @@ export function LayerName({
             autoFocus
           />
 
-          {error && <span className='text-red-500 text-sm'>{error}</span>}
+          {error && <span className="text-red-500 text-sm">{error}</span>}
         </Form>
       )}
 

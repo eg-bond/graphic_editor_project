@@ -15,8 +15,12 @@ interface CreateProjectModalProps {
   handleSubmit: (data: ProjectFormData) => void;
 }
 
-const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form, handleSubmit }) => {
-
+const _CreateProjectModal: FC<CreateProjectModalProps> = ({
+  open,
+  onClose,
+  form,
+  handleSubmit,
+}) => {
   return (
     <Modal open={open} onCancel={onClose} footer={null} width={750} forceRender>
       <Typography.Title level={3}>
@@ -29,7 +33,10 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
             <Form.Item
               name="name"
               required
-              rules={[{ required: true, message: 'Это поле обязательно' }]}
+              rules={[{
+                required: true,
+                message: 'Это поле обязательно',
+              }]}
               label="Название"
             >
               <Input placeholder="Введите название" />
@@ -40,9 +47,22 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
               name="width"
               required
               rules={[
-                { required: true, message: 'Это поле обязательно' },
-                { min: 1, type: 'number', transform: v => +v, message: 'Минимальное значение 1 px', },
-                { max: 5000, type: 'number', transform: v => +v, message: 'Максимальное значение 5000 px', }
+                {
+                  required: true,
+                  message: 'Это поле обязательно',
+                },
+                {
+                  min: 1,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Минимальное значение 1 px',
+                },
+                {
+                  max: 5000,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Максимальное значение 5000 px',
+                },
               ]}
               label="Ширина"
               normalize={formatInteger}
@@ -55,9 +75,22 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
               name="height"
               required
               rules={[
-                { required: true, message: 'Это поле обязательно' },
-                { min: 1, type: 'number', transform: v => +v, message: 'Минимальное значение 1 px', },
-                { max: 5000, type: 'number', transform: v => +v, message: 'Максимальное значение 5000 px', }
+                {
+                  required: true,
+                  message: 'Это поле обязательно',
+                },
+                {
+                  min: 1,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Минимальное значение 1 px',
+                },
+                {
+                  max: 5000,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Максимальное значение 5000 px',
+                },
               ]}
               label="Высота"
               normalize={formatInteger}
@@ -75,6 +108,6 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
       </Form>
     </Modal>
   );
-}
+};
 
 export const CreateProjectModal = memo(_CreateProjectModal);

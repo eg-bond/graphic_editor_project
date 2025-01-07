@@ -19,10 +19,10 @@ import {
 import { LayerT } from '@/redux/history/historySlice';
 
 interface ILayerProps {
-  i: number;
-  lastElementIndex: number;
-  name: LayerT['name'];
-  visible: LayerT['visible'];
+  i: number,
+  lastElementIndex: number,
+  name: LayerT['name'],
+  visible: LayerT['visible'],
 }
 
 // Single layer
@@ -95,7 +95,7 @@ export const Layer = memo<ILayerProps>(function Layer({
       className={`${staticClasses} ${dynamicClasses(activeLayerIndex === i)}`}
       onClick={e => handleLayerClick(e)}>
       {/* Buttons for moving layers up and down */}
-      <div className='flex flex-col gap-1 mr-2'>
+      <div className="flex flex-col gap-1 mr-2">
         <Button
           onClick={() => handleMoveLayerUp()}
           icon={<UpOutlined />}></Button>
@@ -111,14 +111,14 @@ export const Layer = memo<ILayerProps>(function Layer({
         setRenameInputVisible={setRenameInputVisible}
         onClick={() => handleActivateLayer()}
       />
-      <div className='flex-[0.25] flex justify-end gap-2'>
+      <div className="flex-[0.25] flex justify-end gap-2">
         {/* Hide layer button */}
         <Button
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           onClick={() => handleChangeVisibility()}
         />
         {/* Menu button with 'rename' and 'delete' options */}
-        <Dropdown menu={{ items }} placement='bottomRight' trigger={['click']}>
+        <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']}>
           <Button icon={<MenuOutlined />}></Button>
         </Dropdown>
       </div>

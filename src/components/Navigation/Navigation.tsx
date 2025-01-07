@@ -29,7 +29,7 @@ export const Navigation = () => {
   ];
 
   return (
-    <nav className='flex items-center gap-4 w-full border-b h-full px-2'>
+    <nav className="flex items-center gap-4 w-full border-b h-full px-2">
       <DropDownNav title={'Файл'} items={files} />
       <DropDownNav title={'Правка'} items={edits} />
       <Link to="/">Все проекты</Link>

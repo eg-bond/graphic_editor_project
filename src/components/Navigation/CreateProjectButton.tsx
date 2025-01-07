@@ -9,7 +9,11 @@ import { useNavigate } from 'react-router-dom';
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { open, onOpen, onClose } = useModal();
+  const {
+    open,
+    onOpen,
+    onClose,
+  } = useModal();
 
   const handleSubmit = useCallback((values: Omit<ProjectFormData, 'id'>) => {
     const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
@@ -19,7 +23,7 @@ const CreateProjectButton1: FC = () => {
         id,
         height: +values.height,
         width: +values.width,
-        name: values.name
+        name: values.name,
       };
       const newProjects = [newProject, ...projects];
 

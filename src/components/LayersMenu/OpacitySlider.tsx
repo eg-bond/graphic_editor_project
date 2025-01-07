@@ -27,12 +27,12 @@ export function OpacitySlider() {
   }, [activeLayer]);
 
   return (
-    <div className='m-2'>
-      <h2 className='text-center'>Непрозрачность</h2>
+    <div className="m-2">
+      <h2 className="text-center">Непрозрачность</h2>
 
-      <div className='flex gap-2 justify-between items-center'>
+      <div className="flex gap-2 justify-between items-center">
         <Slider
-          className='flex-[0.75]'
+          className="flex-[0.75]"
           min={InputRanges.MIN}
           max={InputRanges.MAX}
           onChange={setValue}
@@ -41,7 +41,7 @@ export function OpacitySlider() {
           tooltip={{ open: false }}
           disabled={!activeLayer}
         />
-        <InputNumber className='flex-[0.25]' value={value} readOnly />
+        <InputNumber className="flex-[0.25]" value={value} readOnly />
       </div>
     </div>
   );

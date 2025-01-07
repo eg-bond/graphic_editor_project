@@ -12,7 +12,7 @@ const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
 const getInitialProjects = () => {
   const projects = localStorage.getItem(PROJECTS_KEY);
-  return JSON.parse(projects ?? "[]") as Project[];
+  return JSON.parse(projects ?? '[]') as Project[];
 };
 
 const gutter: [Gutter, Gutter] = [20, 20];
@@ -20,7 +20,11 @@ const gutter: [Gutter, Gutter] = [20, 20];
 const MainPage1: FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { open, onOpen, onClose } = useModal();
+  const {
+    open,
+    onOpen,
+    onClose,
+  } = useModal();
   const [projects, setProjects] = useState<Project[]>(getInitialProjects);
 
 
@@ -46,20 +50,20 @@ const MainPage1: FC = () => {
   };
 
   return (
-    <main className='max-w-[1500px] mx-auto mt-32'>
+    <main className="max-w-[1500px] mx-auto mt-32">
       <div
         className={`flex ${
-          projects.length ? "justify-between" : "items-center flex-col"
+          projects.length ? 'justify-between' : 'items-center flex-col'
         } mb-8`}
       >
         <Typography.Title>
-          {!projects.length ? "Проекты отсутствуют" : "Мои проекты"}
+          {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
         </Typography.Title>
         <Button
           onClick={onOpen}
-          className='!bg-green-500'
-          type='primary'
-          size='large'
+          className="!bg-green-500"
+          type="primary"
+          size="large"
         >
           Новый проект
         </Button>
@@ -72,17 +76,17 @@ const MainPage1: FC = () => {
               onClick={() =>
                 navigate(`/projects/${project.id}`, { state: project })
               }
-              className='cursor-pointer'
+              className="cursor-pointer"
             >
-              <Typography.Title level={2} className='!mb-12'>
+              <Typography.Title level={2} className="!mb-12">
                 {project.name}
               </Typography.Title>
 
-              <div className='flex justify-between'>
+              <div className="flex justify-between">
                 <Button
-                  color='primary'
-                  type='primary'
-                  size='large'
+                  color="primary"
+                  type="primary"
+                  size="large"
                   onClick={() =>
                     navigate(`/projects/${project.id}`, { state: project })
                   }
@@ -92,13 +96,13 @@ const MainPage1: FC = () => {
 
                 <div onClick={stopPropagation}>
                   <Popconfirm
-                    title='Удалить проект'
-                    description='Вы уверены, что хотите удалить проект?'
-                    okText='Удалить'
-                    cancelText='Отмена'
+                    title="Удалить проект"
+                    description="Вы уверены, что хотите удалить проект?"
+                    okText="Удалить"
+                    cancelText="Отмена"
                     onConfirm={() => handleDelete(project.id)}
                   >
-                    <Button danger size='large'>
+                    <Button danger size="large">
                       Удалить
                     </Button>
                   </Popconfirm>

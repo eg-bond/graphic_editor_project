@@ -26,11 +26,11 @@ export function HistoryMenu() {
   };
 
   return (
-    <div className='h-1/2'>
-      <div className='h-full flex flex-col '>
-        <h1 className='m-2 text-2xl text-center'>История</h1>
+    <div className="h-1/2">
+      <div className="h-full flex flex-col ">
+        <h1 className="m-2 text-2xl text-center">История</h1>
         {/* List of history items */}
-        <div className='overflow-y-auto'>
+        <div className="overflow-y-auto">
           {historyList.map((item, i) => (
             <div
               key={item.id}
@@ -39,7 +39,7 @@ export function HistoryMenu() {
               {/* Action icon of history item */}
               <ActionIcon kind={item.kind} />
               {/* Name of history item */}
-              <span className='basis-3/4 flex justify-end'>
+              <span className="basis-3/4 flex justify-end">
                 {getHistoryItemName(item.kind)}
               </span>
             </div>
