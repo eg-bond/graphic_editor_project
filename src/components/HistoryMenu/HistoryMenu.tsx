@@ -3,27 +3,22 @@ import { activateHistoryItem } from '@/redux/history';
 import { ActionIcon } from '../ActionIcon';
 import { getHistoryItemName } from '@/utils/getHistoryName';
 import { useCallback } from 'react';
-import { setStateFromHistory } from '@/redux/layers';
 
 export function HistoryMenu() {
-  const historyList = useAppSelector(state => state.history.items);
-  const activeItemIndex = useAppSelector(
-    state => state.history.activeItemIndex
-  );
   const d = useAppDispatch();
+  const historyList = useAppSelector(state => state.history.items);
+  const activeItemIndex = useAppSelector(state => state.history.activeItemIndex);
 
   const handleActivateHistoryItem = useCallback(
     (index: number) => {
       if (index === activeItemIndex) return;
       d(activateHistoryItem({ index }));
-      d(setStateFromHistory({ layersList: historyList[index].layersList }));
     },
-    [d, historyList, activeItemIndex]
+    [d, activeItemIndex]
   );
 
   // Tailwind classes for history item
-  const staticClasses =
-    'flex justify-between p-2 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
+  const staticClasses = 'flex justify-between p-2 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
   const dynamicClasses = (i: number) => {
     const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
     const futureCl = activeItemIndex < i ? 'text-gray-500' : '';

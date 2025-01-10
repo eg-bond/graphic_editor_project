@@ -2,18 +2,15 @@ import { LayersList } from './LayersList';
 import { OpacitySlider } from './OpacitySlider';
 import { useAppDispatch } from '@/redux/hooks';
 import { PlusOutlined } from '@ant-design/icons';
-import { addLayer } from '@/redux/layers';
+import { addLayer } from '@/redux/history';
 import { Button } from 'antd';
 import { useCallback } from 'react';
-import { HistoryItemKinds } from '@/types/historyTypes';
-import { addNewHistoryItemThunk } from '@/redux/history';
 
 export function LayersMenu() {
   const d = useAppDispatch();
 
   const handleAddLayer = useCallback(() => {
     d(addLayer());
-    d(addNewHistoryItemThunk(HistoryItemKinds.Add));
   }, [d]);
 
   return (

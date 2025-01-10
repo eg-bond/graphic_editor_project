@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Button, Dropdown, MenuProps } from 'antd';
 import {
@@ -7,7 +7,7 @@ import {
   moveLayerDown,
   moveLayerUp,
   removeLayer,
-} from '@/redux/layers';
+} from '@/redux/history';
 import { LayerName } from './LayerName';
 import {
   DownOutlined,
@@ -16,9 +16,7 @@ import {
   MenuOutlined,
   UpOutlined,
 } from '@ant-design/icons';
-import { LayerT } from '@/redux/layers/layersSlice';
-import { addNewHistoryItemThunk } from '@/redux/history';
-import { HistoryItemKinds } from '@/types/historyTypes';
+import { LayerT } from '@/redux/history/historySlice';
 
 interface ILayerProps {
   i: number;
@@ -35,7 +33,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   visible,
 }: ILayerProps) {
   const activeLayerIndex = useAppSelector(
-    state => state.layers.activeLayerIndex
+    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex
   );
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
@@ -45,34 +43,32 @@ export const Layer = memo<ILayerProps>(function Layer({
     d(activateLayer({ index: i }));
   }, [d, activeLayerIndex, i]);
 
-  const handleLayerClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleLayerClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
       handleActivateLayer();
     }
   };
 
   const handleChangeVisibility = useCallback(() => {
+    // d(addNewHistoryItemThunk(HistoryItemKinds.Visibility));
     d(changeLayerVisibility({ index: i }));
-    d(addNewHistoryItemThunk(HistoryItemKinds.Visibility));
   }, [d, i]);
 
   const handleRemoveLayer = useCallback(() => {
+    // d(addNewHistoryItemThunk(HistoryItemKinds.Remove));
     d(removeLayer({ index: i }));
-    d(addNewHistoryItemThunk(HistoryItemKinds.Remove));
   }, [d, i]);
 
   const handleMoveLayerUp = useCallback(() => {
     if (i === 0) return;
+    // d(addNewHistoryItemThunk(HistoryItemKinds.Order));
     d(moveLayerUp({ index: i }));
-    d(addNewHistoryItemThunk(HistoryItemKinds.Order));
   }, [d, i]);
 
   const handleMoveLayerDown = useCallback(() => {
     if (i === lastElementIndex) return;
+    // d(addNewHistoryItemThunk(HistoryItemKinds.Order));
     d(moveLayerDown({ index: i }));
-    d(addNewHistoryItemThunk(HistoryItemKinds.Order));
   }, [d, i, lastElementIndex]);
 
   const items: MenuProps['items'] = [
