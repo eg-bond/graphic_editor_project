@@ -12,13 +12,13 @@ enum InputRanges {
 export function OpacitySlider() {
   const activeLayer = useAppSelector(selectActiveLayer);
   const activeLayerIndex = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex
+    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
   );
   const d = useAppDispatch();
 
   const [value, setValue] = useState(InputRanges.MAX);
 
-  const onChangeComplete: InputNumberProps['onChange'] = newValue => {
+  const onChangeComplete: InputNumberProps['onChange'] = (newValue) => {
     d(changeOpacity({ activeLayerIndex, opacity: Number(newValue) }));
   };
 

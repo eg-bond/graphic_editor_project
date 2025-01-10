@@ -1,6 +1,6 @@
 export function validateLayerName(
   name: string,
-  existingNames: string[]
+  existingNames: string[],
 ): string | null {
   const trimmedName = name.trim();
 
@@ -11,7 +11,7 @@ export function validateLayerName(
 
   if (
     existingNames.some(
-      existingName => existingName.toLowerCase() === trimmedName.toLowerCase()
+      existingName => existingName.toLowerCase() === trimmedName.toLowerCase(),
     )
   ) {
     return 'Слой с таким именем уже существует';

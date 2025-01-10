@@ -3,7 +3,10 @@ import { Button, Card, Col, Form, Popconfirm, Row, Typography } from 'antd';
 import { Gutter } from 'antd/es/grid/row';
 import { getUid } from '@/utils/getUid.ts';
 import { useNavigate } from 'react-router-dom';
-import { CreateProjectModal, ProjectFormData } from '@/components/CreateProjectModal';
+import {
+  CreateProjectModal,
+  ProjectFormData,
+} from '@/components/CreateProjectModal';
 import { useModal } from '@/hooks/useModal.tsx';
 import { PROJECTS_KEY } from '@/utils/constants.ts';
 import { Project } from '@/redux/history';
@@ -27,22 +30,28 @@ const MainPage1: FC = () => {
   } = useModal();
   const [projects, setProjects] = useState<Project[]>(getInitialProjects);
 
-
   const handleSubmit = useCallback((values: ProjectFormData) => {
-    setProjects(p => {
-      const newProjects = [{ id: getUid(), height: +values.height, width: +values.width, name: values.name }, ...p];
+    setProjects((p) => {
+      const newProjects = [
+        {
+          id: getUid(),
+          height: +values.height,
+          width: +values.width,
+          name: values.name,
+        }, ...p,
+      ];
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
       return newProjects;
     });
 
-      form.resetFields();
-      onClose();
-    },
-    [form, onClose]
+    form.resetFields();
+    onClose();
+  },
+  [form, onClose],
   );
 
   const handleDelete = (id: string) => {
-    setProjects(prevState => {
+    setProjects((prevState) => {
       const newProjects = prevState.filter(p => p.id !== id);
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
       return newProjects;
@@ -74,8 +83,7 @@ const MainPage1: FC = () => {
           <Col span={6} key={project.id}>
             <Card
               onClick={() =>
-                navigate(`/projects/${project.id}`, { state: project })
-              }
+                navigate(`/projects/${project.id}`, { state: project })}
               className="cursor-pointer"
             >
               <Typography.Title level={2} className="!mb-12">
@@ -88,8 +96,7 @@ const MainPage1: FC = () => {
                   type="primary"
                   size="large"
                   onClick={() =>
-                    navigate(`/projects/${project.id}`, { state: project })
-                  }
+                    navigate(`/projects/${project.id}`, { state: project })}
                 >
                   Открыть
                 </Button>

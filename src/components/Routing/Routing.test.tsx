@@ -8,7 +8,7 @@ describe('Routing tests', () => {
     render(
       <MemoryRouter initialEntries={[AppRoutes.Main]}>
         <Routing />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText(/Main Page/i)).toBeInTheDocument();
@@ -18,7 +18,7 @@ describe('Routing tests', () => {
     render(
       <MemoryRouter initialEntries={[`/${AppRoutes.CurrentProject}`]}>
         <Routing />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(screen.getByText(/Основная часть/i)).toBeInTheDocument();
   });

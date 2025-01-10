@@ -16,8 +16,12 @@ export function EditorPage() {
 
   useEffect(() => {
     if (id) {
-      const allProjects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
-      const currentProject: Project = allProjects.find((project: Project) => project.id === id);
+      const allProjects = JSON.parse(
+        localStorage.getItem(PROJECTS_KEY) ?? '[]',
+      );
+      const currentProject: Project = allProjects.find(
+        (project: Project) => project.id === id,
+      );
 
       d(setProjectData({ id, data: currentProject?.data }));
     }

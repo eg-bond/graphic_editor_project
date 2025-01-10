@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import { Dropdown, MenuProps, Space } from 'antd';
 export interface MenuItem {
-  key: string,
-  label: ReactNode,
+  key: string;
+  label: ReactNode;
 }
 
 export interface MyMenuProps extends MenuProps {
-  title: string,
-  items: MenuItem[],
+  title: string;
+  items: MenuItem[];
 }
 
 export const DropDownNav = ({ title, items }: MyMenuProps) => {

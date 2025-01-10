@@ -22,7 +22,9 @@ export function LayersMenu() {
           <Button
             icon={<PlusOutlined />}
             block
-            onClick={() => handleAddLayer()}></Button>
+            onClick={() => handleAddLayer()}
+          >
+          </Button>
         </div>
 
         <OpacitySlider />

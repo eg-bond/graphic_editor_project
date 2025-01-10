@@ -19,10 +19,10 @@ import {
 import { LayerT } from '@/redux/history/historySlice';
 
 interface ILayerProps {
-  i: number,
-  lastElementIndex: number,
-  name: LayerT['name'],
-  visible: LayerT['visible'],
+  i: number;
+  lastElementIndex: number;
+  name: LayerT['name'];
+  visible: LayerT['visible'];
 }
 
 // Single layer
@@ -33,7 +33,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   visible,
 }: ILayerProps) {
   const activeLayerIndex = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex
+    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
   );
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
@@ -50,24 +50,20 @@ export const Layer = memo<ILayerProps>(function Layer({
   };
 
   const handleChangeVisibility = useCallback(() => {
-    // d(addNewHistoryItemThunk(HistoryItemKinds.Visibility));
     d(changeLayerVisibility({ index: i }));
   }, [d, i]);
 
   const handleRemoveLayer = useCallback(() => {
-    // d(addNewHistoryItemThunk(HistoryItemKinds.Remove));
     d(removeLayer({ index: i }));
   }, [d, i]);
 
   const handleMoveLayerUp = useCallback(() => {
     if (i === 0) return;
-    // d(addNewHistoryItemThunk(HistoryItemKinds.Order));
     d(moveLayerUp({ index: i }));
   }, [d, i]);
 
   const handleMoveLayerDown = useCallback(() => {
     if (i === lastElementIndex) return;
-    // d(addNewHistoryItemThunk(HistoryItemKinds.Order));
     d(moveLayerDown({ index: i }));
   }, [d, i, lastElementIndex]);
 
@@ -86,22 +82,28 @@ export const Layer = memo<ILayerProps>(function Layer({
   ];
 
   const staticClasses =
-    'flex justify-between items-center gap-2 px-2 py-1 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer';
+    'flex justify-between items-center gap-2 px-2 py-1 ' +
+    'border-b-2 border-gray-500 first:border-t-2 hover: cursor-pointer';
   const dynamicClasses = (isActive: boolean) =>
     isActive ? 'bg-slate-400' : '';
 
   return (
     <div
       className={`${staticClasses} ${dynamicClasses(activeLayerIndex === i)}`}
-      onClick={e => handleLayerClick(e)}>
+      onClick={e => handleLayerClick(e)}
+    >
       {/* Buttons for moving layers up and down */}
       <div className="flex flex-col gap-1 mr-2">
         <Button
           onClick={() => handleMoveLayerUp()}
-          icon={<UpOutlined />}></Button>
+          icon={<UpOutlined />}
+        >
+        </Button>
         <Button
           onClick={() => handleMoveLayerDown()}
-          icon={<DownOutlined />}></Button>
+          icon={<DownOutlined />}
+        >
+        </Button>
       </div>
       {/* Layer name component */}
       <LayerName

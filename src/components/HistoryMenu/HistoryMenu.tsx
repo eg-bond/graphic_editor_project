@@ -14,11 +14,13 @@ export function HistoryMenu() {
       if (index === activeItemIndex) return;
       d(activateHistoryItem({ index }));
     },
-    [d, activeItemIndex]
+    [d, activeItemIndex],
   );
 
   // Tailwind classes for history item
-  const staticClasses = 'flex justify-between p-2 border-b-2 first:border-t-2 border-gray-500 hover: cursor-pointer ';
+  const staticClasses =
+   'flex justify-between p-2 border-b-2 border-gray-500 ' +
+   'first:border-t-2 hover: cursor-pointer ';
   const dynamicClasses = (i: number) => {
     const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
     const futureCl = activeItemIndex < i ? 'text-gray-500' : '';

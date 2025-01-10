@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 
 interface IActionIconProps {
-  kind: HistoryItemKinds,
+  kind: HistoryItemKinds;
 }
 
 export function ActionIcon({ kind }: IActionIconProps) {

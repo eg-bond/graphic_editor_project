@@ -6,11 +6,11 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { validateLayerName } from '@/utils/validateLayerName.ts';
 
 type ILayerName = {
-  i: number,
-  name: LayerT['name'],
-  renameInputVisible: boolean,
-  setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>,
-  onClick: () => void,
+  i: number;
+  name: LayerT['name'];
+  renameInputVisible: boolean;
+  setRenameInputVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onClick: () => void;
 };
 
 export function LayerName({
@@ -21,7 +21,9 @@ export function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
-  const layersList = useAppSelector(state => state.history.items[state.history.activeItemIndex].layersList);
+  const layersList = useAppSelector((state) => {
+    return state.history.items[state.history.activeItemIndex].layersList;
+  });
   const existingNames = layersList.map(layer => layer.name);
   const inputRef = useRef<InputRef | null>(null);
   const [inputValue, setInputValue] = useState<string>(name);

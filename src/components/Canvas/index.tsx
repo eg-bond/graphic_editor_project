@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 interface CanvasProps {
-  width: number,
-  height: number,
+  width: number;
+  height: number;
 }
 
 export const Canvas: FC<CanvasProps> = ({ width, height }) => {
@@ -15,6 +15,7 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
         background: '#fff',
         margin: 'auto',
       }}
-    ></div>
+    >
+    </div>
   );
 };

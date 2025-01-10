@@ -1,5 +1,8 @@
 import { FC, memo } from 'react';
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Typography, FormInstance } from 'antd';
+import {
+  Button, Col, Form, Input, InputNumber,
+  Modal, Row, Typography, FormInstance,
+} from 'antd';
 import { formatInteger } from '@/utils/formatInteger.ts';
 
 export interface ProjectFormData {
@@ -22,13 +25,23 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
   handleSubmit,
 }) => {
   return (
-    <Modal open={open} onCancel={onClose} footer={null} width={750} forceRender>
+    <Modal
+      open={open}
+      onCancel={onClose}
+      footer={null}
+      width={750}
+      forceRender
+    >
       <Typography.Title level={3}>
         Новый проект
       </Typography.Title>
 
-      <Form<ProjectFormData> layout="vertical" form={form} onFinish={handleSubmit}>
-        <Row gutter={[20,20]}>
+      <Form<ProjectFormData>
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+      >
+        <Row gutter={[20, 20]}>
           <Col span={8}>
             <Form.Item
               name="name"
@@ -101,7 +114,13 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
         </Row>
 
         <div className="flex justify-end">
-          <Button onClick={onClose} htmlType="submit" className="!bg-green-500" type="primary" size="large">
+          <Button
+            onClick={onClose}
+            htmlType="submit"
+            className="!bg-green-500"
+            type="primary"
+            size="large"
+          >
             Добавить
           </Button>
         </div>
