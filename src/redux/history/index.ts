@@ -1,8 +1,11 @@
 import { historySlice } from './historySlice';
-import { addNewHistoryItemThunk } from './thunks';
 
 export const historyReducer = historySlice.reducer;
 
-export const { activateHistoryItem, addNewHistoryItem } = historySlice.actions;
+export const { activateHistoryItem, setProjectData, addLayer, activateLayer,
+  changeOpacity, changeLayerVisibility, changeLayerName, removeLayer, moveLayerUp, moveLayerDown, setStateFromHistory,
+} = historySlice.actions;
 
-export { addNewHistoryItemThunk };
+export type { Project } from './historySlice.ts';
+
+export * from './selectors.ts';

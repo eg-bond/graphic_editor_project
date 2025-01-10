@@ -1,11 +1,9 @@
-import { addNewHistoryItemThunk } from '@/redux/history';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { changeLayerName } from '@/redux/layers';
-import { LayerT } from '@/redux/layers/layersSlice';
-import { HistoryItemKinds } from '@/types/historyTypes';
-import { validateLayerName } from '@/utils/validateLayerName';
+import { changeLayerName } from '@/redux/history';
+import { LayerT } from '@/redux/history/historySlice';
 import { Form, Input, InputRef } from 'antd';
-import { ChangeEvent, useRef, useState, useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { validateLayerName } from '@/utils/validateLayerName.ts';
 
 type ILayerName = {
   i: number;
@@ -23,7 +21,7 @@ export function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
-  const layersList = useAppSelector(state => state.layers.list);
+  const layersList = useAppSelector(state => state.history.items[state.history.activeItemIndex].layersList);
   const existingNames = layersList.map(layer => layer.name);
   const inputRef = useRef<InputRef | null>(null);
   const [inputValue, setInputValue] = useState<string>(name);
@@ -57,7 +55,6 @@ export function LayerName({
     }
 
     d(changeLayerName({ index: i, name: trimmedName }));
-    d(addNewHistoryItemThunk(HistoryItemKinds.Rename));
     setRenameInputVisible(false);
   };
 

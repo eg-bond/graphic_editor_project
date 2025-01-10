@@ -1,12 +1,27 @@
-import { Navigation } from "@/components/Navigation";
-import { LayersMenu } from "@/components/LayersMenu";
-import { HistoryMenu } from "@/components/HistoryMenu";
-import { useLocation } from "react-router-dom";
-import { Canvas } from "@/components/Canvas";
+import { Navigation } from '@/components/Navigation';
+import { LayersMenu } from '@/components/LayersMenu';
+import { HistoryMenu } from '@/components/HistoryMenu';
+import { useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/redux/hooks.ts';
+import { Project, setProjectData } from '@/redux/history';
+import { PROJECTS_KEY } from '@/utils/constants.ts';
+import { Canvas } from '@/components/Canvas';
 
 export function EditorPage() {
   const location = useLocation();
   const project = location.state;
+  const { id } = useParams();
+  const d = useAppDispatch();
+
+  useEffect(() => {
+    if (id) {
+      const allProjects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
+      const currentProject: Project = allProjects.find((project: Project) => project.id === id);
+
+      d(setProjectData({ id, data: currentProject?.data }));
+    }
+  }, [d, id]);
 
   if (!project) {
     return <p className='text-center mt-32'>Проект не найден</p>;

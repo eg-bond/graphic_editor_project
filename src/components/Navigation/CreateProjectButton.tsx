@@ -1,19 +1,18 @@
-import { FC, memo, useCallback } from "react";
-import { useModal } from "@/hooks/useModal.tsx";
-import { CreateProjectModal, Project } from "@/components/CreateProjectModal";
-import { Form } from "antd";
-import { PROJECTS_KEY } from "@/utils/constants.ts";
-import { getUid } from "@/utils/getUid.ts";
-import { useNavigate } from "react-router-dom";
+import { FC, memo, useCallback } from 'react';
+import { useModal } from '@/hooks/useModal.tsx';
+import { CreateProjectModal, ProjectFormData } from '@/components/CreateProjectModal';
+import { Form } from 'antd';
+import { PROJECTS_KEY } from '@/utils/constants.ts';
+import { getUid } from '@/utils/getUid.ts';
+import { useNavigate } from 'react-router-dom';
 
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { open, onOpen, onClose } = useModal();
 
-  const handleSubmit = useCallback(
-    (values: Omit<Project, "id">) => {
-      const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? "[]");
+  const handleSubmit = useCallback((values: Omit<ProjectFormData, 'id'>) => {
+    const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
 
       const id = getUid();
       const newProject = {

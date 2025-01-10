@@ -4,15 +4,15 @@ import { memo } from 'react';
 
 // List of all layers
 export const LayersList = memo(function LayersList() {
-  const layersList = useAppSelector(state => state.layers.list);
+  const layers = useAppSelector(state => state.history.items?.[state.history.activeItemIndex]?.layersList) ?? [];
 
   return (
     <div className='flex flex-col justify-between overflow-y-auto'>
-      {layersList.map((layer, i) => (
+      {layers.map((layer, i) => (
         <Layer
           key={layer.id}
           i={i}
-          lastElementIndex={layersList.length - 1}
+          lastElementIndex={layers.length - 1}
           name={layer.name}
           visible={layer.visible}
         />
