@@ -122,6 +122,8 @@ export default tseslint.config(
       '@stylistic/array-bracket-newline': ['error', 'consistent'],
       // Новая строка для элементов массива
       '@stylistic/array-element-newline': ['error', 'consistent'],
+      // Chaining
+      '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 3 }],
 
       // JSX ------------------------------------------------------
       // Максимальное количество пропсов компоненты в одной строке

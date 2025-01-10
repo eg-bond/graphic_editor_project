@@ -444,14 +444,14 @@
   dependencies:
     levn "^0.4.1"
 
-"@html-eslint/eslint-plugin@^0.32.0":
+"@html-eslint/eslint-plugin@0.32.0":
   version "0.32.0"
   resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.32.0.tgz#2ee613ceeb8445de01bdd21d45e9cc3a091f7821"
   integrity sha512-pHY0kGlSUn9G3qsEB11c/nK0tfHTeKTU2Su5dH+muNv9lr5K7O6Mo1dzTr96PNzTBXsDIkRpZ2k1TdNmgDR7YA==
   dependencies:
     "@html-eslint/template-parser" "^0.32.0"
 
-"@html-eslint/parser@^0.32.0":
+"@html-eslint/parser@0.32.0":
   version "0.32.0"
   resolved "https://registry.yarnpkg.com/@html-eslint/parser/-/parser-0.32.0.tgz#09001ec7127e7ec7c1a34d53a400ba3453b3c294"
   integrity sha512-XSrc3rlIakRlJmFO3EpcVAiwJMfTFvjRZrpFr2jhX1E/Zjd/jPuYbKKXaY6ZLpeRQDtexFiKU+r8pa9DT2pd0A==
@@ -1718,7 +1718,7 @@ eslint-visitor-keys@^4.2.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-4.2.0.tgz#687bacb2af884fcdda8a6e7d65c606f46a14cd45"
   integrity sha512-UyLnSehNt62FFhSwjZlHmeokpRK59rcz29j+F1/aDgbkbRTk7wIc9XzdoasMUbRNKDM0qQt/+BJ4BrpFeABemw==
 
-eslint@^9.17.0:
+eslint@9.17.0:
   version "9.17.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-9.17.0.tgz#faa1facb5dd042172fdc520106984b5c2421bb0c"
   integrity sha512-evtlNcpJg+cZLcnVKwsai8fExnqjGPicK7gnUtlNuzu+Fv9bI0aLpND5T44VLQtoMEnI57LoXO9XAkIXwohKrA==
