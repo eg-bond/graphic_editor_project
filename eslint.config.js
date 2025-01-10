@@ -5,9 +5,32 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
 import newLineDest from 'eslint-plugin-newline-destructuring';
+import html from '@html-eslint/eslint-plugin';
+import parser from '@html-eslint/parser';
 
 export default tseslint.config(
   { ignores: ['dist'] },
+  // Config for HTML files
+  {
+    ...html.configs['flat/recommended'],
+    files: ['**/*.html'],
+    plugins: {
+      '@html-eslint': html,
+    },
+    languageOptions: {
+      parser,
+    },
+    rules: {
+      '@html-eslint/indent': ['error', 2],
+      '@html-eslint/quotes': ['error', 'double'],
+      '@html-eslint/no-extra-spacing-attrs': [
+        'error',
+        { enforceBeforeSelfClose: true },
+      ],
+      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+    },
+  },
+  // Config for TS files
   {
     extends: [
       stylistic.configs.customize({
@@ -114,4 +137,5 @@ export default tseslint.config(
       // }],
     },
   },
+
 );

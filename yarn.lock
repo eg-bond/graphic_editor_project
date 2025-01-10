@@ -427,6 +427,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-9.15.0.tgz#df0e24fe869143b59731942128c19938fdbadfb5"
   integrity sha512-tMTqrY+EzbXmKJR5ToI8lxu7jaN5EdmrBFJpQk5JmSlyLsx6o4t27r883K5xsLuCYCpfKBCGswMSWXsM+jB7lg==
 
+"@eslint/js@9.17.0":
+  version "9.17.0"
+  resolved "https://registry.yarnpkg.com/@eslint/js/-/js-9.17.0.tgz#1523e586791f80376a6f8398a3964455ecc651ec"
+  integrity sha512-Sxc4hqcs1kTu0iID3kcZDW3JHq2a77HO9P8CP6YEA/FpH3Ll8UXE2r/86Rz9YJLKme39S9vU5OWNjC6Xl0Cr3w==
+
 "@eslint/object-schema@^2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@eslint/object-schema/-/object-schema-2.1.5.tgz#8670a8f6258a2be5b2c620ff314a1d984c23eb2e"
@@ -438,6 +443,27 @@
   integrity sha512-zSkKow6H5Kdm0ZUQUB2kV5JIXqoG0+uH5YADhaEHswm664N9Db8dXSi0nMJpacpMf+MyyglF1vnZohpEg5yUtg==
   dependencies:
     levn "^0.4.1"
+
+"@html-eslint/eslint-plugin@^0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.32.0.tgz#2ee613ceeb8445de01bdd21d45e9cc3a091f7821"
+  integrity sha512-pHY0kGlSUn9G3qsEB11c/nK0tfHTeKTU2Su5dH+muNv9lr5K7O6Mo1dzTr96PNzTBXsDIkRpZ2k1TdNmgDR7YA==
+  dependencies:
+    "@html-eslint/template-parser" "^0.32.0"
+
+"@html-eslint/parser@^0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@html-eslint/parser/-/parser-0.32.0.tgz#09001ec7127e7ec7c1a34d53a400ba3453b3c294"
+  integrity sha512-XSrc3rlIakRlJmFO3EpcVAiwJMfTFvjRZrpFr2jhX1E/Zjd/jPuYbKKXaY6ZLpeRQDtexFiKU+r8pa9DT2pd0A==
+  dependencies:
+    es-html-parser "^1.0.0-alpha.4"
+
+"@html-eslint/template-parser@^0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@html-eslint/template-parser/-/template-parser-0.32.0.tgz#0364340793721a863125d0082c03d554fc612756"
+  integrity sha512-+p0EdxmSC3CERw3uHYo9aMw4y6+Rk8YeNzhJP5ewfXpB6qZEeB3XD/6vhiK0NheOh1meGdiKvbYLvaMULRIr5A==
+  dependencies:
+    es-html-parser "^1.0.0-alpha.4"
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
@@ -1459,7 +1485,7 @@ copy-to-clipboard@^3.3.3:
   dependencies:
     toggle-selection "^1.0.6"
 
-cross-spawn@^7.0.0, cross-spawn@^7.0.5:
+cross-spawn@^7.0.0, cross-spawn@^7.0.6:
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.6.tgz#8a58fe78f00dcd70c370451759dfbfaf03e8ee9f"
   integrity sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==
@@ -1580,6 +1606,11 @@ entities@^4.5.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
   integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
 
+es-html-parser@^1.0.0-alpha.4:
+  version "1.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/es-html-parser/-/es-html-parser-1.0.0-alpha.4.tgz#14bb655ac4e996e602ac9b8d0158eea6e5cbec88"
+  integrity sha512-5KUgd64goEPG1ZwP3rf/D+uAbdjyuNon0YY9u1yzR2NkFwa1UwxpsCQkzalAOlQaXAVtP32LGYRW4IAKAwo/sg==
+
 es-module-lexer@^1.5.4:
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/es-module-lexer/-/es-module-lexer-1.5.4.tgz#a8efec3a3da991e60efa6b633a7cad6ab8d26b78"
@@ -1687,17 +1718,17 @@ eslint-visitor-keys@^4.2.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-4.2.0.tgz#687bacb2af884fcdda8a6e7d65c606f46a14cd45"
   integrity sha512-UyLnSehNt62FFhSwjZlHmeokpRK59rcz29j+F1/aDgbkbRTk7wIc9XzdoasMUbRNKDM0qQt/+BJ4BrpFeABemw==
 
-eslint@9.15.0:
-  version "9.15.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-9.15.0.tgz#77c684a4e980e82135ebff8ee8f0a9106ce6b8a6"
-  integrity sha512-7CrWySmIibCgT1Os28lUU6upBshZ+GxybLOrmRzi08kS8MBuO8QA7pXEgYgY5W8vK3e74xv0lpjo9DbaGU9Rkw==
+eslint@^9.17.0:
+  version "9.17.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-9.17.0.tgz#faa1facb5dd042172fdc520106984b5c2421bb0c"
+  integrity sha512-evtlNcpJg+cZLcnVKwsai8fExnqjGPicK7gnUtlNuzu+Fv9bI0aLpND5T44VLQtoMEnI57LoXO9XAkIXwohKrA==
   dependencies:
     "@eslint-community/eslint-utils" "^4.2.0"
     "@eslint-community/regexpp" "^4.12.1"
     "@eslint/config-array" "^0.19.0"
     "@eslint/core" "^0.9.0"
     "@eslint/eslintrc" "^3.2.0"
-    "@eslint/js" "9.15.0"
+    "@eslint/js" "9.17.0"
     "@eslint/plugin-kit" "^0.2.3"
     "@humanfs/node" "^0.16.6"
     "@humanwhocodes/module-importer" "^1.0.1"
@@ -1706,7 +1737,7 @@ eslint@9.15.0:
     "@types/json-schema" "^7.0.15"
     ajv "^6.12.4"
     chalk "^4.0.0"
-    cross-spawn "^7.0.5"
+    cross-spawn "^7.0.6"
     debug "^4.3.2"
     escape-string-regexp "^4.0.0"
     eslint-scope "^8.2.0"
