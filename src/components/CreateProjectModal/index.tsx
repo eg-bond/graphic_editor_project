@@ -1,5 +1,8 @@
 import { FC, memo } from 'react';
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Typography, FormInstance } from 'antd';
+import {
+  Button, Col, Form, Input, InputNumber,
+  Modal, Row, Typography, FormInstance,
+} from 'antd';
 import { formatInteger } from '@/utils/formatInteger.ts';
 
 export interface ProjectFormData {
@@ -15,21 +18,38 @@ interface CreateProjectModalProps {
   handleSubmit: (data: ProjectFormData) => void;
 }
 
-const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form, handleSubmit }) => {
-
+const _CreateProjectModal: FC<CreateProjectModalProps> = ({
+  open,
+  onClose,
+  form,
+  handleSubmit,
+}) => {
   return (
-    <Modal open={open} onCancel={onClose} footer={null} width={750} forceRender>
+    <Modal
+      open={open}
+      onCancel={onClose}
+      footer={null}
+      width={750}
+      forceRender
+    >
       <Typography.Title level={3}>
         Новый проект
       </Typography.Title>
 
-      <Form<ProjectFormData> layout="vertical" form={form} onFinish={handleSubmit}>
-        <Row gutter={[20,20]}>
+      <Form<ProjectFormData>
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+      >
+        <Row gutter={[20, 20]}>
           <Col span={8}>
             <Form.Item
               name="name"
               required
-              rules={[{ required: true, message: 'Это поле обязательно' }]}
+              rules={[{
+                required: true,
+                message: 'Это поле обязательно',
+              }]}
               label="Название"
             >
               <Input placeholder="Введите название" />
@@ -40,9 +60,22 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
               name="width"
               required
               rules={[
-                { required: true, message: 'Это поле обязательно' },
-                { min: 1, type: 'number', transform: v => +v, message: 'Минимальное значение 1 px', },
-                { max: 5000, type: 'number', transform: v => +v, message: 'Максимальное значение 5000 px', }
+                {
+                  required: true,
+                  message: 'Это поле обязательно',
+                },
+                {
+                  min: 1,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Минимальное значение 1 px',
+                },
+                {
+                  max: 5000,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Максимальное значение 5000 px',
+                },
               ]}
               label="Ширина"
               normalize={formatInteger}
@@ -55,9 +88,22 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
               name="height"
               required
               rules={[
-                { required: true, message: 'Это поле обязательно' },
-                { min: 1, type: 'number', transform: v => +v, message: 'Минимальное значение 1 px', },
-                { max: 5000, type: 'number', transform: v => +v, message: 'Максимальное значение 5000 px', }
+                {
+                  required: true,
+                  message: 'Это поле обязательно',
+                },
+                {
+                  min: 1,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Минимальное значение 1 px',
+                },
+                {
+                  max: 5000,
+                  type: 'number',
+                  transform: v => +v,
+                  message: 'Максимальное значение 5000 px',
+                },
               ]}
               label="Высота"
               normalize={formatInteger}
@@ -68,13 +114,19 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({ open, onClose, form,
         </Row>
 
         <div className="flex justify-end">
-          <Button onClick={onClose} htmlType="submit" className="!bg-green-500" type="primary" size="large">
+          <Button
+            onClick={onClose}
+            htmlType="submit"
+            className="!bg-green-500"
+            type="primary"
+            size="large"
+          >
             Добавить
           </Button>
         </div>
       </Form>
     </Modal>
   );
-}
+};
 
 export const CreateProjectModal = memo(_CreateProjectModal);

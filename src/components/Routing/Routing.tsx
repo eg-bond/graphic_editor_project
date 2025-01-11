@@ -9,7 +9,7 @@ export function Routing() {
       <Route path={AppRoutes.Main} element={<MainPage />} />
       <Route
         path={AppRoutes.Projects}
-        element={<h1 className='text-4xl'>Projects Page</h1>}
+        element={<h1 className="text-4xl">Projects Page</h1>}
       />
       <Route path={AppRoutes.CurrentProject} element={<EditorPage />} />
     </Routes>

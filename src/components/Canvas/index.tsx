@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 interface CanvasProps {
   width: number;
@@ -11,10 +11,11 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
       style={{
         width: `${width}px`,
         height: `${height}px`,
-        border: "1px solid black",
-        background: "#fff",
-        margin: "auto"
+        border: '1px solid black',
+        background: '#fff',
+        margin: 'auto',
       }}
-    ></div>
+    >
+    </div>
   );
 };

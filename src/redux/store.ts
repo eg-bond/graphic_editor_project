@@ -10,7 +10,8 @@ export const store = configureStore({
     history: historyReducer,
   },
 
-  devTools: (window as never as DevTools).__REDUX_DEVTOOLS_EXTENSION__ && (window as never as DevTools).__REDUX_DEVTOOLS_EXTENSION__(),
+  devTools: (window as never as DevTools).__REDUX_DEVTOOLS_EXTENSION__ &&
+    (window as never as DevTools).__REDUX_DEVTOOLS_EXTENSION__(),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

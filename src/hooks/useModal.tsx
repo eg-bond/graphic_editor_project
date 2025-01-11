@@ -11,5 +11,9 @@ export const useModal = () => {
     setOpen(false);
   }, []);
 
-  return { open, onOpen, onClose };
-}
+  return {
+    open,
+    onOpen,
+    onClose,
+  };
+};

@@ -1,6 +1,9 @@
 import { FC, memo, useCallback } from 'react';
 import { useModal } from '@/hooks/useModal.tsx';
-import { CreateProjectModal, ProjectFormData } from '@/components/CreateProjectModal';
+import {
+  CreateProjectModal,
+  ProjectFormData,
+} from '@/components/CreateProjectModal';
 import { Form } from 'antd';
 import { PROJECTS_KEY } from '@/utils/constants.ts';
 import { getUid } from '@/utils/getUid.ts';
@@ -9,27 +12,31 @@ import { useNavigate } from 'react-router-dom';
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { open, onOpen, onClose } = useModal();
+  const {
+    open,
+    onOpen,
+    onClose,
+  } = useModal();
 
   const handleSubmit = useCallback((values: Omit<ProjectFormData, 'id'>) => {
     const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
 
-      const id = getUid();
-      const newProject = {
-        id,
-        height: +values.height,
-        width: +values.width,
-        name: values.name
-      };
-      const newProjects = [newProject, ...projects];
+    const id = getUid();
+    const newProject = {
+      id,
+      height: +values.height,
+      width: +values.width,
+      name: values.name,
+    };
+    const newProjects = [newProject, ...projects];
 
-      localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
+    localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
 
-      form.resetFields();
-      onClose();
-      navigate(`/projects/${id}`, { state: newProject });
-    },
-    [form, onClose, navigate]
+    form.resetFields();
+    onClose();
+    navigate(`/projects/${id}`, { state: newProject });
+  },
+  [form, onClose, navigate],
   );
 
   return (

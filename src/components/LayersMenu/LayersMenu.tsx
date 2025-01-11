@@ -14,15 +14,17 @@ export function LayersMenu() {
   }, [d]);
 
   return (
-    <div className='h-1/2'>
-      <div className='h-full flex flex-col'>
-        <h1 className='m-2 text-2xl text-center'>Слои</h1>
+    <div className="h-1/2">
+      <div className="h-full flex flex-col">
+        <h1 className="m-2 text-2xl text-center">Слои</h1>
         {/* Add layer button */}
-        <div className='m-2'>
+        <div className="m-2">
           <Button
             icon={<PlusOutlined />}
             block
-            onClick={() => handleAddLayer()}></Button>
+            onClick={() => handleAddLayer()}
+          >
+          </Button>
         </div>
 
         <OpacitySlider />

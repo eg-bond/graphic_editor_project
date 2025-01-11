@@ -44,7 +44,6 @@ export interface HistoryItem {
   activeLayerIndex: number;
 }
 
-
 const HISTORY_MAX_LENGTH = 20;
 
 const initialState: HistorySliceStateT = {
@@ -63,11 +62,11 @@ const addNewHistoryItem = (state: RootState['history'], payload: HistoryItem) =>
   if (state.items.length >= state.maxHistoryLength) {
     state.items.shift();
   }
-// Remove future history if we're not at the end
+  // Remove future history if we're not at the end
   if (state.activeItemIndex !== state.items.length - 1) {
     state.items = state.items.slice(0, state.activeItemIndex + 1);
   }
-// Add new history item
+  // Add new history item
   const newItem: HistoryItemT = {
     id: state.historyIdCount,
     kind: payload.kind,
@@ -80,7 +79,9 @@ const addNewHistoryItem = (state: RootState['history'], payload: HistoryItem) =>
 
   const allProjects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
 
-  const currentProject: Project = allProjects.find((project: Project) => project.id === state.projectId);
+  const currentProject: Project = allProjects.find(
+    (project: Project) => project.id === state.projectId,
+  );
   currentProject.data = {
     items: state.items,
     historyIdCount: state.historyIdCount,
@@ -95,7 +96,9 @@ export const historySlice = createSlice({
   name: 'history',
   initialState,
   reducers: {
-    setProjectData: (state, action: PayloadAction<{ id: string; data?: ProjectData }>) => {
+    setProjectData: (state, action: PayloadAction<{
+      id: string; data?: ProjectData;
+    }>) => {
       state.projectId = action.payload.id;
       if (action.payload.data) {
         state.items = action.payload.data.items;
@@ -109,13 +112,17 @@ export const historySlice = createSlice({
         state.layerIdCount = 0;
       }
     },
-    activateHistoryItem: (state, action: PayloadAction<{ index: number }>) => {
+    activateHistoryItem: (state, action: PayloadAction<{
+      index: number;
+    }>) => {
       state.activeItemIndex = action.payload.index;
     },
-    setStateFromHistory: (state, action: PayloadAction<{ layersList: Array<LayerT> }>) => {
+    setStateFromHistory: (state, action: PayloadAction<{
+      layersList: Array<LayerT>;
+    }>) => {
       state.items[state.activeItemIndex].layersList = action.payload.layersList;
     },
-    addLayer: state => {
+    addLayer: (state) => {
       state.layerIdCount++;
       const newLayer: LayerT = {
         id: state.layerIdCount,
@@ -126,20 +133,34 @@ export const historySlice = createSlice({
 
       const layers = [...(state.items[state.activeItemIndex]?.layersList ?? [])];
       layers.push(newLayer);
-      addNewHistoryItem(state, { kind: HistoryItemKinds.Add, layersList: layers, activeLayerIndex: layers.length });
+      addNewHistoryItem(state, {
+        kind: HistoryItemKinds.Add,
+        layersList: layers,
+        activeLayerIndex: layers.length,
+      });
     },
-    removeLayer: (state, action: PayloadAction<{ index: number }>) => {
+    removeLayer: (state, action: PayloadAction<{
+      index: number;
+    }>) => {
       const activeElement = state.items[state.activeItemIndex];
       const layers = [...(activeElement?.layersList ?? [])];
 
       layers.splice(action.payload.index, 1);
 
-      addNewHistoryItem(state, { kind: HistoryItemKinds.Remove, layersList: layers, activeLayerIndex: activeElement?.activeLayerIndex ?? -1 });
+      addNewHistoryItem(state, {
+        kind: HistoryItemKinds.Remove,
+        layersList: layers,
+        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+      });
     },
-    activateLayer: (state, action: PayloadAction<{ index: number }>) => {
+    activateLayer: (state, action: PayloadAction<{
+      index: number;
+    }>) => {
       state.items[state.activeItemIndex].activeLayerIndex = action.payload.index;
     },
-    changeOpacity: (state, action: PayloadAction<{ activeLayerIndex: number; opacity: number }>) => {
+    changeOpacity: (state, action: PayloadAction<{
+      activeLayerIndex: number; opacity: number;
+    }>) => {
       const activeElement = state.items[state.activeItemIndex];
       const layers = [...(activeElement?.layersList ?? [])];
 
@@ -147,9 +168,15 @@ export const historySlice = createSlice({
 
       layers[index] = { ...layers[index], opacity: action.payload.opacity };
 
-      addNewHistoryItem(state, { kind: HistoryItemKinds.Opacity, layersList: layers, activeLayerIndex: activeElement?.activeLayerIndex ?? -1 });
+      addNewHistoryItem(state, {
+        kind: HistoryItemKinds.Opacity,
+        layersList: layers,
+        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+      });
     },
-    changeLayerVisibility: (state, action: PayloadAction<{ index: number }>) => {
+    changeLayerVisibility: (state, action: PayloadAction<{
+      index: number;
+    }>) => {
       const activeElement = state.items[state.activeItemIndex];
       const layers = [...(activeElement?.layersList ?? [])];
 
@@ -157,14 +184,23 @@ export const historySlice = createSlice({
 
       layers[index] = { ...layers[index], visible: !layers[index].visible };
 
-      addNewHistoryItem(state, { kind: HistoryItemKinds.Visibility, layersList: layers, activeLayerIndex: activeElement?.activeLayerIndex ?? -1 });
+      addNewHistoryItem(state, {
+        kind: HistoryItemKinds.Visibility,
+        layersList: layers,
+        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+      });
     },
-    changeLayerName: (state, action: PayloadAction<{ index: number; name: string }>,) => {
-      state.items[state.activeItemIndex].layersList[action.payload.index].name = action.payload.name;
+    changeLayerName: (state, action: PayloadAction<{
+      index: number; name: string;
+    }>) => {
+      const i = action.payload.index;
+      state.items[state.activeItemIndex].layersList[i].name = action.payload.name;
 
       const allProjects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
 
-      const currentProject: Project = allProjects.find((project: Project) => project.id === state.projectId);
+      const currentProject: Project = allProjects.find(
+        (project: Project) => project.id === state.projectId,
+      );
       currentProject.data = {
         items: state.items,
         historyIdCount: state.historyIdCount,
@@ -174,7 +210,9 @@ export const historySlice = createSlice({
 
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(allProjects));
     },
-    moveLayerUp: (state, action: PayloadAction<{ index: number }>) => {
+    moveLayerUp: (state, action: PayloadAction<{
+      index: number;
+    }>) => {
       const { index } = action.payload;
 
       if (index <= 0) {
@@ -191,10 +229,12 @@ export const historySlice = createSlice({
       addNewHistoryItem(state, {
         kind: HistoryItemKinds.Order,
         layersList: activeElement.layersList,
-        activeLayerIndex: activeElement?.activeLayerIndex ?? -1
+        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
       });
     },
-    moveLayerDown: (state, action: PayloadAction<{ index: number }>) => {
+    moveLayerDown: (state, action: PayloadAction<{
+      index: number;
+    }>) => {
       const { index } = action.payload;
 
       if (index >= state.items[state.activeItemIndex].layersList.length - 1) {
@@ -211,7 +251,7 @@ export const historySlice = createSlice({
       addNewHistoryItem(state, {
         kind: HistoryItemKinds.Order,
         layersList: activeElement.layersList,
-        activeLayerIndex: activeElement?.activeLayerIndex ?? -1
+        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
       });
     },
   },

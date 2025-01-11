@@ -21,7 +21,9 @@ export function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
-  const layersList = useAppSelector(state => state.history.items[state.history.activeItemIndex].layersList);
+  const layersList = useAppSelector((state) => {
+    return state.history.items[state.history.activeItemIndex].layersList;
+  });
   const existingNames = layersList.map(layer => layer.name);
   const inputRef = useRef<InputRef | null>(null);
   const [inputValue, setInputValue] = useState<string>(name);
@@ -59,13 +61,13 @@ export function LayerName({
   };
 
   return (
-    <div className='flex-[0.75]' onClick={onClick}>
+    <div className="flex-[0.75]" onClick={onClick}>
       {renameInputVisible && (
         <Form onFinish={handleSubmit}>
           <Input
             ref={inputRef}
-            name='change_layer_name'
-            type='text'
+            name="change_layer_name"
+            type="text"
             maxLength={12}
             value={inputValue}
             onChange={handleChange}
@@ -73,7 +75,7 @@ export function LayerName({
             autoFocus
           />
 
-          {error && <span className='text-red-500 text-sm'>{error}</span>}
+          {error && <span className="text-red-500 text-sm">{error}</span>}
         </Form>
       )}
 
