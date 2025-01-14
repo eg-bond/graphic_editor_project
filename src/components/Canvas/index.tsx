@@ -3,7 +3,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { useSaveAndLoad } from './useSaveAndLoad';
 import { useBrush } from './useBrush';
 
-interface Layer {
+export interface Layer {
   id: number;
   name: string;
   canvasData: string;
@@ -32,9 +32,6 @@ export interface ICanvasContextRefs {
 }
 
 export const Canvas: FC<CanvasProps> = ({ width, height }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  // ------------
   const canvasRefs = useRef<{
     [key: string]: HTMLCanvasElement | null;
   }>({});
@@ -66,9 +63,10 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
   }, [width, height]);
 
   const showData = () => {
-    console.log(canvasRefs.current[0].toDataURL('image/png'));
-    console.log(canvasRefs.current[1].toDataURL('image/png'));
-    console.log(canvasRefs.current[2].toDataURL('image/png'));
+    console.log(layersState);
+    // console.log(canvasRefs.current[0].toDataURL('image/png'));
+    // console.log(canvasRefs.current[1].toDataURL('image/png'));
+    // console.log(canvasRefs.current[2].toDataURL('image/png'));
   };
 
   const {
@@ -81,11 +79,13 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
     saveCanvasData,
     loadCanvasData,
     clearCanvas,
-  } = useSaveAndLoad(canvasRef, contextRef);
+  } = useSaveAndLoad(
+    canvasRefs, contextRefs,
+    layersState, activeLayerIndex, setLayersState);
 
   const setToDraw = () => {
-    if (!contextRef.current) return;
-    contextRef.current.globalCompositeOperation = 'source-over';
+    if (!contextRefs.current[activeLayerIndex]) return;
+    contextRefs.current[activeLayerIndex].globalCompositeOperation = 'source-over';
   };
 
   // const setToErase = () => {
