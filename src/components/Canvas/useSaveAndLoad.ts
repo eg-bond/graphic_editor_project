@@ -3,10 +3,17 @@ import { ICanvasContextRefs } from '.';
 export const useSaveAndLoad = (
   canvasRef: ICanvasContextRefs['canvasRef'],
   contextRef: ICanvasContextRefs['contextRef'],
+  // composeLayers: () => HTMLCanvasElement | undefined,
 ) => {
   const saveCanvasData = (): void => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    // const compositeCanvas = composeLayers();
+    // if (!compositeCanvas) return;
+
+    // Save as image
+    // const canvasData = compositeCanvas.toDataURL();
 
     // Get the canvas data as a base64 string
     const canvasData = canvas.toDataURL('image/png');
