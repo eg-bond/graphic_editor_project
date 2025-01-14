@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react';
 
 interface CanvasProps {
@@ -64,6 +65,53 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
     contextRef.current.globalCompositeOperation = 'destination-out';
   };
 
+  const saveCanvasData = (): void => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // Get the canvas data as a base64 string
+    const canvasData = canvas.toDataURL('image/png');
+
+    // Save to localStorage
+    try {
+      localStorage.setItem('savedCanvasData', canvasData);
+      console.log('Canvas data saved successfully');
+    } catch (error) {
+      console.error('Error saving canvas data:', error);
+    }
+  };
+
+  const loadCanvasData = (): void => {
+    const canvas = canvasRef.current;
+    const context = contextRef.current;
+    if (!canvas || !context) return;
+
+    // Get the saved data from localStorage
+    const savedData = localStorage.getItem('savedCanvasData');
+    if (!savedData) {
+      console.log('No saved canvas data found');
+      return;
+    }
+
+    // Create a new image with the saved data
+    const image = new Image();
+    image.onload = () => {
+      // Clear the current canvas
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      // Draw the loaded image
+      context.drawImage(image, 0, 0);
+    };
+    image.src = savedData;
+  };
+
+  const clearCanvas = (): void => {
+    const canvas = canvasRef.current;
+    const context = contextRef.current;
+    if (!canvas || !context) return;
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   return (
     <div>
       <canvas
@@ -80,12 +128,15 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
       >
       </canvas>
       <div>
-        <button onClick={setToDraw}>
+        <Button onClick={setToDraw}>
           Draw
-        </button>
-        <button onClick={setToErase}>
+        </Button>
+        <Button onClick={setToErase}>
           Erase
-        </button>
+        </Button>
+        <Button onClick={saveCanvasData}>Save</Button>
+        <Button onClick={loadCanvasData}>Load</Button>
+        <Button onClick={clearCanvas}>Clear</Button>
       </div>
     </div>
   );
