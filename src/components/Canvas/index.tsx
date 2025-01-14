@@ -1,16 +1,21 @@
 import { Button } from 'antd';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
+import { useSaveAndLoad } from './useSaveAndLoad';
+import { useBrush } from './useBrush';
 
 interface CanvasProps {
   width: number;
   height: number;
 }
 
+export interface ICanvasContextRefs {
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+  contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>;
+}
+
 export const Canvas: FC<CanvasProps> = ({ width, height }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-
-  const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,32 +33,17 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
     contextRef.current = context;
   }, [width, height]);
 
-  const startDrawing = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
-    const { offsetX, offsetY } = event.nativeEvent;
-    if (!contextRef.current) return;
+  const {
+    startDrawing,
+    draw,
+    stopDrawing,
+  } = useBrush(contextRef);
 
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
-    setIsDrawing(true);
-    event.nativeEvent.preventDefault();
-  };
-
-  const draw = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
-    if (!isDrawing || !contextRef.current) return;
-
-    const { offsetX, offsetY } = event.nativeEvent;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
-    event.nativeEvent.preventDefault();
-  };
-
-  const stopDrawing = () => {
-    if (!contextRef.current) return;
-    contextRef.current.closePath();
-    setIsDrawing(false);
-  };
+  const {
+    saveCanvasData,
+    loadCanvasData,
+    clearCanvas,
+  } = useSaveAndLoad(canvasRef, contextRef);
 
   const setToDraw = () => {
     if (!contextRef.current) return;
@@ -63,53 +53,6 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
   const setToErase = () => {
     if (!contextRef.current) return;
     contextRef.current.globalCompositeOperation = 'destination-out';
-  };
-
-  const saveCanvasData = (): void => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    // Get the canvas data as a base64 string
-    const canvasData = canvas.toDataURL('image/png');
-
-    // Save to localStorage
-    try {
-      localStorage.setItem('savedCanvasData', canvasData);
-      console.log('Canvas data saved successfully');
-    } catch (error) {
-      console.error('Error saving canvas data:', error);
-    }
-  };
-
-  const loadCanvasData = (): void => {
-    const canvas = canvasRef.current;
-    const context = contextRef.current;
-    if (!canvas || !context) return;
-
-    // Get the saved data from localStorage
-    const savedData = localStorage.getItem('savedCanvasData');
-    if (!savedData) {
-      console.log('No saved canvas data found');
-      return;
-    }
-
-    // Create a new image with the saved data
-    const image = new Image();
-    image.onload = () => {
-      // Clear the current canvas
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      // Draw the loaded image
-      context.drawImage(image, 0, 0);
-    };
-    image.src = savedData;
-  };
-
-  const clearCanvas = (): void => {
-    const canvas = canvasRef.current;
-    const context = contextRef.current;
-    if (!canvas || !context) return;
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
   };
 
   return (
