@@ -1,3 +1,4 @@
+import { updateLocalLayers } from '@/redux/canvas';
 import { addDrawing } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { useAppDispatch } from '@/redux/hooks';
@@ -10,7 +11,7 @@ export const useSaveAndLoad = (
     [key: string]: CanvasRenderingContext2D;
   }>,
   localLayers: LayerT[],
-  setLocalLayers: React.Dispatch<React.SetStateAction<LayerT[]>>,
+  // setLocalLayers: React.Dispatch<React.SetStateAction<LayerT[]>>,
   activeLayerIndex: number,
   // setLayersState: React.Dispatch<React.SetStateAction<LayerT[]>>,
   // composeLayers: () => HTMLCanvasElement | undefined,
@@ -25,14 +26,14 @@ export const useSaveAndLoad = (
     const canvasData = canvas.toDataURL('image/png');
 
     d(addDrawing({ canvasData }));
-
-    setLocalLayers((prev) => {
-      const newLayers = [...prev];
-      newLayers[activeLayerIndex] = {
-        ...newLayers[activeLayerIndex], canvasData,
-      };
-      return newLayers;
-    });
+    d(updateLocalLayers({ index: activeLayerIndex, canvasData }));
+    // setLocalLayers((prev) => {
+    //   const newLayers = [...prev];
+    //   newLayers[activeLayerIndex] = {
+    //     ...newLayers[activeLayerIndex], canvasData,
+    //   };
+    //   return newLayers;
+    // });
   };
 
   const loadCanvasData = (): void => {
@@ -47,7 +48,7 @@ export const useSaveAndLoad = (
       // Create a new image with the saved data
       const image = new Image();
       image.onload = () => {
-      // Clear the current canvas
+        // Clear the current canvas
         context.clearRect(0, 0, canvas.width, canvas.height);
         // Draw the loaded image
         context.drawImage(image, 0, 0);

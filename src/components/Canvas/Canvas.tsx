@@ -1,12 +1,12 @@
-import { Button } from 'antd';
+import { Button, ColorPicker } from 'antd';
 import { FC, useEffect, useRef } from 'react';
 import { useSaveAndLoad } from './useSaveAndLoad';
 import { useBrush } from './useBrush';
 import { LayerT } from '@/redux/history/historySlice';
+import { AggregationColor } from 'antd/es/color-picker/color';
 
 export interface ICanvasProps {
   localLayers: LayerT[];
-  setLocalLayers: React.Dispatch<React.SetStateAction<LayerT[]>>;
   activeLayerIndex: number;
   width: number;
   height: number;
@@ -14,7 +14,6 @@ export interface ICanvasProps {
 
 export const Canvas: FC<ICanvasProps> = ({
   localLayers,
-  setLocalLayers,
   activeLayerIndex,
   width,
   height,
@@ -30,7 +29,7 @@ export const Canvas: FC<ICanvasProps> = ({
     saveCanvasData,
     loadCanvasData,
     clearCanvas,
-  } = useSaveAndLoad(canvasRefs, contextRefs, localLayers, setLocalLayers, activeLayerIndex);
+  } = useSaveAndLoad(canvasRefs, contextRefs, localLayers, activeLayerIndex);
 
   const {
     startDrawing,
@@ -43,43 +42,23 @@ export const Canvas: FC<ICanvasProps> = ({
       const canvas = canvasRefs.current[i];
       if (!canvas) return;
 
-      canvas.width = width;
-      canvas.height = height;
-    });
-  }, [width, height]);
-
-  useEffect(() => {
-    Object.keys(canvasRefs.current).forEach((i) => {
-      const canvas = canvasRefs.current[i];
-      if (!canvas) return;
-
       const context = canvas.getContext('2d');
       if (!context) return;
-
-      context.lineCap = 'round';
-      context.strokeStyle = 'black';
+      // context.lineCap = 'round';
+      // context.strokeStyle = 'black';
       context.lineWidth = 5;
       contextRefs.current[i] = context;
-
+      // !!!!!!!! makes history work, but not efficiently
+      clearCanvas();
       loadCanvasData();
     });
+    console.log('lay');
   }, [localLayers]);
-
-  // console.log('localLayers');
-  // console.log(localLayers);
 
   const showData = () => {
     // console.log(canvasRefs.current[0].toDataURL('image/png'));
-    // console.log(canvasRefs.current[1].toDataURL('image/png'));
-    // console.log(canvasRefs.current[2].toDataURL('image/png'));
-    // console.log(canvasRefs.current[3].toDataURL('image/png'));
-
     console.log(localLayers[0].canvasData);
   };
-
-  // useEffect(() => {
-  //   loadCanvasData();
-  // }, []);
 
   const setToDraw = () => {
     if (!contextRefs.current[activeLayerIndex]) return;
@@ -87,9 +66,15 @@ export const Canvas: FC<ICanvasProps> = ({
   };
 
   // const setToErase = () => {
-  //   if (!contextRef.current) return;
-  //   contextRef.current.globalCompositeOperation = 'destination-out';
+  //   if (!contextRefs.current[activeLayerIndex]) return;
+  //   contextRefs.current[activeLayerIndex].globalCompositeOperation = 'destination-out';
   // };
+
+  const changeColor = (e: AggregationColor) => {
+    Object.keys(contextRefs.current).forEach((i) => {
+      contextRefs.current[i].strokeStyle = e.toHexString();
+    });
+  };
 
   return (
     <div>
@@ -112,7 +97,12 @@ export const Canvas: FC<ICanvasProps> = ({
               style={{
                 width: `${width}px`,
                 height: `${height}px`,
+                zIndex: 100 - i,
+                opacity: layer.opacity / 100,
+                display: layer.visible ? 'block' : 'none',
               }}
+              width={width}
+              height={height}
               ref={el => canvasRefs.current[i] = el}
             >
             </canvas>
@@ -126,6 +116,10 @@ export const Canvas: FC<ICanvasProps> = ({
         {/* <Button onClick={setToErase}>
           Erase
         </Button> */}
+        <ColorPicker
+          onChangeComplete={changeColor}
+          defaultValue="black"
+        />
         <Button onClick={saveCanvasData}>Save</Button>
         <Button onClick={loadCanvasData}>Load</Button>
         <Button onClick={clearCanvas}>Clear</Button>

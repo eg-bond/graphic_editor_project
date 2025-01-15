@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { historyReducer } from './history';
+import { canvasReducer } from './canvas';
 
 interface DevTools {
   __REDUX_DEVTOOLS_EXTENSION__: () => boolean;
@@ -8,6 +9,7 @@ interface DevTools {
 export const store = configureStore({
   reducer: {
     history: historyReducer,
+    canvas: canvasReducer,
   },
 
   devTools: (window as never as DevTools).__REDUX_DEVTOOLS_EXTENSION__ &&
