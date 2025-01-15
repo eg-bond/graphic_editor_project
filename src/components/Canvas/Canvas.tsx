@@ -121,16 +121,7 @@ export const Canvas: FC<ICanvasProps> = ({
         <Button onClick={clearCanvas}>Clear</Button>
         <Button onClick={showData}>ShowData</Button>
       </div>
-      <div className="layer-controls">
-        {layersList.map(layer => (
-          <Button
-            // onClick={() => setActiveLayerIndex(layer.id)}
-            key={layer.id}
-          >
-            {layer.name}
-          </Button>
-        ))}
-      </div>
+
     </div>
   );
 };

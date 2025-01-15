@@ -4,9 +4,9 @@ import { HistoryMenu } from '@/components/HistoryMenu';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
-import { Project, setProjectData } from '@/redux/history';
-import { PROJECTS_KEY } from '@/utils/constants.ts';
+import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
+import { getProjectsFromLS } from '@/utils/getProjectsFromLS';
 
 export function EditorPage() {
   const location = useLocation();
@@ -18,13 +18,7 @@ export function EditorPage() {
 
   useEffect(() => {
     if (id) {
-      const allProjects = JSON.parse(
-        localStorage.getItem(PROJECTS_KEY) ?? '[]',
-      );
-      const currentProject: Project = allProjects.find(
-        (project: Project) => project.id === id,
-      );
-
+      const { currentProject } = getProjectsFromLS(id);
       d(setProjectData({ id, data: currentProject?.data }));
     }
     setInitialized(true);

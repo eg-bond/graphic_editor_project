@@ -1,8 +1,9 @@
 import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PROJECTS_KEY } from '@/utils/constants.ts';
 import { swapArrayElements } from '@/utils/swapArrayElements.ts';
-import { RootState } from '@/redux/store.ts';
+import { addNewHistoryItemToLS } from '@/utils/addNewHistoryItemToLS';
+import { ProjectData } from '@/types/localStorageTypes';
+import { addNewHistoryItemToState } from './helpers';
 
 export interface LayerT {
   id: number;
@@ -19,33 +20,18 @@ export type HistoryItemT = {
   activeLayerIndex: number;
 };
 
-export interface HistorySliceStateT extends ProjectData {
+export interface HistorySliceStateT {
   projectId: string | null;
   maxHistoryLength: number;
-}
-
-interface ProjectData {
+  // ProjectData
   items: Array<HistoryItemT>;
   historyIdCount: number;
   activeItemIndex: number;
   layerIdCount: number;
 }
 
-export interface Project {
-  id: string;
-  name: string;
-  width: number;
-  height: number;
-  data?: ProjectData;
-}
-
-export interface HistoryItem {
-  kind: HistoryItemKinds;
-  layersList: Array<LayerT>;
-  activeLayerIndex: number;
-}
-
 const HISTORY_MAX_LENGTH = 20;
+const NEW_LAYER_NAME = 'Cлой ';
 
 const initialState: HistorySliceStateT = {
   projectId: null,
@@ -54,47 +40,6 @@ const initialState: HistorySliceStateT = {
   activeItemIndex: 0,
   maxHistoryLength: HISTORY_MAX_LENGTH,
   layerIdCount: 0,
-};
-
-const NEW_LAYER_NAME = 'Cлой ';
-
-const addNewHistoryItemToState = (
-  state: RootState['history'], payload: HistoryItem,
-) => {
-  // Manage history size
-  if (state.items.length >= state.maxHistoryLength) {
-    state.items.shift();
-  }
-  // Remove future history if we're not at the end
-  if (state.activeItemIndex !== state.items.length - 1) {
-    state.items = state.items.slice(0, state.activeItemIndex + 1);
-  }
-  // Add new history item
-  const newItem: HistoryItemT = {
-    id: state.historyIdCount,
-    kind: payload.kind,
-    layersList: payload.layersList,
-    activeLayerIndex: payload.activeLayerIndex,
-  };
-  state.historyIdCount++;
-  state.items.push(newItem);
-  state.activeItemIndex = state.items.length - 1;
-};
-
-const addNewHistoryItemToLS = (state: RootState['history']) => {
-  const allProjects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
-
-  const currentProject: Project = allProjects.find(
-    (project: Project) => project.id === state.projectId,
-  );
-  currentProject.data = {
-    items: state.items,
-    historyIdCount: state.historyIdCount,
-    activeItemIndex: state.activeItemIndex,
-    layerIdCount: state.layerIdCount,
-  };
-
-  localStorage.setItem(PROJECTS_KEY, JSON.stringify(allProjects));
 };
 
 export const historySlice = createSlice({
@@ -205,21 +150,16 @@ export const historySlice = createSlice({
       index: number; name: string;
     }>) => {
       const i = action.payload.index;
-      state.items[state.activeItemIndex].layersList[i].name = action.payload.name;
+      const activeElement = state.items[state.activeItemIndex];
+      const layers = [...(activeElement?.layersList ?? [])];
+      layers[i] = { ...layers[i], name: action.payload.name };
 
-      const allProjects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
-
-      const currentProject: Project = allProjects.find(
-        (project: Project) => project.id === state.projectId,
-      );
-      currentProject.data = {
-        items: state.items,
-        historyIdCount: state.historyIdCount,
-        activeItemIndex: state.activeItemIndex,
-        layerIdCount: state.layerIdCount,
-      };
-
-      localStorage.setItem(PROJECTS_KEY, JSON.stringify(allProjects));
+      addNewHistoryItemToState(state, {
+        kind: HistoryItemKinds.Rename,
+        layersList: layers,
+        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+      });
+      addNewHistoryItemToLS(state);
     },
     moveLayerUp: (state, action: PayloadAction<{
       index: number;
