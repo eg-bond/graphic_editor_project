@@ -5,22 +5,16 @@ import { useBrush } from './useBrush';
 import { LayerT } from '@/redux/history/historySlice';
 
 export interface ICanvasProps {
-  // canvasRefs: React.MutableRefObject<{
-  //   [key: string]: HTMLCanvasElement | null;
-  // }>;
-  // contextRefs: React.MutableRefObject<{
-  //   [key: string]: CanvasRenderingContext2D;
-  // }>;
-  layersList: LayerT[];
+  localLayers: LayerT[];
+  setLocalLayers: React.Dispatch<React.SetStateAction<LayerT[]>>;
   activeLayerIndex: number;
   width: number;
   height: number;
 }
 
 export const Canvas: FC<ICanvasProps> = ({
-  // canvasRefs,
-  // contextRefs,
-  layersList,
+  localLayers,
+  setLocalLayers,
   activeLayerIndex,
   width,
   height,
@@ -32,46 +26,60 @@ export const Canvas: FC<ICanvasProps> = ({
     [key: string]: CanvasRenderingContext2D;
   }>({});
 
+  const {
+    saveCanvasData,
+    loadCanvasData,
+    clearCanvas,
+  } = useSaveAndLoad(canvasRefs, contextRefs, localLayers, setLocalLayers, activeLayerIndex);
+
+  const {
+    startDrawing,
+    draw,
+    stopDrawing,
+  } = useBrush(contextRefs, activeLayerIndex, saveCanvasData);
+
   useEffect(() => {
     Object.keys(canvasRefs.current).forEach((i) => {
       const canvas = canvasRefs.current[i];
-
       if (!canvas) return;
 
       canvas.width = width;
       canvas.height = height;
+    });
+  }, [width, height]);
+
+  useEffect(() => {
+    Object.keys(canvasRefs.current).forEach((i) => {
+      const canvas = canvasRefs.current[i];
+      if (!canvas) return;
 
       const context = canvas.getContext('2d');
-
       if (!context) return;
 
       context.lineCap = 'round';
       context.strokeStyle = 'black';
       context.lineWidth = 5;
       contextRefs.current[i] = context;
+
+      loadCanvasData();
     });
-    // console.log('ue');
-    // console.log(contextRefs.current);
-  }, [width, height, layersList]);
+  }, [localLayers]);
+
+  // console.log('localLayers');
+  // console.log(localLayers);
 
   const showData = () => {
-    console.log(canvasRefs.current[0].toDataURL('image/png'));
-    console.log(canvasRefs.current[1].toDataURL('image/png'));
-    console.log(canvasRefs.current[2].toDataURL('image/png'));
-    console.log(canvasRefs.current[3].toDataURL('image/png'));
+    // console.log(canvasRefs.current[0].toDataURL('image/png'));
+    // console.log(canvasRefs.current[1].toDataURL('image/png'));
+    // console.log(canvasRefs.current[2].toDataURL('image/png'));
+    // console.log(canvasRefs.current[3].toDataURL('image/png'));
+
+    console.log(localLayers[0].canvasData);
   };
 
-  const {
-    startDrawing,
-    draw,
-    stopDrawing,
-  } = useBrush(contextRefs, activeLayerIndex);
-
-  const {
-    saveCanvasData,
-    loadCanvasData,
-    clearCanvas,
-  } = useSaveAndLoad(canvasRefs, contextRefs, layersList, activeLayerIndex);
+  // useEffect(() => {
+  //   loadCanvasData();
+  // }, []);
 
   const setToDraw = () => {
     if (!contextRefs.current[activeLayerIndex]) return;
@@ -96,18 +104,20 @@ export const Canvas: FC<ICanvasProps> = ({
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       >
-        {layersList.map((layer, i) => (
-          <canvas
-            key={layer.id}
-            className="absolute top-0 left-0"
-            style={{
-              width: `${width}px`,
-              height: `${height}px`,
-            }}
-            ref={el => canvasRefs.current[i] = el}
-          >
-          </canvas>
-        ))}
+        {localLayers.map((layer, i) => {
+          return (
+            <canvas
+              key={layer.id}
+              className="absolute top-0 left-0"
+              style={{
+                width: `${width}px`,
+                height: `${height}px`,
+              }}
+              ref={el => canvasRefs.current[i] = el}
+            >
+            </canvas>
+          );
+        })}
       </div>
       <div>
         <Button onClick={setToDraw}>

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export const useBrush = (
   contextRefs: React.MutableRefObject<{
     [key: string]: CanvasRenderingContext2D;
   }>,
   activeLayerIndex: number,
+  saveCanvasData: () => void,
 ) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const i = activeLayerIndex;
@@ -34,6 +35,7 @@ export const useBrush = (
   const stopDrawing = () => {
     if (!contextRefs.current[i]) return;
     contextRefs.current[i].closePath();
+    if (isDrawing) saveCanvasData();
     setIsDrawing(false);
   };
 

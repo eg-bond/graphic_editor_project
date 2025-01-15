@@ -9,12 +9,14 @@ export const useSaveAndLoad = (
   contextRefs: React.MutableRefObject<{
     [key: string]: CanvasRenderingContext2D;
   }>,
-  layersList: LayerT[],
+  localLayers: LayerT[],
+  setLocalLayers: React.Dispatch<React.SetStateAction<LayerT[]>>,
   activeLayerIndex: number,
   // setLayersState: React.Dispatch<React.SetStateAction<LayerT[]>>,
   // composeLayers: () => HTMLCanvasElement | undefined,
 ) => {
   const d = useAppDispatch();
+
   const saveCanvasData = (): void => {
     const canvas = canvasRefs.current[activeLayerIndex];
     if (!canvas) return;
@@ -23,6 +25,14 @@ export const useSaveAndLoad = (
     const canvasData = canvas.toDataURL('image/png');
 
     d(addDrawing({ canvasData }));
+
+    setLocalLayers((prev) => {
+      const newLayers = [...prev];
+      newLayers[activeLayerIndex] = {
+        ...newLayers[activeLayerIndex], canvasData,
+      };
+      return newLayers;
+    });
   };
 
   const loadCanvasData = (): void => {
@@ -32,7 +42,7 @@ export const useSaveAndLoad = (
       if (!canvas || !context) return;
 
       // Get the saved data from local layers state
-      const savedData = layersList[+index].canvasData;
+      const savedData = localLayers[+index].canvasData;
 
       // Create a new image with the saved data
       const image = new Image();
