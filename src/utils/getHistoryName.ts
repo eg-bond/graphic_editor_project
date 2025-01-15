@@ -14,6 +14,8 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Видимость слоя';
     case HistoryItemKinds.Order:
       return 'Порядок слоев';
+    case HistoryItemKinds.Brush:
+      return 'Кисть';
     default:
       return '';
   }

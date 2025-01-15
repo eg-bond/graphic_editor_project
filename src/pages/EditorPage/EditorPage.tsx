@@ -2,7 +2,7 @@ import { Navigation } from '@/components/Navigation';
 import { LayersMenu } from '@/components/LayersMenu';
 import { HistoryMenu } from '@/components/HistoryMenu';
 import { useLocation, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
 import { Project, setProjectData } from '@/redux/history';
 import { PROJECTS_KEY } from '@/utils/constants.ts';
@@ -13,6 +13,8 @@ export function EditorPage() {
   const project = location.state;
   const { id } = useParams();
   const d = useAppDispatch();
+  // Redux state initialization
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -25,9 +27,10 @@ export function EditorPage() {
 
       d(setProjectData({ id, data: currentProject?.data }));
     }
+    setInitialized(true);
   }, [d, id]);
 
-  if (!project) {
+  if (!project || !initialized) {
     return <p className="text-center mt-32">Проект не найден</p>;
   }
 

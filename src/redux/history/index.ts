@@ -14,6 +14,7 @@ export const {
   moveLayerUp,
   moveLayerDown,
   setStateFromHistory,
+  addDrawing,
 } = historySlice.actions;
 
 export type { Project } from './historySlice.ts';

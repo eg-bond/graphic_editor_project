@@ -1,46 +1,36 @@
 import { Button } from 'antd';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useSaveAndLoad } from './useSaveAndLoad';
 import { useBrush } from './useBrush';
+import { LayerT } from '@/redux/history/historySlice';
 
-export interface Layer {
-  id: number;
-  name: string;
-  canvasData: string;
-}
-
-export interface CanvasState {
-  layers: Layer[];
+export interface ICanvasProps {
+  // canvasRefs: React.MutableRefObject<{
+  //   [key: string]: HTMLCanvasElement | null;
+  // }>;
+  // contextRefs: React.MutableRefObject<{
+  //   [key: string]: CanvasRenderingContext2D;
+  // }>;
+  layersList: LayerT[];
   activeLayerIndex: number;
-}
-
-interface CanvasProps {
   width: number;
   height: number;
 }
 
-const LAYERS = [
-  { id: 0, name: 'слой 0', canvasData: '' },
-  { id: 1, name: 'слой 1', canvasData: '' },
-  { id: 2, name: 'слой 2', canvasData: '' },
-];
-const ACTIVE_LI = 0;
-
-export interface ICanvasContextRefs {
-  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-  contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>;
-}
-
-export const Canvas: FC<CanvasProps> = ({ width, height }) => {
+export const Canvas: FC<ICanvasProps> = ({
+  // canvasRefs,
+  // contextRefs,
+  layersList,
+  activeLayerIndex,
+  width,
+  height,
+}) => {
   const canvasRefs = useRef<{
     [key: string]: HTMLCanvasElement | null;
   }>({});
   const contextRefs = useRef<{
     [key: string]: CanvasRenderingContext2D;
   }>({});
-
-  const [layersState, setLayersState] = useState<Layer[]>(LAYERS);
-  const [activeLayerIndex, setActiveLayerIndex] = useState(ACTIVE_LI);
 
   useEffect(() => {
     Object.keys(canvasRefs.current).forEach((i) => {
@@ -60,13 +50,15 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
       context.lineWidth = 5;
       contextRefs.current[i] = context;
     });
-  }, [width, height]);
+    // console.log('ue');
+    // console.log(contextRefs.current);
+  }, [width, height, layersList]);
 
   const showData = () => {
-    console.log(layersState);
-    // console.log(canvasRefs.current[0].toDataURL('image/png'));
-    // console.log(canvasRefs.current[1].toDataURL('image/png'));
-    // console.log(canvasRefs.current[2].toDataURL('image/png'));
+    console.log(canvasRefs.current[0].toDataURL('image/png'));
+    console.log(canvasRefs.current[1].toDataURL('image/png'));
+    console.log(canvasRefs.current[2].toDataURL('image/png'));
+    console.log(canvasRefs.current[3].toDataURL('image/png'));
   };
 
   const {
@@ -79,9 +71,7 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
     saveCanvasData,
     loadCanvasData,
     clearCanvas,
-  } = useSaveAndLoad(
-    canvasRefs, contextRefs,
-    layersState, activeLayerIndex, setLayersState);
+  } = useSaveAndLoad(canvasRefs, contextRefs, layersList, activeLayerIndex);
 
   const setToDraw = () => {
     if (!contextRefs.current[activeLayerIndex]) return;
@@ -106,7 +96,7 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       >
-        {layersState.map(layer => (
+        {layersList.map((layer, i) => (
           <canvas
             key={layer.id}
             className="absolute top-0 left-0"
@@ -114,7 +104,7 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
               width: `${width}px`,
               height: `${height}px`,
             }}
-            ref={el => canvasRefs.current[layer.id] = el}
+            ref={el => canvasRefs.current[i] = el}
           >
           </canvas>
         ))}
@@ -132,9 +122,9 @@ export const Canvas: FC<CanvasProps> = ({ width, height }) => {
         <Button onClick={showData}>ShowData</Button>
       </div>
       <div className="layer-controls">
-        {layersState.map(layer => (
+        {layersList.map(layer => (
           <Button
-            onClick={() => setActiveLayerIndex(layer.id)}
+            // onClick={() => setActiveLayerIndex(layer.id)}
             key={layer.id}
           >
             {layer.name}

@@ -1,4 +1,6 @@
-import type { Layer } from '.';
+import { addDrawing } from '@/redux/history';
+import { LayerT } from '@/redux/history/historySlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 export const useSaveAndLoad = (
   canvasRefs: React.MutableRefObject<{
@@ -7,11 +9,12 @@ export const useSaveAndLoad = (
   contextRefs: React.MutableRefObject<{
     [key: string]: CanvasRenderingContext2D;
   }>,
-  layersState: Layer[],
+  layersList: LayerT[],
   activeLayerIndex: number,
-  setLayersState: React.Dispatch<React.SetStateAction<Layer[]>>,
+  // setLayersState: React.Dispatch<React.SetStateAction<LayerT[]>>,
   // composeLayers: () => HTMLCanvasElement | undefined,
 ) => {
+  const d = useAppDispatch();
   const saveCanvasData = (): void => {
     const canvas = canvasRefs.current[activeLayerIndex];
     if (!canvas) return;
@@ -19,20 +22,7 @@ export const useSaveAndLoad = (
     // Get the canvas data as a base64 string
     const canvasData = canvas.toDataURL('image/png');
 
-    // Save to local layers state
-    setLayersState((prevLayersState) => {
-      const updatedLayersState = [...prevLayersState];
-      updatedLayersState[activeLayerIndex].canvasData = canvasData;
-      return updatedLayersState;
-    });
-
-    // Save to localStorage
-    // try {
-    //   localStorage.setItem('savedCanvasData', canvasData);
-    //   console.log('Canvas data saved successfully');
-    // } catch (error) {
-    //   console.error('Error saving canvas data:', error);
-    // }
+    d(addDrawing({ canvasData }));
   };
 
   const loadCanvasData = (): void => {
@@ -41,15 +31,8 @@ export const useSaveAndLoad = (
       const context = contextRefs.current[index];
       if (!canvas || !context) return;
 
-      // Get the saved data from localStorage
-      // const savedData = localStorage.getItem('savedCanvasData');
-      // if (!savedData) {
-      //   console.log('No saved canvas data found');
-      //   return;
-      // }
-
       // Get the saved data from local layers state
-      const savedData = layersState[+index].canvasData;
+      const savedData = layersList[+index].canvasData;
 
       // Create a new image with the saved data
       const image = new Image();
