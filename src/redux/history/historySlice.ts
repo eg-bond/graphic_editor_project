@@ -24,7 +24,6 @@ export type HistoryItemT = {
 export interface HistorySliceStateT {
   projectId: string | null;
   maxHistoryLength: number;
-  // ProjectData
   items: Array<HistoryItemT>;
   historyIdCount: number;
   activeItemIndex: number;

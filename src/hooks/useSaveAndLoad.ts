@@ -17,7 +17,6 @@ export const useSaveAndLoad = (
   const saveCanvasData = (): void => {
     const canvas = canvasRefs.current[activeLayerIndex];
     if (!canvas) return;
-
     // Get the canvas data as a base64 string
     const canvasData = canvas.toDataURL('image/png');
 
@@ -29,10 +28,8 @@ export const useSaveAndLoad = (
       const canvas = canvasRefs.current[index];
       const context = contextRefs.current[index];
       if (!canvas || !context) return;
-
       // Get the saved data from local layers st ate
       const savedData = LayersList[+index].canvasData;
-
       // Create a new image with the saved data
       const image = new Image();
       image.onload = () => {
@@ -44,29 +41,6 @@ export const useSaveAndLoad = (
       image.src = savedData;
     });
   };
-
-  // Другой вариант функции loadCanvasData, по идее должен быть лучше
-  // чем тот, что выше
-  // const loadCanvasData = async (): Promise<void> => {
-  //   for (const index of Object.keys(canvasRefs.current)) {
-  //     const canvas = canvasRefs.current[index];
-  //     const context = contextRefs.current[index];
-  //     if (!canvas || !context) continue;
-
-  //     const savedData = localLayers[+index].canvasData;
-
-  //     // Create a blob from the base64 data
-  //     const blob = await fetch(savedData).then(res => res.blob());
-  //     // Create bitmap (hardware accelerated)
-  //     const bitmap = await createImageBitmap(blob);
-
-  //     context.clearRect(0, 0, canvas.width, canvas.height);
-  //     context.drawImage(bitmap, 0, 0);
-
-  //     // Optional: release the bitmap when done
-  //     bitmap.close();
-  //   }
-  // };
 
   const clearCanvas = (): void => {
     Object.keys(canvasRefs.current).forEach((index) => {
@@ -80,3 +54,27 @@ export const useSaveAndLoad = (
 
   return { saveCanvasData, loadCanvasData, clearCanvas };
 };
+
+// Другой вариант функции loadCanvasData, по идее должен быть лучше
+// в плане перфоманса чем тот, что выше
+
+// const loadCanvasData = async (): Promise<void> => {
+//   for (const index of Object.keys(canvasRefs.current)) {
+//     const canvas = canvasRefs.current[index];
+//     const context = contextRefs.current[index];
+//     if (!canvas || !context) continue;
+
+//     const savedData = localLayers[+index].canvasData;
+
+//     // Create a blob from the base64 data
+//     const blob = await fetch(savedData).then(res => res.blob());
+//     // Create bitmap (hardware accelerated)
+//     const bitmap = await createImageBitmap(blob);
+
+//     context.clearRect(0, 0, canvas.width, canvas.height);
+//     context.drawImage(bitmap, 0, 0);
+
+//     // Optional: release the bitmap when done
+//     bitmap.close();
+//   }
+// };

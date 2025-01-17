@@ -73,6 +73,7 @@ export default tseslint.config(
           ignoreStrings: false,
           ignoreTemplateLiterals: false,
           ignoreRegExpLiterals: true,
+          ignoreComments: true,
         },
       ],
       // Line breaks ----------------------------------------------------

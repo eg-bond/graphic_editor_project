@@ -5,6 +5,8 @@ export const useBrush = (
   saveCanvasData: () => void,
 ) => {
   const [isDrawing, setIsDrawing] = useState(false);
+  // console.log('useBrush');
+  // console.log(canvasContext);
 
   const startDrawing = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!canvasContext) return;

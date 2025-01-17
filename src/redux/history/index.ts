@@ -17,6 +17,4 @@ export const {
   addDrawing,
 } = historySlice.actions;
 
-export type { Project } from './historySlice.ts';
-
 export * from './selectors.ts';
