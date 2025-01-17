@@ -1,2 +1,2 @@
-import { CanvasContainer } from './CanvasContainer';
-export { CanvasContainer as Canvas };
+import { Canvas } from './Canvas';
+export { Canvas };

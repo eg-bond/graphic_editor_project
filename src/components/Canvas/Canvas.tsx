@@ -1,32 +1,35 @@
 import { Button } from 'antd';
 import { FC, useEffect, useRef } from 'react';
-import { useSaveAndLoad } from './useSaveAndLoad';
-import { useBrush } from './useBrush';
-import { LayerT } from '@/redux/history/historySlice';
+import { useSaveAndLoad } from '../../hooks/useSaveAndLoad';
+import { useBrush } from '../../hooks/useBrush';
 import { useAppSelector } from '@/redux/hooks';
 
 export interface ICanvasProps {
-  localLayers: LayerT[];
-  activeLayerIndex: number;
   width: number;
   height: number;
 }
 
-export const Canvas: FC<ICanvasProps> = ({
-  localLayers,
-  activeLayerIndex,
-  width,
-  height,
-}) => {
+export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
+  const layersList = useAppSelector(
+    state => state.history.items?.[state.history.activeItemIndex]?.layersList,
+  ) ?? [];
+  const activeLayerIndex = useAppSelector(
+    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
+  );
+  const toolColor = useAppSelector(state => state.tools.color);
+
+  // Реф, хранящий ссылки на отрендеренные canvas элементы
   const canvasRefs = useRef<{
     [key: string]: HTMLCanvasElement | null;
   }>({});
+  // Реф, хранящий ссылки на 2d контексты этих canvas элементов (нужен ли???)
   const contextRefs = useRef<{
     [key: string]: CanvasRenderingContext2D;
   }>({});
 
-  const toolColor = useAppSelector(state => state.tools.color);
-
+  // эффект, который сохраняет контексты canvas элементов в contextRefs и
+  // загружающий данные из redux в canvas элементы при каждом изменении layersList
+  // тут точно нужно что-то менять, чтобы был нормальный performance
   useEffect(() => {
     Object.keys(canvasRefs.current).forEach((i) => {
       const canvas = canvasRefs.current[i];
@@ -34,45 +37,43 @@ export const Canvas: FC<ICanvasProps> = ({
 
       const context = canvas.getContext('2d');
       if (!context) return;
-      // context.lineCap = 'round';
+
+      // lineWidth наверное должен устанавливаться внутри useBrush и т.д.??
       context.lineWidth = 5;
       contextRefs.current[i] = context;
-
+      // функция загрузки данных точно не должна отрабатывать при любом изменении layersList
       loadCanvasData();
     });
-  }, [localLayers]);
+  }, [layersList]);
 
-  // changes color of canvas contexsts -----------------
-  // const changeColor = (color: string) => {
-  //   Object.keys(contextRefs.current).forEach((i) => {
-  //     contextRefs.current[i].strokeStyle = color;
-  //   });
-  // };
   useEffect(() => {
     Object.keys(contextRefs.current).forEach((i) => {
       contextRefs.current[i].strokeStyle = toolColor;
     });
   }, [toolColor]);
 
-  // context of canvas element, linked to activeLayerIndex
-  const canvasContext = contextRefs.current[activeLayerIndex];
-
+  // хук, отвечающий за сохранение и загрузку данных из canvas элементов в redux и наоборот
   const {
     saveCanvasData,
     loadCanvasData,
     clearCanvas,
-  } = useSaveAndLoad(canvasRefs, contextRefs, localLayers, activeLayerIndex);
+  } = useSaveAndLoad(canvasRefs, contextRefs, layersList, activeLayerIndex);
 
+  // контекст конкретного canvas элемента активного слоя,
+  const canvasContext = contextRefs.current[activeLayerIndex];
+
+  // хук, реализующий функционал инструмента "Кисть"
   const {
     startDrawing,
     draw,
     stopDrawing,
   } = useBrush(canvasContext, saveCanvasData);
 
-  const setToDraw = () => {
-    if (!contextRefs.current[activeLayerIndex]) return;
-    contextRefs.current[activeLayerIndex].globalCompositeOperation = 'source-over';
-  };
+  // Будет необходимо при смене инструментов? Перенести в useBrush?
+  // const setToDraw = () => {
+  //   if (!contextRefs.current[activeLayerIndex]) return;
+  //   contextRefs.current[activeLayerIndex].globalCompositeOperation = 'source-over';
+  // };
 
   // const setToErase = () => {
   //   if (!contextRefs.current[activeLayerIndex]) return;
@@ -92,7 +93,7 @@ export const Canvas: FC<ICanvasProps> = ({
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       >
-        {localLayers.map((layer, i) => (
+        {layersList.map((layer, i) => (
           <canvas
             key={layer.id}
             className="absolute top-0 left-0"
@@ -112,9 +113,10 @@ export const Canvas: FC<ICanvasProps> = ({
 
       </div>
       <div>
-        <Button onClick={setToDraw}>
+        {/* Временные кнопки для удобства */}
+        {/* <Button onClick={setToDraw}>
           Draw
-        </Button>
+        </Button> */}
         {/* <Button onClick={setToErase}>
           Erase
         </Button> */}

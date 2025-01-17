@@ -9,7 +9,7 @@ export const useSaveAndLoad = (
   contextRefs: React.MutableRefObject<{
     [key: string]: CanvasRenderingContext2D;
   }>,
-  localLayers: LayerT[],
+  LayersList: LayerT[],
   activeLayerIndex: number,
 ) => {
   const d = useAppDispatch();
@@ -22,7 +22,6 @@ export const useSaveAndLoad = (
     const canvasData = canvas.toDataURL('image/png');
 
     d(addDrawing({ canvasData }));
-    // d(updateLocalLayers({ index: activeLayerIndex, canvasData }));
   };
 
   const loadCanvasData = (): void => {
@@ -32,7 +31,7 @@ export const useSaveAndLoad = (
       if (!canvas || !context) return;
 
       // Get the saved data from local layers st ate
-      const savedData = localLayers[+index].canvasData;
+      const savedData = LayersList[+index].canvasData;
 
       // Create a new image with the saved data
       const image = new Image();
@@ -46,6 +45,8 @@ export const useSaveAndLoad = (
     });
   };
 
+  // Другой вариант функции loadCanvasData, по идее должен быть лучше
+  // чем тот, что выше
   // const loadCanvasData = async (): Promise<void> => {
   //   for (const index of Object.keys(canvasRefs.current)) {
   //     const canvas = canvasRefs.current[index];
