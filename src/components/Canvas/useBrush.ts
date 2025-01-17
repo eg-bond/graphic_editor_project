@@ -1,42 +1,40 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export const useBrush = (
-  contextRefs: React.MutableRefObject<{
-    [key: string]: CanvasRenderingContext2D;
-  }>,
-  activeLayerIndex: number,
+  canvasContext: CanvasRenderingContext2D,
   saveCanvasData: () => void,
 ) => {
   const [isDrawing, setIsDrawing] = useState(false);
-  const i = activeLayerIndex;
 
-  const startDrawing = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const startDrawing = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!canvasContext) return;
+
     const { offsetX, offsetY } = event.nativeEvent;
-    if (!contextRefs.current) return;
-
-    contextRefs.current[i].beginPath();
-    contextRefs.current[i].moveTo(offsetX, offsetY);
-    contextRefs.current[i].lineTo(offsetX, offsetY);
-    contextRefs.current[i].stroke();
-
+    canvasContext.beginPath();
+    canvasContext.moveTo(offsetX, offsetY);
+    canvasContext.lineTo(offsetX, offsetY);
+    canvasContext.stroke();
     setIsDrawing(true);
     event.nativeEvent.preventDefault();
-  };
+  }, [canvasContext]);
 
   const draw = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!isDrawing || !contextRefs.current[i]) return;
+    if (!isDrawing || !canvasContext) return;
 
     const { offsetX, offsetY } = event.nativeEvent;
-    contextRefs.current[i].lineTo(offsetX, offsetY);
-    contextRefs.current[i].stroke();
+    canvasContext.lineTo(offsetX, offsetY);
+    canvasContext.stroke();
     event.nativeEvent.preventDefault();
   };
 
   const stopDrawing = () => {
-    if (!contextRefs.current[i]) return;
-    contextRefs.current[i].closePath();
-    if (isDrawing) saveCanvasData();
-    setIsDrawing(false);
+    if (!canvasContext) return;
+    canvasContext.closePath();
+
+    if (isDrawing) {
+      saveCanvasData();
+      setIsDrawing(false);
+    }
   };
 
   return { startDrawing, draw, stopDrawing };

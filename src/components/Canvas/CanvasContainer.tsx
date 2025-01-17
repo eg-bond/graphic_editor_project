@@ -1,7 +1,6 @@
-import { FC, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { FC } from 'react';
+import { useAppSelector } from '@/redux/hooks';
 import { Canvas } from './Canvas';
-import { setInitialCanvasLayers } from '@/redux/canvas';
 
 export interface Layer {
   id: number;
@@ -25,20 +24,12 @@ export interface ICanvasContextRefs {
 }
 
 export const CanvasContainer: FC<CanvasProps> = ({ width, height }) => {
-  const d = useAppDispatch();
   const layersList = useAppSelector(
     state => state.history.items?.[state.history.activeItemIndex]?.layersList,
   ) ?? [];
   const activeLayerIndex = useAppSelector(
     state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
   );
-  // const canvasLayers = useAppSelector(
-  //   state => state.canvas.canvasLayers,
-  // ) ?? layersList;
-
-  useEffect(() => {
-    d(setInitialCanvasLayers({ layersList }));
-  }, []);
 
   // const [localLayers, setLocalLayers] = useState(layersList);
 

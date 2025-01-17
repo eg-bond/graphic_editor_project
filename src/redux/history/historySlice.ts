@@ -4,6 +4,7 @@ import { swapArrayElements } from '@/utils/swapArrayElements.ts';
 import { addNewHistoryItemToLS } from '@/utils/addNewHistoryItemToLS';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
+import { EMPTY_CANVAS_DATA } from '@/utils/constants';
 
 export interface LayerT {
   id: number;
@@ -79,7 +80,7 @@ export const historySlice = createSlice({
         name: NEW_LAYER_NAME + String(state.layerIdCount),
         opacity: 100,
         visible: true,
-        canvasData: '',
+        canvasData: EMPTY_CANVAS_DATA,
       };
 
       const layers = [...(state.items[state.activeItemIndex]?.layersList ?? [])];
@@ -88,7 +89,7 @@ export const historySlice = createSlice({
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Add,
         layersList: layers,
-        activeLayerIndex: layers.length,
+        activeLayerIndex: layers.length - 1,
       });
       addNewHistoryItemToLS(state);
     },
