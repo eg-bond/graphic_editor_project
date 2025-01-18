@@ -4,6 +4,7 @@ import {
   EyeOutlined,
   FileAddOutlined,
   FontSizeOutlined,
+  HighlightOutlined,
   SmallDashOutlined,
   VerticalAlignMiddleOutlined,
 } from '@ant-design/icons';
@@ -26,6 +27,8 @@ export function ActionIcon({ kind }: IActionIconProps) {
       return <EyeOutlined />;
     case HistoryItemKinds.Order:
       return <VerticalAlignMiddleOutlined />;
+    case HistoryItemKinds.Brush:
+      return <HighlightOutlined />;
     default:
       return <FileAddOutlined />;
   }

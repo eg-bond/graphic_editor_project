@@ -23,7 +23,7 @@ export function OpacitySlider() {
   };
 
   useEffect(() => {
-    setValue(activeLayer?.opacity || InputRanges.MAX);
+    setValue(activeLayer?.opacity ?? InputRanges.MAX);
   }, [activeLayer]);
 
   return (

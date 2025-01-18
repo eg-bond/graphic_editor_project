@@ -9,7 +9,7 @@ import html from '@html-eslint/eslint-plugin';
 import parser from '@html-eslint/parser';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage'] },
   // Config for HTML files
   {
     ...html.configs['flat/recommended'],
@@ -73,6 +73,7 @@ export default tseslint.config(
           ignoreStrings: false,
           ignoreTemplateLiterals: false,
           ignoreRegExpLiterals: true,
+          ignoreComments: true,
         },
       ],
       // Line breaks ----------------------------------------------------
