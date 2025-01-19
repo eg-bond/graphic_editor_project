@@ -1,50 +1,59 @@
 import { Navigation } from '@/components/Navigation';
 import { LayersMenu } from '@/components/LayersMenu';
 import { HistoryMenu } from '@/components/HistoryMenu';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
+import { setProject } from '@/redux/project/projectSlice';
 import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
 import { getProjectsFromLS } from '@/utils/getProjectsFromLS';
 import { Tools } from '@/components/Tools';
+import { CanvasResolutionButton } from '@/components/CanvasResolution';
 
 export function EditorPage() {
-  const location = useLocation();
-  const project = location.state;
-  const { id } = useParams();
-  const d = useAppDispatch();
-  // Redux state initialization
+  const { id } = useParams(); // Получаем id проекта из URL
+  const dispatch = useAppDispatch();
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (id) {
       const { currentProject } = getProjectsFromLS(id);
-      d(setProjectData({ id, data: currentProject?.data }));
+
+      if (currentProject) {
+        // Загружаем проект в projectSlice
+        dispatch(setProject(currentProject));
+
+        // Загружаем данные для истории (если необходимо)
+        dispatch(setProjectData({ id, data: currentProject?.data }));
+      } else {
+        console.error('Проект не найден!');
+      }
     }
     setInitialized(true);
-  }, [d, id]);
+  }, [dispatch, id]);
 
-  if (!project || !initialized) {
-    return <p className="text-center mt-32">Проект не найден</p>;
+  if (!initialized) {
+    return <p className="text-center mt-32">Загрузка...</p>;
   }
 
   return (
-    <div className="h-screen w-full flex flex-col">
+    <div className="h-screen w-full flex flex-col ">
       {/* Top section */}
-      <div className="h-[5vh] w-full">
+      <div className="h-[5vh] w-full ">
         <Navigation />
       </div>
 
       {/* Main content area with right sidebar */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 ">
         <div className="flex-1 bg-gray-200 relative">
           <div>
             <Tools />
           </div>
-          <div className="h-[95vh] bg-blue-300 flex justify-center items-center">
-            <Canvas width={project.width} height={project.height} />
+          <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto">
+            <Canvas />
           </div>
+          <CanvasResolutionButton />
         </div>
 
         {/* Right vertical menu */}
