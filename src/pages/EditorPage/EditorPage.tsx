@@ -50,8 +50,11 @@ export function EditorPage() {
           <div>
             <Tools />
           </div>
-          <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto">
-            <Canvas />
+          <div className="h-[95vh] bg-blue-300 flex justify-center items-start overflow-auto">
+            <div className="m-auto">
+              <Canvas />
+            </div>
+
           </div>
           <CanvasResolutionButton />
         </div>
