@@ -3,18 +3,21 @@ import { historySlice } from './historySlice';
 export const historyReducer = historySlice.reducer;
 
 export const {
-  activateHistoryItem,
   setProjectData,
+  activateHistoryItem,
   addLayer,
+  removeLayer,
   activateLayer,
   changeOpacity,
   changeLayerVisibility,
   changeLayerName,
-  removeLayer,
   moveLayerUp,
   moveLayerDown,
-  setStateFromHistory,
   addDrawing,
+  resizeCanvas,
+  setStateFromHistory,
 } = historySlice.actions;
 
 export * from './selectors.ts';
+
+export default historySlice.reducer;
