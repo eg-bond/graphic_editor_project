@@ -5,12 +5,14 @@ import {
   ProjectFormData,
 } from '@/components/CreateProjectModal';
 import { Form } from 'antd';
-import { PROJECTS_KEY } from '@/utils/constants.ts';
 import { getUid } from '@/utils/getUid.ts';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/redux/hooks';
+import { setProject, saveToLocalStorage } from '@/redux/project/projectSlice';
 
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch(); // Подключаем диспетчер Redux
   const [form] = Form.useForm();
   const {
     open,
@@ -18,25 +20,34 @@ const CreateProjectButton1: FC = () => {
     onClose,
   } = useModal();
 
-  const handleSubmit = useCallback((values: Omit<ProjectFormData, 'id'>) => {
-    const projects = JSON.parse(localStorage.getItem(PROJECTS_KEY) ?? '[]');
+  const handleSubmit = useCallback(
+    (values: Omit<ProjectFormData, 'id'>) => {
+      const id = getUid();
+      const newProject = {
+        id,
+        height: +values.height,
+        width: +values.width,
+        name: values.name,
+        data: {
+          items: [],
+          historyIdCount: 0,
+          activeItemIndex: 0,
+          layerIdCount: 0,
+        },
+      };
 
-    const id = getUid();
-    const newProject = {
-      id,
-      height: +values.height,
-      width: +values.width,
-      name: values.name,
-    };
-    const newProjects = [newProject, ...projects];
+      // Сохраняем проект в Redux
+      dispatch(setProject(newProject));
 
-    localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
+      // Сохраняем проект в LocalStorage
+      dispatch(saveToLocalStorage());
 
-    form.resetFields();
-    onClose();
-    navigate(`/projects/${id}`, { state: newProject });
-  },
-  [form, onClose, navigate],
+      // Сбрасываем форму, закрываем модал и переходим к редактору
+      form.resetFields();
+      onClose();
+      navigate(`/projects/${id}`, { state: newProject });
+    },
+    [dispatch, form, onClose, navigate],
   );
 
   return (

@@ -68,7 +68,7 @@ export const historySlice = createSlice({
       state.activeItemIndex = action.payload.index;
     },
     setStateFromHistory: (state, action: PayloadAction<{
-      layersList: Array<LayerT>;
+      layersList: LayerT[];
     }>) => {
       state.items[state.activeItemIndex].layersList = action.payload.layersList;
     },
@@ -223,6 +223,34 @@ export const historySlice = createSlice({
         activeLayerIndex: index ?? -1,
       });
       addNewHistoryItemToLS(state);
+    },
+    resizeCanvas: (state, action: PayloadAction<{
+      width: number; height: number;
+    }>) => {
+      const { width, height } = action.payload;
+
+      const activeItem = state.items[state.activeItemIndex];
+      if (activeItem) {
+        activeItem.layersList = activeItem.layersList.map((layer) => {
+          const tempCanvas = document.createElement('canvas');
+          const tempContext = tempCanvas.getContext('2d');
+
+          tempCanvas.width = width;
+          tempCanvas.height = height;
+
+          const image = new Image();
+          image.src = layer.canvasData;
+
+          if (tempContext) {
+            tempContext.drawImage(image, 0, 0, width, height);
+            return {
+              ...layer,
+              canvasData: tempCanvas.toDataURL(),
+            };
+          }
+          return layer;
+        });
+      }
     },
   },
 });

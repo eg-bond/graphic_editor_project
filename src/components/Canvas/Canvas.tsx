@@ -5,12 +5,10 @@ import { useBrush } from '../../hooks/useBrush';
 import { useAppSelector } from '@/redux/hooks';
 import { debounce } from '@/utils/debounce';
 
-export interface ICanvasProps {
-  width: number;
-  height: number;
-}
+export const Canvas: FC = () => {
+  // Получаем ширину и высоту из Redux
+  const { width, height } = useAppSelector(state => state.project);
 
-export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
   const layersList = useAppSelector(
     state => state.history.items?.[state.history.activeItemIndex]?.layersList,
   ) ?? [];
@@ -23,7 +21,7 @@ export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
   const canvasRefs = useRef<{
     [key: string]: HTMLCanvasElement | null;
   }>({});
-  // Реф, хранящий ссылки на 2d контексты этих canvas элементов (нужен ли???)
+  // Реф, хранящий ссылки на 2d контексты этих canvas элементов
   const contextRefs = useRef<{
     [key: string]: CanvasRenderingContext2D;
   }>({});
@@ -46,8 +44,7 @@ export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
         ref={el => canvasRefs.current[i] = el}
       />
     )),
-  [layersList, width, height],
-  );
+  [layersList, width, height]);
 
   // хук, отвечающий за сохранение и загрузку данных из canvas элементов в redux и наоборот
   const {
@@ -58,7 +55,6 @@ export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
 
   // эффект, который сохраняет контексты canvas элементов в contextRefs и
   // загружающий данные из redux в canvas элементы при каждом изменении layersList
-  // тут точно нужно что-то менять, чтобы был нормальный performance
   useEffect(() => {
     Object.keys(canvasRefs.current).forEach((i) => {
       const canvas = canvasRefs.current[i];
@@ -81,7 +77,6 @@ export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
   );
   // Effect for loading canvas data
   useEffect(() => {
-    // функция загрузки данных точно не должна отрабатывать при любом изменении layersList
     if (layersList.length > 0) {
       debouncedLoadCanvasData();
     }
@@ -95,11 +90,7 @@ export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
     });
   }, [toolColor]);
 
-  // контекст конкретного canvas элемента активного слоя,
-  // BUG: когда слоев становится слишком много - возвращает undefined и кисть не работает
-  // видимо из-за того что contextRefs не успевает обновиться.
-  // можно использовать useState вместо useRef, тогда наверное этой проблемы не будет,
-  // но это скорее всего убьет перфоманс еще сильнее
+  // контекст конкретного canvas элемента активного слоя
   const getActiveContext = useCallback(() => {
     return contextRefs.current[activeLayerIndex];
   }, [activeLayerIndex]);
@@ -110,17 +101,16 @@ export const Canvas: FC<ICanvasProps> = ({ width, height }) => {
     draw,
     stopDrawing,
   } = useBrush(getActiveContext(), saveCanvasData);
-  // ...
-  // Другие инструменты наверное также хуками добавлять и включать конкретный
-  // инструмент при нажатии на соответствующую кнопку в компоненте Tools
 
   return (
-    <div>
+    <div className="mt-20">
       <div
         className=" relative border border-black bg-white mx-auto"
         style={{
           width: `${width}px`,
           height: `${height}px`,
+          margin: '1rem',
+
         }}
         onMouseDown={startDrawing}
         onMouseMove={draw}
