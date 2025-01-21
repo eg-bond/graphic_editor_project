@@ -30,7 +30,7 @@ export interface HistorySliceStateT {
   layerIdCount: number;
 }
 
-const HISTORY_MAX_LENGTH = 20;
+const HISTORY_MAX_LENGTH = 10;
 const NEW_LAYER_NAME = 'Cлой ';
 
 const initialState: HistorySliceStateT = {

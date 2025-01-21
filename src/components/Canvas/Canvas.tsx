@@ -80,7 +80,7 @@ export const Canvas: FC = () => {
 
   // Debounce the load canvas data function
   const debouncedLoadCanvasData = useMemo(
-    () => debounce(() => loadCanvasData(), 100),
+    () => debounce(() => loadCanvasData(), 200),
     [loadCanvasData],
   );
   // Effect for loading canvas data
