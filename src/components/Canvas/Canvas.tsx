@@ -129,7 +129,7 @@ export const Canvas: FC = () => {
           style={{
             width,
             height,
-            zIndex: 150,
+            zIndex: 100 - activeLayerIndex,
           }}
           width={width}
           height={height}

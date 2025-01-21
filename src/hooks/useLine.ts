@@ -41,7 +41,10 @@ export const useLine = (
     setIsDrawing(false);
     setStartPoint(null);
     setCurrentPoint(null);
-  }, [ctx, currentPoint, isDrawing, saveCanvasData, startPoint]);
+
+    if (!previewCtx) return;
+    previewCtx.clearRect(0, 0, 10000, 10000);
+  }, [ctx, currentPoint, isDrawing, saveCanvasData, startPoint, previewCtx]);
 
   useEffect(() => {
     if (!isDrawing || !startPoint || !currentPoint || !previewCtx) return;

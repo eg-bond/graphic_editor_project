@@ -11,31 +11,44 @@ export const useTool = (
   const tool = useAppSelector(state => state.tools.tool);
 
   const {
-    startDrawing: brushStartDrwing,
+    startDrawing: brushStartDrawing,
     draw: brushDraw,
     stopDrawing: brushStopDrawing,
   } = useBrush(canvasContext, saveCanvasData);
+
   const {
-    startDrawing,
-    draw,
-    stopDrawing,
+    startDrawing: lineStartDrawing,
+    draw: lineDraw,
+    stopDrawing: lineStopDrawing,
   } = useLine(canvasContext, saveCanvasData, previewCtx);
 
   if (tool === ToolKinds.Brush) {
-    return { startDrawing: brushStartDrwing, draw: brushDraw, stopDrawing: brushStopDrawing };
+    return {
+      startDrawing: brushStartDrawing,
+      draw: brushDraw,
+      stopDrawing: brushStopDrawing,
+    };
   }
 
   if (tool === ToolKinds.Line) {
-    return { startDrawing, draw, stopDrawing };
+    return {
+      startDrawing: lineStartDrawing,
+      draw: lineDraw,
+      stopDrawing: lineStopDrawing,
+    };
   }
 
   if (tool === ToolKinds.Eraser) {
-    return { startDrawing, draw, stopDrawing };
+    // Аналогично для ластика
   }
 
   if (tool === ToolKinds.Circle) {
-    return { startDrawing, draw, stopDrawing };
+    // Аналогично для круга
   }
 
-  return { startDrawing, draw, stopDrawing };
+  if (tool === ToolKinds.Rect) {
+    // Аналогично для квадрата
+  }
+
+  return { startDrawing: () => {}, draw: () => {}, stopDrawing: () => {} };
 };
