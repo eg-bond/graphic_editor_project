@@ -1,9 +1,9 @@
 import { Button } from 'antd';
-import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { useSaveAndLoad } from '../../hooks/useSaveAndLoad';
-import { useBrush } from '../../hooks/useBrush';
+import { FC, useEffect, useMemo, useRef } from 'react';
+import { useSaveAndLoad } from '@/hooks/useSaveAndLoad.ts';
 import { useAppSelector } from '@/redux/hooks';
 import { debounce } from '@/utils/debounce';
+import { useTool } from '@/hooks/useTool.ts';
 
 export const Canvas: FC = () => {
   // Получаем ширину и высоту из Redux
@@ -21,6 +21,8 @@ export const Canvas: FC = () => {
   const canvasRefs = useRef<{
     [key: string]: HTMLCanvasElement | null;
   }>({});
+
+  const previewRef = useRef<CanvasRenderingContext2D | null>(null);
   // Реф, хранящий ссылки на 2d контексты этих canvas элементов
   const contextRefs = useRef<{
     [key: string]: CanvasRenderingContext2D;
@@ -68,7 +70,13 @@ export const Canvas: FC = () => {
       context.strokeStyle = toolColor;
       contextRefs.current[i] = context;
     });
-  }, [layersList]);
+  }, [layersList, toolColor]);
+
+  useEffect(() => {
+    if (previewRef.current) {
+      previewRef.current.lineWidth = 5;
+    }
+  }, [previewRef]);
 
   // Debounce the load canvas data function
   const debouncedLoadCanvasData = useMemo(
@@ -88,19 +96,17 @@ export const Canvas: FC = () => {
     Object.keys(contextRefs.current).forEach((i) => {
       contextRefs.current[i].strokeStyle = toolColor;
     });
+    if (previewRef.current) {
+      previewRef.current.strokeStyle = toolColor;
+    }
   }, [toolColor]);
-
-  // контекст конкретного canvas элемента активного слоя
-  const getActiveContext = useCallback(() => {
-    return contextRefs.current[activeLayerIndex];
-  }, [activeLayerIndex]);
 
   // хук, реализующий функционал инструмента "Кисть"
   const {
     startDrawing,
     draw,
     stopDrawing,
-  } = useBrush(getActiveContext(), saveCanvasData);
+  } = useTool(contextRefs.current[activeLayerIndex], saveCanvasData, previewRef.current);
 
   return (
     <div className="mt-20">
@@ -118,6 +124,17 @@ export const Canvas: FC = () => {
         onMouseLeave={stopDrawing}
       >
         {canvasElements}
+        <canvas
+          className="absolute top-0 left-0"
+          style={{
+            width,
+            height,
+            zIndex: 150,
+          }}
+          width={width}
+          height={height}
+          ref={el => previewRef.current = el?.getContext('2d') ?? null}
+        />
       </div>
       <div>
         {/* временные кнопки для удобства */}
