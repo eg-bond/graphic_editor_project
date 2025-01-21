@@ -1,41 +1,35 @@
-import {
-  BorderOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  FrownOutlined,
-  LineOutlined,
-} from '@ant-design/icons';
 import ColorPicker from 'antd/es/color-picker';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { selectColor, selectTool, ToolKinds } from '@/redux/tools';
 import { ToolButton } from './ToolButton';
 import { AggregationColor } from 'antd/es/color-picker/color';
 import { DEFAULT_TOOLS_COLOR } from '@/utils/constants';
+import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon } from './ToolsIcon';
 
 const TOOLS = [
   {
     title: 'Кисть',
-    icon: <EditOutlined />,
+    icon: <BrushIcon />,
     type: ToolKinds.Brush,
   },
   {
     title: 'Ластик',
-    icon: <DeleteOutlined />,
+    icon: <EraserIcon />,
     type: ToolKinds.Eraser,
   },
   {
     title: 'Линия',
-    icon: <LineOutlined />,
+    icon: <LineIcon />,
     type: ToolKinds.Line,
   },
   {
     title: 'Круг',
-    icon: <FrownOutlined />,
+    icon: <CircleIcon />,
     type: ToolKinds.Circle,
   },
   {
     title: 'Квадрат',
-    icon: <BorderOutlined />,
+    icon: <RectIcon />,
     type: ToolKinds.Rect,
   },
 ] as const;

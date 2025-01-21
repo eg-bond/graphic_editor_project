@@ -9,6 +9,10 @@ export const Canvas: FC = () => {
   const { width, height } = useAppSelector(state => state.project);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const toolColor = useAppSelector(state => state.tools.color);
+  console.log('TOOL COLOR::: ', toolColor);
+
+  const tool = useAppSelector(state => state.tools.tool);
+  console.log('TOOL::: ', tool);
 
   // Реф для хранения используемого для рисования canvas элемента
   const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
@@ -31,7 +35,6 @@ export const Canvas: FC = () => {
     ctx.strokeStyle = toolColor;
   }, [toolColor]);
 
-  // хук, реализующий функционал инструмента "Кисть"
   const {
     startDrawing,
     draw,
