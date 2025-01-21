@@ -15,7 +15,7 @@ interface ToolsSliceState {
 }
 
 const initialState: ToolsSliceState = {
-  tool: null,
+  tool: ToolKinds.Brush,
   color: DEFAULT_TOOLS_COLOR,
 };
 
