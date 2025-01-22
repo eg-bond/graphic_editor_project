@@ -7,6 +7,7 @@ import {
   moveLayerDown,
   moveLayerUp,
   removeLayer,
+  selectActiveLayerIndex,
 } from '@/redux/history';
 import { LayerName } from './LayerName';
 import {
@@ -32,9 +33,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   name,
   visible,
 }: ILayerProps) {
-  const activeLayerIndex = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
-  );
+  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
 

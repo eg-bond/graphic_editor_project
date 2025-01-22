@@ -9,7 +9,7 @@ export const useTool = (
 ) => {
   const tool = useAppSelector(state => state.tools.tool);
 
-  // Форсируем ререндер для обновления информации в previewCanvas
+  // Форсируем ререндер для обновления информации в canvasElementRef
   const [, forceRender] = useState({});
   useEffect(() => {
     forceRender({});
