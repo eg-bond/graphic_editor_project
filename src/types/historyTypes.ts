@@ -9,7 +9,7 @@ export enum HistoryItemKinds {
   // History item kinds related to tools
   Brush,
   Line,
+  Rect,
   Eraser,
-  // ...
-  // ... somthin else
+  Circle,
 }

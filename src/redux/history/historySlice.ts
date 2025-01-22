@@ -208,7 +208,7 @@ export const historySlice = createSlice({
       addNewHistoryItemToLS(state);
     },
     addDrawing: (state, action: PayloadAction<{
-      canvasData: string;
+      canvasData: string; kind: HistoryItemKinds;
     }>) => {
       const activeElement = state.items[state.activeItemIndex];
       const layers = [...(activeElement?.layersList ?? [])];
@@ -218,7 +218,7 @@ export const historySlice = createSlice({
       layers[index] = { ...layers[index], canvasData: action.payload.canvasData };
 
       addNewHistoryItemToState(state, {
-        kind: HistoryItemKinds.Brush,
+        kind: action.payload.kind,
         layersList: layers,
         activeLayerIndex: index ?? -1,
       });
@@ -228,8 +228,8 @@ export const historySlice = createSlice({
       width: number; height: number;
     }>) => {
       const { width, height } = action.payload;
-
       const activeItem = state.items[state.activeItemIndex];
+
       if (activeItem) {
         activeItem.layersList = activeItem.layersList.map((layer) => {
           const tempCanvas = document.createElement('canvas');
