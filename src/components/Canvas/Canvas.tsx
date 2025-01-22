@@ -1,4 +1,3 @@
-import { Button } from 'antd';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { useSaveAndLoad } from '@/hooks/useSaveAndLoad.ts';
 import { useAppSelector } from '@/redux/hooks';
@@ -23,6 +22,7 @@ export const Canvas: FC = () => {
   }>({});
 
   const previewRef = useRef<CanvasRenderingContext2D | null>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
   // Реф, хранящий ссылки на 2d контексты этих canvas элементов
   const contextRefs = useRef<{
     [key: string]: CanvasRenderingContext2D;
@@ -49,11 +49,7 @@ export const Canvas: FC = () => {
   [layersList, width, height]);
 
   // хук, отвечающий за сохранение и загрузку данных из canvas элементов в redux и наоборот
-  const {
-    saveCanvasData,
-    loadCanvasData,
-    clearCanvas,
-  } = useSaveAndLoad(canvasRefs, contextRefs, layersList, activeLayerIndex);
+  const { loadCanvasData } = useSaveAndLoad(canvasRefs, contextRefs, layersList);
 
   // эффект, который сохраняет контексты canvas элементов в contextRefs и
   // загружающий данные из redux в canvas элементы при каждом изменении layersList
@@ -80,7 +76,7 @@ export const Canvas: FC = () => {
 
   // Debounce the load canvas data function
   const debouncedLoadCanvasData = useMemo(
-    () => debounce(() => loadCanvasData(), 200),
+    () => debounce(() => loadCanvasData(), 0), // убрать deb????
     [loadCanvasData],
   );
   // Effect for loading canvas data
@@ -106,7 +102,7 @@ export const Canvas: FC = () => {
     startDrawing,
     draw,
     stopDrawing,
-  } = useTool(contextRefs.current[activeLayerIndex], saveCanvasData, previewRef.current);
+  } = useTool(previewCanvasRef.current);
 
   return (
     <div className="mt-20">
@@ -123,7 +119,9 @@ export const Canvas: FC = () => {
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       >
+        {/* Canvas элементы, служащие для вывода данных из слоев */}
         {canvasElements}
+        {/* Canvas элемент с на которым мы непосредственно взаимодействуем */}
         <canvas
           className="absolute top-0 left-0"
           style={{
@@ -133,15 +131,10 @@ export const Canvas: FC = () => {
           }}
           width={width}
           height={height}
-          ref={el => previewRef.current = el?.getContext('2d') ?? null}
+          ref={previewCanvasRef}
         />
       </div>
-      <div>
-        {/* временные кнопки для удобства */}
-        <Button onClick={saveCanvasData}>Save</Button>
-        <Button onClick={loadCanvasData}>Load</Button>
-        <Button onClick={clearCanvas}>Clear</Button>
-      </div>
+
     </div>
   );
 };

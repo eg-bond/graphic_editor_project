@@ -2,25 +2,30 @@ import { useAppSelector } from '@/redux/hooks.ts';
 import { useBrush } from '@/hooks/useBrush.ts';
 import { ToolKinds } from '@/redux/tools';
 import { useLine } from '@/hooks/useLine.ts';
+import { useEffect, useState } from 'react';
 
 export const useTool = (
-  canvasContext: CanvasRenderingContext2D,
-  saveCanvasData: () => void,
-  previewCtx: CanvasRenderingContext2D | null,
+  canvasElement: HTMLCanvasElement | null,
 ) => {
   const tool = useAppSelector(state => state.tools.tool);
+
+  // Форсируем ререндер для обновления информации в previewCanvas
+  const [, forceRender] = useState({});
+  useEffect(() => {
+    forceRender({});
+  }, [canvasElement]);
 
   const {
     startDrawing: brushStartDrawing,
     draw: brushDraw,
     stopDrawing: brushStopDrawing,
-  } = useBrush(canvasContext, saveCanvasData);
+  } = useBrush(canvasElement);
 
   const {
     startDrawing: lineStartDrawing,
     draw: lineDraw,
     stopDrawing: lineStopDrawing,
-  } = useLine(canvasContext, saveCanvasData, previewCtx);
+  } = useLine(canvasElement);
 
   if (tool === ToolKinds.Brush) {
     return {

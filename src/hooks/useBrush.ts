@@ -1,24 +1,28 @@
+import { useSaveCanvasData } from './useSaveCanvasData';
 import React, { useCallback, useState } from 'react';
 
-export const useBrush = (
-  canvasContext: CanvasRenderingContext2D,
-  saveCanvasData: () => void,
-) => {
+export const useBrush = (canvasElement: HTMLCanvasElement | null) => {
   const [isDrawing, setIsDrawing] = useState(false);
+  const { saveCanvasData } = useSaveCanvasData(canvasElement);
 
-  const startDrawing = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!canvasContext) return;
+  const startDrawing = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (!canvasElement) return;
+      const canvasContext = canvasElement.getContext('2d');
+      if (!canvasContext) return;
 
-    const { offsetX, offsetY } = event.nativeEvent;
-    canvasContext.beginPath();
-    canvasContext.moveTo(offsetX, offsetY);
-    canvasContext.lineTo(offsetX, offsetY);
-    canvasContext.stroke();
-    setIsDrawing(true);
-    event.nativeEvent.preventDefault();
-  }, [canvasContext]);
+      const { offsetX, offsetY } = event.nativeEvent;
+      canvasContext.beginPath();
+      canvasContext.moveTo(offsetX, offsetY);
+      canvasContext.lineTo(offsetX, offsetY);
+      canvasContext.stroke();
+      setIsDrawing(true);
+      event.nativeEvent.preventDefault();
+    }, [canvasElement]);
 
   const draw = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!canvasElement) return;
+    const canvasContext = canvasElement.getContext('2d');
     if (!isDrawing || !canvasContext) return;
 
     const { offsetX, offsetY } = event.nativeEvent;
@@ -28,6 +32,8 @@ export const useBrush = (
   };
 
   const stopDrawing = () => {
+    if (!canvasElement) return;
+    const canvasContext = canvasElement.getContext('2d');
     if (!canvasContext) return;
     canvasContext.closePath();
 

@@ -1,6 +1,4 @@
-import { addDrawing } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
-import { useAppDispatch } from '@/redux/hooks';
 
 export const useSaveAndLoad = (
   canvasRefs: React.MutableRefObject<{
@@ -10,19 +8,7 @@ export const useSaveAndLoad = (
     [key: string]: CanvasRenderingContext2D;
   }>,
   LayersList: LayerT[],
-  activeLayerIndex: number,
 ) => {
-  const d = useAppDispatch();
-
-  const saveCanvasData = (): void => {
-    const canvas = canvasRefs.current[activeLayerIndex];
-    if (!canvas) return;
-    // Get the canvas data as a base64 string
-    const canvasData = canvas.toDataURL('image/png');
-
-    d(addDrawing({ canvasData }));
-  };
-
   const loadCanvasData = (): void => {
     Object.keys(canvasRefs.current).forEach((index) => {
       const canvas = canvasRefs.current[index];
@@ -42,17 +28,7 @@ export const useSaveAndLoad = (
     });
   };
 
-  const clearCanvas = (): void => {
-    Object.keys(canvasRefs.current).forEach((index) => {
-      const canvas = canvasRefs.current[index];
-      const context = contextRefs.current[index];
-      if (!canvas || !context) return;
-
-      context.clearRect(0, 0, canvas.width, canvas.height);
-    });
-  };
-
-  return { saveCanvasData, loadCanvasData, clearCanvas };
+  return { loadCanvasData };
 };
 
 // Другой вариант функции loadCanvasData, по идее должен быть лучше
