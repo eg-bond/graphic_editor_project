@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSaveCanvasData } from './useSaveCanvasData';
 
-export const useLine = (
-  ctx: CanvasRenderingContext2D,
-  saveCanvasData: () => void,
-  previewCtx: CanvasRenderingContext2D | null,
-) => {
+export const useLine = (canvasElement: HTMLCanvasElement | null) => {
+  const { saveCanvasData } = useSaveCanvasData(canvasElement);
   const [startPoint, setStartPoint] = useState<{
     x: number; y: number;
   } | null>(null);
@@ -13,13 +11,12 @@ export const useLine = (
   } | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  const startDrawing = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!ctx) return;
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    setStartPoint({ x: event.clientX - rect.left, y: event.clientY - rect.top });
-    setIsDrawing(true);
-  }, [ctx]);
+  const startDrawing = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      const rect = event.currentTarget.getBoundingClientRect();
+      setStartPoint({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+      setIsDrawing(true);
+    }, []);
 
   const draw = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isDrawing) return;
@@ -29,33 +26,29 @@ export const useLine = (
   }, [isDrawing]);
 
   const stopDrawing = useCallback(() => {
-    if (isDrawing && startPoint && currentPoint) {
-      ctx.beginPath();
-      ctx.moveTo(startPoint.x, startPoint.y);
-      ctx.lineTo(currentPoint.x, currentPoint.y);
-      ctx.stroke();
-
+    if (isDrawing) {
       saveCanvasData();
+      setIsDrawing(false);
+      setStartPoint(null);
+      setCurrentPoint(null);
     }
-
-    setIsDrawing(false);
-    setStartPoint(null);
-    setCurrentPoint(null);
-
-    if (!previewCtx) return;
-    previewCtx.clearRect(0, 0, 10000, 10000);
-  }, [ctx, currentPoint, isDrawing, saveCanvasData, startPoint, previewCtx]);
+  }, [isDrawing, saveCanvasData]);
 
   useEffect(() => {
-    if (!isDrawing || !startPoint || !currentPoint || !previewCtx) return;
+    if (!isDrawing || !startPoint || !currentPoint) return;
 
-    previewCtx.clearRect(0, 0, 10000, 10000);
+    if (!canvasElement) return;
+    const canvasContext = canvasElement.getContext('2d');
 
-    previewCtx.beginPath();
-    previewCtx.moveTo(startPoint.x, startPoint.y);
-    previewCtx.lineTo(currentPoint.x, currentPoint.y);
-    previewCtx.stroke();
-  }, [currentPoint, isDrawing, previewCtx, startPoint]);
+    if (!canvasContext) return;
+
+    canvasContext.clearRect(0, 0, 10000, 10000);
+
+    canvasContext.beginPath();
+    canvasContext.moveTo(startPoint.x, startPoint.y);
+    canvasContext.lineTo(currentPoint.x, currentPoint.y);
+    canvasContext.stroke();
+  }, [currentPoint, isDrawing, startPoint, canvasElement]);
 
   return { startDrawing, draw, stopDrawing };
 };

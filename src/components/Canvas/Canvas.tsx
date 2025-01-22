@@ -1,104 +1,34 @@
-import { Button } from 'antd';
-import { FC, useEffect, useMemo, useRef } from 'react';
-import { useSaveAndLoad } from '@/hooks/useSaveAndLoad.ts';
+import { FC, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
-import { debounce } from '@/utils/debounce';
 import { useTool } from '@/hooks/useTool.ts';
+import { LayersCanvasData } from './LayersCanvasData';
+import { selectActiveLayerIndex } from '@/redux/history';
 
 export const Canvas: FC = () => {
   // Получаем ширину и высоту из Redux
   const { width, height } = useAppSelector(state => state.project);
-
-  const layersList = useAppSelector(
-    state => state.history.items?.[state.history.activeItemIndex]?.layersList,
-  ) ?? [];
-  const activeLayerIndex = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
-  );
+  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const toolColor = useAppSelector(state => state.tools.color);
 
-  // Реф, хранящий ссылки на отрендеренные canvas элементы
-  const canvasRefs = useRef<{
-    [key: string]: HTMLCanvasElement | null;
-  }>({});
+  // Реф для хранения используемого для рисования canvas элемента
+  const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
 
-  const previewRef = useRef<CanvasRenderingContext2D | null>(null);
-  // Реф, хранящий ссылки на 2d контексты этих canvas элементов
-  const contextRefs = useRef<{
-    [key: string]: CanvasRenderingContext2D;
-  }>({});
-
-  // мемоизируем отрисовку canvas элементов
-  const canvasElements = useMemo(() =>
-    layersList.map((layer, i) => (
-      <canvas
-        key={layer.id}
-        className="absolute top-0 left-0"
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          zIndex: 100 - i,
-          opacity: layer.opacity / 100,
-          display: layer.visible ? 'block' : 'none',
-        }}
-        width={width}
-        height={height}
-        ref={el => canvasRefs.current[i] = el}
-      />
-    )),
-  [layersList, width, height]);
-
-  // хук, отвечающий за сохранение и загрузку данных из canvas элементов в redux и наоборот
-  const {
-    saveCanvasData,
-    loadCanvasData,
-    clearCanvas,
-  } = useSaveAndLoad(canvasRefs, contextRefs, layersList, activeLayerIndex);
-
-  // эффект, который сохраняет контексты canvas элементов в contextRefs и
-  // загружающий данные из redux в canvas элементы при каждом изменении layersList
+  // Эффект, который устанавливавает lineWidth (в будущем должен изменяться
+  // в зависимости от толщины инструмента, установленной в toolsSlice)
   useEffect(() => {
-    Object.keys(canvasRefs.current).forEach((i) => {
-      const canvas = canvasRefs.current[i];
-      if (!canvas) return;
+    if (!canvasElementRef.current) return;
+    const ctx = canvasElementRef.current.getContext('2d');
+    if (!ctx) return;
+    ctx.lineWidth = 5;
+  }, []);
 
-      const context = canvas.getContext('2d');
-      if (!context) return;
-
-      // lineWidth наверное должен устанавливаться внутри useBrush??
-      context.lineWidth = 5;
-      context.strokeStyle = toolColor;
-      contextRefs.current[i] = context;
-    });
-  }, [layersList, toolColor]);
-
+  // эффект, меняющий цвет кисти canvas элемента при изменении toolColor
   useEffect(() => {
-    if (previewRef.current) {
-      previewRef.current.lineWidth = 5;
-    }
-  }, [previewRef]);
+    if (!canvasElementRef.current) return;
+    const ctx = canvasElementRef.current.getContext('2d');
+    if (!ctx) return;
 
-  // Debounce the load canvas data function
-  const debouncedLoadCanvasData = useMemo(
-    () => debounce(() => loadCanvasData(), 100),
-    [loadCanvasData],
-  );
-  // Effect for loading canvas data
-  useEffect(() => {
-    if (layersList.length > 0) {
-      debouncedLoadCanvasData();
-    }
-    return () => debouncedLoadCanvasData.cancel();
-  }, [layersList]);
-
-  // эффект, меняющий цвет кисти для всех canvas элементов при изменении toolColor
-  useEffect(() => {
-    Object.keys(contextRefs.current).forEach((i) => {
-      contextRefs.current[i].strokeStyle = toolColor;
-    });
-    if (previewRef.current) {
-      previewRef.current.strokeStyle = toolColor;
-    }
+    ctx.strokeStyle = toolColor;
   }, [toolColor]);
 
   // хук, реализующий функционал инструмента "Кисть"
@@ -106,7 +36,7 @@ export const Canvas: FC = () => {
     startDrawing,
     draw,
     stopDrawing,
-  } = useTool(contextRefs.current[activeLayerIndex], saveCanvasData, previewRef.current);
+  } = useTool(canvasElementRef.current);
 
   return (
     <div className="mt-20">
@@ -123,7 +53,10 @@ export const Canvas: FC = () => {
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       >
-        {canvasElements}
+        {/* Canvas элементы, служащие для вывода canvas данных из слоев */}
+        <LayersCanvasData />
+
+        {/* Canvas элемент с на которым мы непосредственно взаимодействуем */}
         <canvas
           className="absolute top-0 left-0"
           style={{
@@ -133,15 +66,10 @@ export const Canvas: FC = () => {
           }}
           width={width}
           height={height}
-          ref={el => previewRef.current = el?.getContext('2d') ?? null}
+          ref={canvasElementRef}
         />
       </div>
-      <div>
-        {/* временные кнопки для удобства */}
-        <Button onClick={saveCanvasData}>Save</Button>
-        <Button onClick={loadCanvasData}>Load</Button>
-        <Button onClick={clearCanvas}>Clear</Button>
-      </div>
+
     </div>
   );
 };

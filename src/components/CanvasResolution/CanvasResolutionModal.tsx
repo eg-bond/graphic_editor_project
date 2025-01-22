@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { Modal, Form, InputNumber, Button } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateResolution, saveToLocalStorage } from '@/redux/project/projectSlice';
-import { setStateFromHistory } from '@/redux/history';
+import { selectLayersList, setStateFromHistory } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 
 interface CanvasResolutionModalProps {
@@ -16,9 +16,7 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
 
   // Получаем текущую ширину, высоту и слои из Redux
   const { width, height } = useAppSelector(state => state.project);
-  const layersList = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.layersList || [],
-  );
+  const layersList = useAppSelector(selectLayersList);
 
   // Инициализируем форму текущими значениями при открытии модального окна
   useEffect(() => {

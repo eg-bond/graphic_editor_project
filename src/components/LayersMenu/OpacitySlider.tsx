@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { changeOpacity } from '@/redux/history';
+import { changeOpacity, selectActiveLayerIndex } from '@/redux/history';
 import { selectActiveLayer } from '@/redux/history';
 import { InputNumber, InputNumberProps, Slider } from 'antd';
 import { useEffect, useState } from 'react';
@@ -11,9 +11,7 @@ enum InputRanges {
 
 export function OpacitySlider() {
   const activeLayer = useAppSelector(selectActiveLayer);
-  const activeLayerIndex = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
-  );
+  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const d = useAppDispatch();
 
   const [value, setValue] = useState(InputRanges.MAX);

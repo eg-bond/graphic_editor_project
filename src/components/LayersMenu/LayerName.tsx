@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { changeLayerName } from '@/redux/history';
+import { changeLayerName, selectLayersList } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { Form, Input, InputRef } from 'antd';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -21,9 +21,7 @@ export function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
-  const layersList = useAppSelector((state) => {
-    return state.history.items[state.history.activeItemIndex].layersList;
-  });
+  const layersList = useAppSelector(selectLayersList);
   const existingNames = layersList.map(layer => layer.name);
   const inputRef = useRef<InputRef | null>(null);
   const [inputValue, setInputValue] = useState<string>(name);

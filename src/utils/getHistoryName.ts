@@ -16,6 +16,14 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Порядок слоев';
     case HistoryItemKinds.Brush:
       return 'Кисть';
+    case HistoryItemKinds.Line:
+      return 'Линия';
+    case HistoryItemKinds.Circle:
+      return 'Круг';
+    case HistoryItemKinds.Rect:
+      return 'Квадрат';
+    case HistoryItemKinds.Eraser:
+      return 'Ластик';
     default:
       return '';
   }
