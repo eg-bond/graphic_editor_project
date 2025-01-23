@@ -5,11 +5,11 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
     case HistoryItemKinds.Add:
       return 'Новый слой';
     case HistoryItemKinds.Remove:
-      return 'Удаление слоя';
+      return 'Удалить слой';
     case HistoryItemKinds.Rename:
-      return 'Переименование слоя';
+      return 'Имя слоя';
     case HistoryItemKinds.Opacity:
-      return 'Непрозрачность слоя';
+      return 'Непрозрачность';
     case HistoryItemKinds.Visibility:
       return 'Видимость слоя';
     case HistoryItemKinds.Order:
@@ -24,6 +24,8 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Квадрат';
     case HistoryItemKinds.Eraser:
       return 'Ластик';
+    case HistoryItemKinds.OpenProject:
+      return 'Открыть';
     default:
       return '';
   }

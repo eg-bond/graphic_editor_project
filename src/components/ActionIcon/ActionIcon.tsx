@@ -3,6 +3,7 @@ import {
   DeleteOutlined,
   EyeOutlined,
   FileAddOutlined,
+  FolderOpenOutlined,
   FontSizeOutlined,
   HighlightOutlined,
   LineOutlined,
@@ -32,6 +33,8 @@ export function ActionIcon({ kind }: IActionIconProps) {
       return <HighlightOutlined />;
     case HistoryItemKinds.Line:
       return <LineOutlined />;
+    case HistoryItemKinds.OpenProject:
+      return <FolderOpenOutlined />;
     default:
       return <FileAddOutlined />;
   }

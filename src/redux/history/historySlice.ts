@@ -35,11 +35,16 @@ const NEW_LAYER_NAME = 'Cлой ';
 
 const initialState: HistorySliceStateT = {
   projectId: null,
-  items: [],
-  historyIdCount: 0,
+  items: [{
+    id: 0,
+    kind: HistoryItemKinds.OpenProject,
+    layersList: [],
+    activeLayerIndex: -1,
+  }],
+  historyIdCount: 1,
   activeItemIndex: 0,
-  maxHistoryLength: HISTORY_MAX_LENGTH,
   layerIdCount: 0,
+  maxHistoryLength: HISTORY_MAX_LENGTH,
 };
 
 export const historySlice = createSlice({
@@ -50,16 +55,18 @@ export const historySlice = createSlice({
       id: string; data?: ProjectData;
     }>) => {
       state.projectId = action.payload.id;
-      state.activeItemIndex = 0;
+      state.activeItemIndex = initialState.activeItemIndex;
       if (action.payload.data) {
-        state.items = [action.payload.data.historyItem];
+        state.items = [{
+          ...action.payload.data.historyItem,
+          kind: HistoryItemKinds.OpenProject,
+        }];
         state.historyIdCount = action.payload.data.historyIdCount;
         state.layerIdCount = +action.payload.data.layerIdCount || 0;
       } else {
-        state.items = [];
-        state.historyIdCount = 0;
-        state.activeItemIndex = -1;
-        state.layerIdCount = 0;
+        state.items = initialState.items;
+        state.historyIdCount = initialState.historyIdCount;
+        state.layerIdCount = initialState.layerIdCount;
       }
     },
     activateHistoryItem: (state, action: PayloadAction<{
