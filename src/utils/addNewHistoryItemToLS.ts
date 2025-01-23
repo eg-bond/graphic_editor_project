@@ -5,10 +5,11 @@ import { getProjectsFromLS } from './getProjectsFromLS';
 export const addNewHistoryItemToLS = (historyState: RootState['history']) => {
   const { allProjects, currentProject } = getProjectsFromLS(historyState.projectId);
 
+  if (!currentProject) return;
+
   currentProject.data = {
-    items: historyState.items,
+    historyItem: historyState.items[historyState.activeItemIndex],
     historyIdCount: historyState.historyIdCount,
-    activeItemIndex: historyState.activeItemIndex,
     layerIdCount: historyState.layerIdCount,
   };
 

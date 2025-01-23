@@ -4,7 +4,7 @@ export function combineCanvasImages(
   return new Promise((resolve) => {
     // Create a new canvas
     const resultCanvas = document.createElement('canvas');
-    const ctx = resultCanvas.getContext('2d');
+    const ctx = resultCanvas.getContext('2d') as CanvasRenderingContext2D;
 
     // Create two image objects
     const img1 = new Image();

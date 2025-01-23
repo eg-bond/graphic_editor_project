@@ -1,9 +1,8 @@
 import { HistoryItemT } from '@/redux/history/historySlice';
 
 export interface ProjectData {
-  items: Array<HistoryItemT>;
+  historyItem: HistoryItemT;
   historyIdCount: number;
-  activeItemIndex: number;
   layerIdCount: number;
 }
 

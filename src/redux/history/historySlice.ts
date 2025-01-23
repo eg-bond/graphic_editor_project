@@ -50,10 +50,10 @@ export const historySlice = createSlice({
       id: string; data?: ProjectData;
     }>) => {
       state.projectId = action.payload.id;
+      state.activeItemIndex = 0;
       if (action.payload.data) {
-        state.items = action.payload.data.items;
+        state.items = [action.payload.data.historyItem];
         state.historyIdCount = action.payload.data.historyIdCount;
-        state.activeItemIndex = action.payload.data.activeItemIndex;
         state.layerIdCount = +action.payload.data.layerIdCount || 0;
       } else {
         state.items = [];
@@ -66,6 +66,7 @@ export const historySlice = createSlice({
       index: number;
     }>) => {
       state.activeItemIndex = action.payload.index;
+      addNewHistoryItemToLS(state);
     },
     setStateFromHistory: (state, action: PayloadAction<{
       layersList: LayerT[];
