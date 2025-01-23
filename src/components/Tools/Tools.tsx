@@ -1,10 +1,17 @@
 import ColorPicker from 'antd/es/color-picker';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { selectColor, selectTool, ToolKinds } from '@/redux/tools';
+import {
+  selectColor, selectSecondaryColor,
+  selectTool, ToolKinds,
+} from '@/redux/tools';
 import { ToolButton } from './ToolButton';
 import { AggregationColor } from 'antd/es/color-picker/color';
-import { DEFAULT_TOOLS_COLOR } from '@/utils/constants';
+import {
+  DEFAULT_TOOLS_COLOR,
+  DEFAULT_TOOLS_SECONDARY_COLOR,
+} from '@/utils/constants';
 import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon } from './ToolsIcon';
+import { Tooltip } from 'antd';
 
 const TOOLS = [
   {
@@ -42,6 +49,10 @@ export function Tools() {
     d(selectColor({ color: e.toHexString() }));
   };
 
+  const onSecondaryColorChange = (e: AggregationColor) => {
+    d(selectSecondaryColor({ color: e.toHexString() }));
+  };
+
   return (
     <div className={
       'absolute left-4 top-4 flex flex-col ' +
@@ -62,10 +73,23 @@ export function Tools() {
         />
       ))}
 
-      <ColorPicker
-        defaultValue={DEFAULT_TOOLS_COLOR}
-        onChangeComplete={onColorChange}
-      />
+      <Tooltip title="Основной цвет" placement="right">
+        <div>
+          <ColorPicker
+            defaultValue={DEFAULT_TOOLS_COLOR}
+            onChangeComplete={onColorChange}
+          />
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Второстепенный цвет" placement="right">
+        <div>
+          <ColorPicker
+            defaultValue={DEFAULT_TOOLS_SECONDARY_COLOR}
+            onChangeComplete={onSecondaryColorChange}
+          />
+        </div>
+      </Tooltip>
 
     </div>
   );
