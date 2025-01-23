@@ -31,7 +31,6 @@ export const Canvas: FC = () => {
     ctx.strokeStyle = toolColor;
   }, [toolColor]);
 
-  // хук, реализующий функционал инструмента "Кисть"
   const {
     startDrawing,
     draw,

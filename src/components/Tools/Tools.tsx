@@ -1,41 +1,42 @@
-import {
-  BorderOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  FrownOutlined,
-  LineOutlined,
-} from '@ant-design/icons';
 import ColorPicker from 'antd/es/color-picker';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { selectColor, selectTool, ToolKinds } from '@/redux/tools';
+import {
+  selectColor, selectSecondaryColor,
+  selectTool, ToolKinds,
+} from '@/redux/tools';
 import { ToolButton } from './ToolButton';
 import { AggregationColor } from 'antd/es/color-picker/color';
-import { DEFAULT_TOOLS_COLOR } from '@/utils/constants';
+import {
+  DEFAULT_TOOLS_COLOR,
+  DEFAULT_TOOLS_SECONDARY_COLOR,
+} from '@/utils/constants';
+import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon } from './ToolsIcon';
+import { Tooltip } from 'antd';
 
 const TOOLS = [
   {
     title: 'Кисть',
-    icon: <EditOutlined />,
+    icon: <BrushIcon />,
     type: ToolKinds.Brush,
   },
   {
     title: 'Ластик',
-    icon: <DeleteOutlined />,
+    icon: <EraserIcon />,
     type: ToolKinds.Eraser,
   },
   {
     title: 'Линия',
-    icon: <LineOutlined />,
+    icon: <LineIcon />,
     type: ToolKinds.Line,
   },
   {
     title: 'Круг',
-    icon: <FrownOutlined />,
+    icon: <CircleIcon />,
     type: ToolKinds.Circle,
   },
   {
     title: 'Квадрат',
-    icon: <BorderOutlined />,
+    icon: <RectIcon />,
     type: ToolKinds.Rect,
   },
 ] as const;
@@ -46,6 +47,10 @@ export function Tools() {
 
   const onColorChange = (e: AggregationColor) => {
     d(selectColor({ color: e.toHexString() }));
+  };
+
+  const onSecondaryColorChange = (e: AggregationColor) => {
+    d(selectSecondaryColor({ color: e.toHexString() }));
   };
 
   return (
@@ -68,10 +73,23 @@ export function Tools() {
         />
       ))}
 
-      <ColorPicker
-        defaultValue={DEFAULT_TOOLS_COLOR}
-        onChangeComplete={onColorChange}
-      />
+      <Tooltip title="Основной цвет" placement="right">
+        <div>
+          <ColorPicker
+            defaultValue={DEFAULT_TOOLS_COLOR}
+            onChangeComplete={onColorChange}
+          />
+        </div>
+      </Tooltip>
+
+      <Tooltip title="Второстепенный цвет" placement="right">
+        <div>
+          <ColorPicker
+            defaultValue={DEFAULT_TOOLS_SECONDARY_COLOR}
+            onChangeComplete={onSecondaryColorChange}
+          />
+        </div>
+      </Tooltip>
 
     </div>
   );

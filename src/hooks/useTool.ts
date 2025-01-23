@@ -3,6 +3,7 @@ import { useBrush } from '@/hooks/useBrush.ts';
 import { ToolKinds } from '@/redux/tools';
 import { useLine } from '@/hooks/useLine.ts';
 import { useEffect, useState } from 'react';
+import { useRectangle } from './useRectangel';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
@@ -26,6 +27,12 @@ export const useTool = (
     draw: lineDraw,
     stopDrawing: lineStopDrawing,
   } = useLine(canvasElement);
+
+  const {
+    startDrawing: rectStartDrawing,
+    draw: rectDraw,
+    stopDrawing: rectStopDrawing,
+  } = useRectangle(canvasElement);
 
   if (tool === ToolKinds.Brush) {
     return {
@@ -52,7 +59,11 @@ export const useTool = (
   }
 
   if (tool === ToolKinds.Rect) {
-    // Аналогично для квадрата
+    return {
+      startDrawing: rectStartDrawing,
+      draw: rectDraw,
+      stopDrawing: rectStopDrawing,
+    };
   }
 
   return { startDrawing: () => {}, draw: () => {}, stopDrawing: () => {} };

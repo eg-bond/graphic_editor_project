@@ -1,4 +1,7 @@
-import { DEFAULT_TOOLS_COLOR } from '@/utils/constants';
+import {
+  DEFAULT_TOOLS_COLOR,
+  DEFAULT_TOOLS_SECONDARY_COLOR,
+} from '@/utils/constants';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export enum ToolKinds {
@@ -12,11 +15,14 @@ export enum ToolKinds {
 interface ToolsSliceState {
   tool: ToolKinds | null;
   color: string;
+  // цвет заливки фигур
+  secondaryColor: string;
 }
 
 const initialState: ToolsSliceState = {
   tool: ToolKinds.Brush,
   color: DEFAULT_TOOLS_COLOR,
+  secondaryColor: DEFAULT_TOOLS_SECONDARY_COLOR,
 };
 
 export const toolsSlice = createSlice({
@@ -32,6 +38,11 @@ export const toolsSlice = createSlice({
       color: string;
     }>) => {
       state.color = action.payload.color;
+    },
+    selectSecondaryColor: (state, action: PayloadAction<{
+      color: string;
+    }>) => {
+      state.secondaryColor = action.payload.color;
     },
   },
 });
