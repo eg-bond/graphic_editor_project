@@ -20,7 +20,7 @@ export const Canvas: FC = () => {
     const ctx = canvasElementRef.current.getContext('2d');
     if (!ctx) return;
     ctx.lineWidth = 5;
-  }, []);
+  }, [width, height]);
 
   // эффект, меняющий цвет кисти canvas элемента при изменении toolColor
   useEffect(() => {
@@ -29,7 +29,7 @@ export const Canvas: FC = () => {
     if (!ctx) return;
 
     ctx.strokeStyle = toolColor;
-  }, [toolColor]);
+  }, [toolColor, width, height]);
 
   const {
     startDrawing,

@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Project } from '@/types/localStorageTypes'; // Импортируем интерфейс Project
+import type { Project } from '@/types/localStorageTypes';
 
 const initialState: Project = {
   id: '',
   name: '',
   width: 0,
   height: 0,
-  data: undefined,
 };
 
 const projectSlice = createSlice({
@@ -28,6 +27,7 @@ const projectSlice = createSlice({
     // Сохраняет данные проекта в LocalStorage
     saveToLocalStorage(state) {
       const projects = JSON.parse(localStorage.getItem('graphic-projects') || '[]');
+
       const updatedProjects = projects.map((project: Project) =>
         project.id === state.id ? { ...state } : project,
       );

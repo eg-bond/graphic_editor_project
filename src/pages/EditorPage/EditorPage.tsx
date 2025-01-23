@@ -10,6 +10,8 @@ import { Canvas } from '@/components/Canvas';
 import { getProjectsFromLS } from '@/utils/getProjectsFromLS';
 import { Tools } from '@/components/Tools';
 import { CanvasResolutionButton } from '@/components/CanvasResolution';
+import { Flex, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export function EditorPage() {
   const { id } = useParams(); // Получаем id проекта из URL
@@ -34,7 +36,16 @@ export function EditorPage() {
   }, [dispatch, id]);
 
   if (!initialized) {
-    return <p className="text-center mt-32">Загрузка...</p>;
+    return (
+      <Flex
+        style={{ height: '100vh' }}
+        justify="center"
+        align="center"
+        gap="middle"
+      >
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+      </Flex>
+    );
   }
 
   return (

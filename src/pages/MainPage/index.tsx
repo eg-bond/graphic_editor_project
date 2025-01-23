@@ -9,7 +9,7 @@ import {
 } from '@/components/CreateProjectModal';
 import { useModal } from '@/hooks/useModal.tsx';
 import { PROJECTS_KEY } from '@/utils/constants.ts';
-import { Project } from '@/redux/history';
+import { Project } from '@/types/localStorageTypes';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 

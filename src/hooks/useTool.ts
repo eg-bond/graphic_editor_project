@@ -4,16 +4,19 @@ import { ToolKinds } from '@/redux/tools';
 import { useLine } from '@/hooks/useLine.ts';
 import { useEffect, useState } from 'react';
 import { useRectangle } from './useRectangel';
+import { selectActiveLayer } from '@/redux/history';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
 ) => {
   const tool = useAppSelector(state => state.tools.tool);
+  const activeLayer = useAppSelector(selectActiveLayer);
 
   // Форсируем ререндер, чтобы в canvasElement не было null
   const [, forceRender] = useState({});
   useEffect(() => {
     forceRender({});
+    console.log(canvasElement);
   }, [canvasElement]);
 
   const {
@@ -33,6 +36,10 @@ export const useTool = (
     draw: rectDraw,
     stopDrawing: rectStopDrawing,
   } = useRectangle(canvasElement);
+
+  if (!activeLayer) return {
+    startDrawing: () => {}, draw: () => {}, stopDrawing: () => {},
+  };
 
   if (tool === ToolKinds.Brush) {
     return {

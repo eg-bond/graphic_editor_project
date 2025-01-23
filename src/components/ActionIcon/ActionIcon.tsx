@@ -5,11 +5,13 @@ import {
   FileAddOutlined,
   FolderOpenOutlined,
   FontSizeOutlined,
-  HighlightOutlined,
-  LineOutlined,
   SmallDashOutlined,
   VerticalAlignMiddleOutlined,
 } from '@ant-design/icons';
+import {
+  BrushIcon, CircleIcon,
+  EraserIcon, LineIcon, RectIcon,
+} from '../Tools/ToolsIcon';
 
 interface IActionIconProps {
   kind: HistoryItemKinds;
@@ -30,9 +32,15 @@ export function ActionIcon({ kind }: IActionIconProps) {
     case HistoryItemKinds.Order:
       return <VerticalAlignMiddleOutlined />;
     case HistoryItemKinds.Brush:
-      return <HighlightOutlined />;
+      return <BrushIcon />;
     case HistoryItemKinds.Line:
-      return <LineOutlined />;
+      return <LineIcon />;
+    case HistoryItemKinds.Rect:
+      return <RectIcon />;
+    case HistoryItemKinds.Circle:
+      return <CircleIcon />;
+    case HistoryItemKinds.Eraser:
+      return <EraserIcon />;
     case HistoryItemKinds.OpenProject:
       return <FolderOpenOutlined />;
     default:
