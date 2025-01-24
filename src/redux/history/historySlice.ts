@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { swapArrayElements } from '@/utils/swapArrayElements.ts';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
-import { EMPTY_CANVAS_DATA } from '@/utils/constants';
+import { EMPTY_CANVAS_DATA, NEW_LAYER_NAME } from '@/utils/constants';
 import { addNewHistoryItemToLS } from '@/utils/localStorageUtils';
 
 export interface LayerT {
@@ -31,7 +31,6 @@ export interface HistorySliceStateT {
 }
 
 const HISTORY_MAX_LENGTH = 10;
-const NEW_LAYER_NAME = 'Cлой ';
 
 const initialState: HistorySliceStateT = {
   projectId: null,

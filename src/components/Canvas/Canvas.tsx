@@ -54,7 +54,7 @@ export const Canvas: FC = () => {
           width: `${width}px`,
           height: `${height}px`,
           margin: '1rem',
-          cursor: 'none', // This will hide the original cursor
+          cursor: 'none',
         }}
         onMouseDown={startDrawing}
         onMouseMove={(e) => {
