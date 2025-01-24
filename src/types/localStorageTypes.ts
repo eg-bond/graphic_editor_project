@@ -13,3 +13,8 @@ export interface Project {
   height: number;
   data?: ProjectData;
 }
+
+export enum Statuses {
+  Success = 'success',
+  Error = 'error',
+}

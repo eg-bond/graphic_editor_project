@@ -62,8 +62,8 @@ export const Canvas: FC = () => {
           updateMousePosition(e);
         }}
         onMouseUp={stopDrawing}
-        onMouseLeave={(e) => {
-          stopDrawing(e);
+        onMouseLeave={() => {
+          stopDrawing();
           handleMouseLeave();
         }}
         onMouseEnter={handleMouseEnter}
