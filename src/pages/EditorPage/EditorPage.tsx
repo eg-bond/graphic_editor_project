@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/redux/hooks.ts';
 import { setProject } from '@/redux/project/projectSlice';
 import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
-import { getProjectsFromLS } from '@/utils/getProjectsFromLS';
+import { getProjectsFromLS } from '@/utils/localStorageUtils';
 import { Tools } from '@/components/Tools';
 import { CanvasResolutionButton } from '@/components/CanvasResolution';
 import { Flex, Spin } from 'antd';

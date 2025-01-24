@@ -1,10 +1,10 @@
 import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { swapArrayElements } from '@/utils/swapArrayElements.ts';
-import { addNewHistoryItemToLS } from '@/utils/addNewHistoryItemToLS';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
 import { EMPTY_CANVAS_DATA } from '@/utils/constants';
+import { addNewHistoryItemToLS } from '@/utils/localStorageUtils';
 
 export interface LayerT {
   id: number;

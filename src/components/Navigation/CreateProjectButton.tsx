@@ -8,8 +8,9 @@ import { Form } from 'antd';
 import { getUid } from '@/utils/getUid.ts';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/redux/hooks';
-import { setProject, saveToLocalStorage } from '@/redux/project/projectSlice';
+import { setProject } from '@/redux/project/projectSlice';
 import type { Project } from '@/types/localStorageTypes';
+import { saveNewProjectToLS } from '@/utils/localStorageUtils';
 
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const CreateProjectButton1: FC = () => {
       dispatch(setProject(newProject));
 
       // Сохраняем проект в LocalStorage
-      dispatch(saveToLocalStorage());
+      saveNewProjectToLS(newProject);
 
       // Сбрасываем форму, закрываем модал и переходим к редактору
       form.resetFields();

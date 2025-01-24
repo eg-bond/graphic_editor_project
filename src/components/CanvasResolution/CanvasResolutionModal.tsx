@@ -1,9 +1,11 @@
 import { FC, useEffect } from 'react';
 import { Modal, Form, InputNumber, Button } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { updateResolution, saveToLocalStorage } from '@/redux/project/projectSlice';
+import { updateResolution } from '@/redux/project/projectSlice';
 import { selectLayersList, setStateFromHistory } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
+import { updateProjectInLS } from '@/utils/localStorageUtils';
+import { useParams } from 'react-router-dom';
 
 interface CanvasResolutionModalProps {
   open: boolean;
@@ -13,6 +15,7 @@ interface CanvasResolutionModalProps {
 export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
+  const { id } = useParams(); // Получаем id проекта из URL
 
   // Получаем текущую ширину, высоту и слои из Redux
   const { width, height } = useAppSelector(state => state.project);
@@ -89,7 +92,7 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
       dispatch(updateResolution({ width: values.width, height: values.height }));
 
       // Сохраняем изменения в LocalStorage
-      dispatch(saveToLocalStorage());
+      updateProjectInLS(id, { width: values.width, height: values.height });
 
       // Закрываем модальное окно
       onClose();

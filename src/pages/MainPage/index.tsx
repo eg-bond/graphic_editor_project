@@ -10,13 +10,11 @@ import {
 import { useModal } from '@/hooks/useModal.tsx';
 import { PROJECTS_KEY } from '@/utils/constants.ts';
 import { Project } from '@/types/localStorageTypes';
+import { getProjectsFromLS, saveNewProjectToLS } from '@/utils/localStorageUtils';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
-const getInitialProjects = () => {
-  const projects = localStorage.getItem(PROJECTS_KEY);
-  return JSON.parse(projects ?? '[]') as Project[];
-};
+const { allProjects } = getProjectsFromLS();
 
 const gutter: [Gutter, Gutter] = [20, 20];
 
@@ -28,21 +26,18 @@ const MainPage1: FC = () => {
     onOpen,
     onClose,
   } = useModal();
-  const [projects, setProjects] = useState<Project[]>(getInitialProjects);
+  const [projects, setProjects] = useState<Project[]>(allProjects);
 
   const handleSubmit = useCallback((values: ProjectFormData) => {
-    setProjects((p) => {
-      const newProjects = [
-        {
-          id: getUid(),
-          height: +values.height,
-          width: +values.width,
-          name: values.name,
-        }, ...p,
-      ];
-      localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
-      return newProjects;
-    });
+    const newProject = {
+      id: getUid(),
+      height: +values.height,
+      width: +values.width,
+      name: values.name,
+    };
+
+    saveNewProjectToLS(newProject);
+    setProjects(prevProjects => [{ ...newProject }, ...prevProjects]);
 
     form.resetFields();
     onClose();
