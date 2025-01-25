@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { Modal, Form, InputNumber, Button } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateResolution } from '@/redux/project/projectSlice';
-import { selectLayersList, setStateFromHistory } from '@/redux/history';
+import { resizeCanvas, selectLayersList, setStateFromHistory } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { updateProjectInLS } from '@/utils/localStorageUtils';
 import { useParams } from 'react-router-dom';
@@ -21,7 +21,6 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
   const { width, height } = useAppSelector(state => state.project);
   const layersList = useAppSelector(selectLayersList);
 
-  // Инициализируем форму текущими значениями при открытии модального окна
   useEffect(() => {
     if (open) {
       form.setFieldsValue({ width, height });
@@ -32,7 +31,6 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
     try {
       const values = form.getFieldsValue();
 
-      // Создаём новый список слоёв с обновлёнными canvasData
       const updatedLayers = await Promise.all(
         layersList.map(
           (layer): Promise<LayerT> =>
@@ -41,23 +39,19 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
               const context = canvas.getContext('2d');
 
               if (!context) {
-                resolve(layer); // Если контекст недоступен, возвращаем оригинальный слой
+                resolve(layer);
                 return;
               }
 
-              // Устанавливаем старые размеры холста
               canvas.width = width;
               canvas.height = height;
 
-              // Загружаем данные слоя
               const image = new Image();
               image.src = layer.canvasData;
 
               image.onload = () => {
-                // Рисуем содержимое слоя на временном canvas
                 context.drawImage(image, 0, 0);
 
-                // Переключаемся на новое разрешение
                 const resizedCanvas = document.createElement('canvas');
                 const resizedContext = resizedCanvas.getContext('2d');
 
@@ -65,36 +59,32 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
                   resizedCanvas.width = values.width;
                   resizedCanvas.height = values.height;
 
-                  // Копируем содержимое без изменения масштаба
                   resizedContext.drawImage(canvas, 0, 0);
 
-                  // Возвращаем новый слой с обновлённым canvasData
                   resolve({
                     ...layer,
                     canvasData: resizedCanvas.toDataURL(),
                   });
                 } else {
-                  resolve(layer); // Если контекст недоступен, возвращаем оригинальный слой
+                  resolve(layer);
                 }
               };
 
               image.onerror = () => {
-                resolve(layer); // Если загрузка изображения не удалась, возвращаем оригинальный слой
+                resolve(layer);
               };
             }),
         ),
       );
 
-      // Обновляем слои в Redux
       dispatch(setStateFromHistory({ layersList: updatedLayers }));
 
-      // Обновляем разрешение холста в Redux
       dispatch(updateResolution({ width: values.width, height: values.height }));
 
-      // Сохраняем изменения в LocalStorage
+      dispatch(resizeCanvas({ width: values.width, height: values.height }));
+
       updateProjectInLS(id, { width: values.width, height: values.height });
 
-      // Закрываем модальное окно
       onClose();
     } catch (error) {
       console.error('Error while resizing canvas layers:', error);

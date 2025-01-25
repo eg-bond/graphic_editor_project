@@ -257,6 +257,14 @@ export const historySlice = createSlice({
           }
           return layer;
         });
+
+        addNewHistoryItemToState(state, {
+          kind: HistoryItemKinds.ResizeCanvas,
+          layersList: activeItem.layersList,
+          activeLayerIndex: -1,
+        });
+
+        addNewHistoryItemToLS(state);
       }
     },
   },
