@@ -3,6 +3,7 @@ import CircleIcon from './CircleIcon';
 import EraserIcon from './EraserIcon';
 import LineIcon from './LineIcon';
 import RectIcon from './RectIcon';
+import ResizeIcon from './ResizeIcon';
 
 export {
   BrushIcon,
@@ -10,4 +11,5 @@ export {
   EraserIcon,
   LineIcon,
   RectIcon,
+  ResizeIcon,
 };

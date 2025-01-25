@@ -14,4 +14,5 @@ export enum HistoryItemKinds {
   Circle,
   // Other
   OpenProject,
+  ResizeCanvas,
 }

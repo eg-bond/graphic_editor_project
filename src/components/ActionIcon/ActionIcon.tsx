@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import {
   BrushIcon, CircleIcon,
-  EraserIcon, LineIcon, RectIcon,
+  EraserIcon, LineIcon, RectIcon, ResizeIcon,
 } from '../Tools/ToolsIcon';
 
 interface IActionIconProps {
@@ -43,6 +43,8 @@ export function ActionIcon({ kind }: IActionIconProps) {
       return <EraserIcon />;
     case HistoryItemKinds.OpenProject:
       return <FolderOpenOutlined />;
+    case HistoryItemKinds.ResizeCanvas:
+      return <ResizeIcon />;
     default:
       return <FileAddOutlined />;
   }

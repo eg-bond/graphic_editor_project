@@ -26,6 +26,8 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Ластик';
     case HistoryItemKinds.OpenProject:
       return 'Открыть';
+    case HistoryItemKinds.ResizeCanvas:
+      return 'Изменение размеров холста';
     default:
       return '';
   }
