@@ -13,6 +13,8 @@ export function getHistoryItemKind(toolKind: ToolKinds | null): HistoryItemKinds
       return HistoryItemKinds.Circle;
     case ToolKinds.Eraser:
       return HistoryItemKinds.Eraser;
+    case ToolKinds.Triangle:
+      return HistoryItemKinds.Triangle;
     default:
       return HistoryItemKinds.Brush;
   }

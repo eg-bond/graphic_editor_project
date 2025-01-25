@@ -10,6 +10,7 @@ export enum ToolKinds {
   Rect = 'rect',
   Circle = 'circle',
   Eraser = 'eraser',
+  Triangle = 'triangle',
 }
 
 interface ToolsSliceState {
