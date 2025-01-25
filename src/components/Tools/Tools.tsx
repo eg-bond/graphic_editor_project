@@ -60,10 +60,12 @@ export function Tools() {
   };
 
   return (
-    <div className={
-      'absolute left-4 top-4 flex flex-col ' +
-      'gap-2 bg-white p-2 rounded-lg shadow-md'
-    }
+    <div
+      className={
+        'absolute left-4 top-4 flex flex-col ' +
+        'gap-2 bg-white p-2 rounded-lg shadow-md'
+      }
+      style={{ zIndex: 1000 }}
     >
       {TOOLS.map(({
         title,
