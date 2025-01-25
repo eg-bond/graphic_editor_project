@@ -10,7 +10,7 @@ import {
   DEFAULT_TOOLS_COLOR,
   DEFAULT_TOOLS_SECONDARY_COLOR,
 } from '@/utils/constants';
-import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon } from './ToolsIcon';
+import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon } from './ToolsIcon';
 import { Tooltip } from 'antd';
 import { LineWidthChanger } from '@/components/Tools/LineWidthChanger.tsx';
 
@@ -39,6 +39,11 @@ const TOOLS = [
     title: 'Квадрат',
     icon: <RectIcon />,
     type: ToolKinds.Rect,
+  },
+  {
+    title: 'Треугольник',
+    icon: <TriangleIcon />,
+    type: ToolKinds.Triangle,
   },
 ] as const;
 

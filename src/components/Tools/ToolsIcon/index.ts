@@ -4,6 +4,7 @@ import EraserIcon from './EraserIcon';
 import LineIcon from './LineIcon';
 import RectIcon from './RectIcon';
 import LineWidthIcon from './LineWidthIcon';
+import TriangleIcon from './TriangeIcon';
 
 export {
   BrushIcon,
@@ -12,4 +13,5 @@ export {
   LineIcon,
   RectIcon,
   LineWidthIcon,
+  TriangleIcon,
 };
