@@ -47,8 +47,16 @@ export function LayerName({
     setRenameInputVisible(false);
   };
 
+  const handleDoubleClick = () => {
+    setRenameInputVisible(true);
+  };
+
   return (
-    <div className="flex-[0.75]" onClick={onClick}>
+    <div
+      className="flex-[0.75]"
+      onDoubleClick={handleDoubleClick}
+      onClick={onClick}
+    >
       {renameInputVisible && (
         <Form onFinish={handleSubmit}>
           <Input
