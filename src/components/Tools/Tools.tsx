@@ -12,6 +12,7 @@ import {
 } from '@/utils/constants';
 import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon } from './ToolsIcon';
 import { Tooltip } from 'antd';
+import { LineWidthChanger } from '@/components/Tools/LineWidthChanger.tsx';
 
 const TOOLS = [
   {
@@ -91,6 +92,7 @@ export function Tools() {
         </div>
       </Tooltip>
 
+      <LineWidthChanger />
     </div>
   );
 }

@@ -9,6 +9,7 @@ export const Canvas: FC = () => {
   const { width, height } = useAppSelector(state => state.project);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const toolColor = useAppSelector(state => state.tools.color);
+  const lineWidth = useAppSelector(state => state.tools.lineWidth);
 
   // Реф для хранения используемого для рисования canvas элемента
   const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
@@ -19,8 +20,8 @@ export const Canvas: FC = () => {
     if (!canvasElementRef.current) return;
     const ctx = canvasElementRef.current.getContext('2d');
     if (!ctx) return;
-    ctx.lineWidth = 5;
-  }, [width, height]);
+    ctx.lineWidth = lineWidth;
+  }, [lineWidth]);
 
   // Эффект, меняющий цвет кисти canvas элемента при изменении toolColor
   useEffect(() => {

@@ -17,12 +17,14 @@ interface ToolsSliceState {
   color: string;
   // цвет заливки фигур
   secondaryColor: string;
+  lineWidth: number;
 }
 
 const initialState: ToolsSliceState = {
   tool: ToolKinds.Brush,
   color: DEFAULT_TOOLS_COLOR,
   secondaryColor: DEFAULT_TOOLS_SECONDARY_COLOR,
+  lineWidth: 5,
 };
 
 export const toolsSlice = createSlice({
@@ -43,6 +45,9 @@ export const toolsSlice = createSlice({
       color: string;
     }>) => {
       state.secondaryColor = action.payload.color;
+    },
+    setLineWidth: (state, action: PayloadAction<number>) => {
+      state.lineWidth = action.payload;
     },
   },
 });
