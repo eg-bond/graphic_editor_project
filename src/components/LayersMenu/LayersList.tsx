@@ -1,12 +1,15 @@
+import { memo } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { Layer } from './Layer';
-import { memo } from 'react';
 
-// List of all layers
 export const LayersList = memo(function LayersList() {
   const layers = useAppSelector(
-    state => state.history.items?.[state.history.activeItemIndex]?.layersList,
-  ) ?? [];
+    state => state.history.items?.[state.history.activeItemIndex]?.layersList ?? [],
+  );
+
+  const activeLayerIndex = useAppSelector(
+    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
+  );
 
   return (
     <div className="flex flex-col justify-between overflow-y-auto">
@@ -17,6 +20,7 @@ export const LayersList = memo(function LayersList() {
           lastElementIndex={layers.length - 1}
           name={layer.name}
           visible={layer.visible}
+          isActive={i === activeLayerIndex}
         />
       ))}
     </div>

@@ -16,6 +16,8 @@ export const {
   addDrawing,
   resizeCanvas,
   setStateFromHistory,
+  layerUp,
+  layerDown,
 } = historySlice.actions;
 
 export * from './selectors.ts';

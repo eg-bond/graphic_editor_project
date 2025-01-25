@@ -9,7 +9,10 @@ import {
   selectActiveLayerIndex,
 } from '@/redux/history';
 import { LayerName } from './LayerName';
-import { DownOutlined, EyeInvisibleOutlined, EyeOutlined, UpOutlined } from '@ant-design/icons';
+import {
+  DownOutlined, EyeInvisibleOutlined,
+  EyeOutlined, UpOutlined,
+} from '@ant-design/icons';
 import { LayerT } from '@/redux/history/historySlice';
 
 interface ILayerProps {
@@ -17,6 +20,7 @@ interface ILayerProps {
   lastElementIndex: number;
   name: LayerT['name'];
   visible: LayerT['visible'];
+  isActive: boolean;
 }
 
 // Single layer
@@ -27,6 +31,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   visible,
 }: ILayerProps) {
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
+
   const d = useAppDispatch();
   const [renameInputVisible, setRenameInputVisible] = useState(false);
 
