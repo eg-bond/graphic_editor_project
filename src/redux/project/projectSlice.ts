@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Project } from '@/types/localStorageTypes'; // Импортируем интерфейс Project
+import type { Project } from '@/types/localStorageTypes';
 
 const initialState: Project = {
   id: '',
   name: '',
   width: 0,
   height: 0,
-  data: undefined,
 };
 
 const projectSlice = createSlice({
@@ -24,22 +23,9 @@ const projectSlice = createSlice({
       state.width = action.payload.width;
       state.height = action.payload.height;
     },
-
-    // Сохраняет данные проекта в LocalStorage
-    saveToLocalStorage(state) {
-      const projects = JSON.parse(localStorage.getItem('graphic-projects') || '[]');
-      const updatedProjects = projects.map((project: Project) =>
-        project.id === state.id ? { ...state } : project,
-      );
-      localStorage.setItem('graphic-projects', JSON.stringify(updatedProjects));
-    },
   },
 });
 
-export const {
-  setProject,
-  updateResolution,
-  saveToLocalStorage,
-} = projectSlice.actions;
+export const { setProject, updateResolution } = projectSlice.actions;
 
 export default projectSlice.reducer;

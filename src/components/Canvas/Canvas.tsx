@@ -3,9 +3,9 @@ import { useAppSelector } from '@/redux/hooks';
 import { useTool } from '@/hooks/useTool.ts';
 import { LayersCanvasData } from './LayersCanvasData';
 import { selectActiveLayerIndex } from '@/redux/history';
+import { useCircleCursor } from '@/hooks/useCircleCursor';
 
 export const Canvas: FC = () => {
-  // Получаем ширину и высоту из Redux
   const { width, height } = useAppSelector(state => state.project);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const toolColor = useAppSelector(state => state.tools.color);
@@ -20,17 +20,26 @@ export const Canvas: FC = () => {
     const ctx = canvasElementRef.current.getContext('2d');
     if (!ctx) return;
     ctx.lineWidth = 5;
-  }, []);
+  }, [width, height]);
 
-  // эффект, меняющий цвет кисти canvas элемента при изменении toolColor
+  // Эффект, меняющий цвет кисти canvas элемента при изменении toolColor
   useEffect(() => {
     if (!canvasElementRef.current) return;
     const ctx = canvasElementRef.current.getContext('2d');
     if (!ctx) return;
 
     ctx.strokeStyle = toolColor;
-  }, [toolColor]);
+  }, [toolColor, width, height]);
 
+  // Круглый курсор для холста
+  const {
+    updateMousePosition,
+    handleMouseEnter,
+    handleMouseLeave,
+    cursorElement,
+  } = useCircleCursor();
+
+  // Инструменты
   const {
     startDrawing,
     draw,
@@ -45,13 +54,23 @@ export const Canvas: FC = () => {
           width: `${width}px`,
           height: `${height}px`,
           margin: '1rem',
-
+          cursor: 'none',
         }}
         onMouseDown={startDrawing}
-        onMouseMove={draw}
+        onMouseMove={(e) => {
+          draw(e);
+          updateMousePosition(e);
+        }}
         onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
+        onMouseLeave={() => {
+          stopDrawing();
+          handleMouseLeave();
+        }}
+        onMouseEnter={handleMouseEnter}
       >
+        {/* Кастомный курсор */}
+        {cursorElement}
+
         {/* Canvas элементы, служащие для вывода canvas данных из слоев */}
         <LayersCanvasData />
 

@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { changeLayerName, selectLayersList } from '@/redux/history';
+import { useAppDispatch } from '@/redux/hooks';
+import { changeLayerName } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { Form, Input, InputRef } from 'antd';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { validateLayerName } from '@/utils/validateLayerName.ts';
+import { NEW_LAYER_NAME } from '@/utils/constants';
 
 type ILayerName = {
   i: number;
@@ -21,8 +21,6 @@ export function LayerName({
   onClick,
 }: ILayerName) {
   const d = useAppDispatch();
-  const layersList = useAppSelector(selectLayersList);
-  const existingNames = layersList.map(layer => layer.name);
   const inputRef = useRef<InputRef | null>(null);
   const [inputValue, setInputValue] = useState<string>(name);
   const [error, setError] = useState<string | null>(null);
@@ -39,19 +37,10 @@ export function LayerName({
   };
 
   const handleSubmit = () => {
-    const trimmedName = inputValue.trim();
+    let trimmedName = inputValue.trim();
 
-    if (!trimmedName) {
-      setError('Поле не может быть пустым');
-      inputRef.current?.focus();
-      return;
-    }
-
-    const validationError = validateLayerName(trimmedName, existingNames);
-    if (validationError) {
-      setError(validationError);
-      inputRef.current?.focus();
-      return;
+    if (trimmedName === '') {
+      trimmedName = NEW_LAYER_NAME + String(i + 1);
     }
 
     d(changeLayerName({ index: i, name: trimmedName }));

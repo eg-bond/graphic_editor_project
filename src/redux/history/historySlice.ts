@@ -1,10 +1,10 @@
 import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { swapArrayElements } from '@/utils/swapArrayElements.ts';
-import { addNewHistoryItemToLS } from '@/utils/addNewHistoryItemToLS';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
-import { EMPTY_CANVAS_DATA } from '@/utils/constants';
+import { EMPTY_CANVAS_DATA, NEW_LAYER_NAME } from '@/utils/constants';
+import { addNewHistoryItemToLS } from '@/utils/localStorageUtils';
 
 export interface LayerT {
   id: number;
@@ -31,15 +31,19 @@ export interface HistorySliceStateT {
 }
 
 const HISTORY_MAX_LENGTH = 10;
-const NEW_LAYER_NAME = 'Cлой ';
 
 const initialState: HistorySliceStateT = {
   projectId: null,
-  items: [],
-  historyIdCount: 0,
+  items: [{
+    id: 0,
+    kind: HistoryItemKinds.OpenProject,
+    layersList: [],
+    activeLayerIndex: -1,
+  }],
+  historyIdCount: 1,
   activeItemIndex: 0,
-  maxHistoryLength: HISTORY_MAX_LENGTH,
   layerIdCount: 0,
+  maxHistoryLength: HISTORY_MAX_LENGTH,
 };
 
 export const historySlice = createSlice({
@@ -50,22 +54,25 @@ export const historySlice = createSlice({
       id: string; data?: ProjectData;
     }>) => {
       state.projectId = action.payload.id;
+      state.activeItemIndex = initialState.activeItemIndex;
       if (action.payload.data) {
-        state.items = action.payload.data.items;
+        state.items = [{
+          ...action.payload.data.historyItem,
+          kind: HistoryItemKinds.OpenProject,
+        }];
         state.historyIdCount = action.payload.data.historyIdCount;
-        state.activeItemIndex = action.payload.data.activeItemIndex;
         state.layerIdCount = +action.payload.data.layerIdCount || 0;
       } else {
-        state.items = [];
-        state.historyIdCount = 0;
-        state.activeItemIndex = -1;
-        state.layerIdCount = 0;
+        state.items = initialState.items;
+        state.historyIdCount = initialState.historyIdCount;
+        state.layerIdCount = initialState.layerIdCount;
       }
     },
     activateHistoryItem: (state, action: PayloadAction<{
       index: number;
     }>) => {
       state.activeItemIndex = action.payload.index;
+      addNewHistoryItemToLS(state);
     },
     setStateFromHistory: (state, action: PayloadAction<{
       layersList: LayerT[];

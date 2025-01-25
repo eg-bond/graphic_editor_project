@@ -3,15 +3,18 @@ import { DropDownNav, MenuItem } from './DropDownNav';
 import {
   CreateProjectButton,
 } from '@/components/Navigation/CreateProjectButton.tsx';
+import { useSaveToLs } from '@/hooks/useSaveToLs';
 
 export const Navigation = () => {
+  const { handleSave, notificationCtx } = useSaveToLs();
+
   const files: MenuItem[] = [
     {
       label: <CreateProjectButton />,
       key: '0',
     },
     {
-      label: <Link to="/">Сохранить</Link>,
+      label: <button onClick={() => handleSave()}>Сохранить</button>,
       key: '1',
     },
     {
@@ -35,6 +38,7 @@ export const Navigation = () => {
       <DropDownNav title="Файл" items={files} />
       <DropDownNav title="Правка" items={edits} />
       <Link to="/">Все проекты</Link>
+      {notificationCtx}
     </nav>
   );
 };

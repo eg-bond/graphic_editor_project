@@ -12,4 +12,6 @@ export enum HistoryItemKinds {
   Rect,
   Eraser,
   Circle,
+  // Other
+  OpenProject,
 }

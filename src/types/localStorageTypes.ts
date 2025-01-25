@@ -1,9 +1,8 @@
 import { HistoryItemT } from '@/redux/history/historySlice';
 
 export interface ProjectData {
-  items: Array<HistoryItemT>;
+  historyItem: HistoryItemT;
   historyIdCount: number;
-  activeItemIndex: number;
   layerIdCount: number;
 }
 
@@ -13,4 +12,9 @@ export interface Project {
   width: number;
   height: number;
   data?: ProjectData;
+}
+
+export enum Statuses {
+  Success = 'success',
+  Error = 'error',
 }
