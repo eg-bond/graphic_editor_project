@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRectangle } from './useRectangel';
 import { selectActiveLayer } from '@/redux/history';
 import { useCircle } from './useCircle';
+import { useTriangle } from './useTriangle';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
@@ -48,6 +49,12 @@ export const useTool = (
     stopDrawing: circleStopDrawing,
   } = useCircle(canvasElement);
 
+  const {
+    startDrawing: triangleStartDrawing,
+    draw: triangleDraw,
+    stopDrawing: triangleStopDrawing,
+  } = useTriangle(canvasElement);
+
   if (!activeLayer) return {
     startDrawing: () => {}, draw: () => {}, stopDrawing: () => {},
   };
@@ -65,6 +72,14 @@ export const useTool = (
       startDrawing: lineStartDrawing,
       draw: lineDraw,
       stopDrawing: lineStopDrawing,
+    };
+  }
+
+  if (tool === ToolKinds.Triangle) {
+    return {
+      startDrawing: triangleStartDrawing,
+      draw: triangleDraw,
+      stopDrawing: triangleStopDrawing,
     };
   }
 
