@@ -11,6 +11,7 @@ import {
 import {
   BrushIcon, CircleIcon,
   EraserIcon, LineIcon, RectIcon,
+  TriangleIcon,
 } from '../Tools/ToolsIcon';
 
 interface IActionIconProps {
@@ -33,6 +34,8 @@ export function ActionIcon({ kind }: IActionIconProps) {
       return <VerticalAlignMiddleOutlined />;
     case HistoryItemKinds.Brush:
       return <BrushIcon />;
+    case HistoryItemKinds.Triangle:
+      return <TriangleIcon />;
     case HistoryItemKinds.Line:
       return <LineIcon />;
     case HistoryItemKinds.Rect:
