@@ -5,6 +5,7 @@ import { useLine } from '@/hooks/useLine.ts';
 import { useEffect, useState } from 'react';
 import { useRectangle } from './useRectangel';
 import { selectActiveLayer } from '@/redux/history';
+import { useCircle } from './useCircle';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
@@ -12,7 +13,6 @@ export const useTool = (
   const tool = useAppSelector(state => state.tools.tool);
   const activeLayer = useAppSelector(selectActiveLayer);
 
-  // Форсируем ререндер, чтобы в canvasElement не было null
   const [, forceRender] = useState({});
   useEffect(() => {
     forceRender({});
@@ -41,6 +41,12 @@ export const useTool = (
     draw: rectDraw,
     stopDrawing: rectStopDrawing,
   } = useRectangle(canvasElement);
+
+  const {
+    startDrawing: circleStartDrawing,
+    draw: circleDraw,
+    stopDrawing: circleStopDrawing,
+  } = useCircle(canvasElement);
 
   if (!activeLayer) return {
     startDrawing: () => {}, draw: () => {}, stopDrawing: () => {},
@@ -71,7 +77,11 @@ export const useTool = (
   }
 
   if (tool === ToolKinds.Circle) {
-    // Аналогично для круга
+    return {
+      startDrawing: circleStartDrawing,
+      draw: circleDraw,
+      stopDrawing: circleStopDrawing,
+    };
   }
 
   if (tool === ToolKinds.Rect) {
