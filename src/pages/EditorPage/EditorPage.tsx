@@ -9,7 +9,6 @@ import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
 import { getProjectsFromLS } from '@/utils/localStorageUtils';
 import { Tools } from '@/components/Tools';
-import { CanvasResolutionButton } from '@/components/CanvasResolution';
 import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -67,7 +66,6 @@ export function EditorPage() {
             </div>
 
           </div>
-          <CanvasResolutionButton />
         </div>
 
         {/* Right vertical menu */}
