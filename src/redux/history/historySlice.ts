@@ -107,6 +107,8 @@ export const historySlice = createSlice({
 
       layers.splice(action.payload.index, 1);
 
+      activeElement.activeLayerIndex--;
+
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Remove,
         layersList: layers,
