@@ -29,8 +29,9 @@ const MainPage1: FC = () => {
   const [projects, setProjects] = useState<Project[]>(allProjects);
 
   const handleSubmit = useCallback((values: ProjectFormData) => {
+    const id = getUid();
     const newProject = {
-      id: getUid(),
+      id,
       height: +values.height,
       width: +values.width,
       name: values.name,
@@ -41,9 +42,8 @@ const MainPage1: FC = () => {
 
     form.resetFields();
     onClose();
-  },
-  [form, onClose],
-  );
+    navigate(`/projects/${id}`);
+  }, [form, navigate, onClose]);
 
   const handleDelete = (id: string) => {
     setProjects((prevState) => {

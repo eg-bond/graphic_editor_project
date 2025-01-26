@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useAppSelector } from '@/redux/hooks.ts';
 
 interface MousePosition {
   x: number;
@@ -6,6 +7,7 @@ interface MousePosition {
 }
 
 export const useCircleCursor = () => {
+  const size = useAppSelector(state => state.tools.lineWidth);
   const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
   const [isMouseInCanvas, setIsMouseInCanvas] = useState(false);
 
@@ -32,9 +34,8 @@ export const useCircleCursor = () => {
       <div
         style={{
           position: 'absolute',
-          // Размеры курсора в будущем должны меняться в зависимости от толщины инструмента
-          width: `${10}px`,
-          height: `${10}px`,
+          width: size,
+          height: size,
           backgroundColor: 'transparent',
           border: `1px solid black`,
           borderRadius: '50%',
@@ -46,7 +47,7 @@ export const useCircleCursor = () => {
         }}
       />
     );
-  }, [isMouseInCanvas, mousePosition.x, mousePosition.y]);
+  }, [isMouseInCanvas, mousePosition.x, mousePosition.y, size]);
 
   return {
     updateMousePosition,

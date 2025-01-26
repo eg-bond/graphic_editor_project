@@ -31,8 +31,14 @@ export const useLine = (canvasElement: HTMLCanvasElement | null) => {
       setIsDrawing(false);
       setStartPoint(null);
       setCurrentPoint(null);
+
+      const canvasContext = canvasElement?.getContext('2d');
+
+      if (!canvasContext) return;
+
+      canvasContext.clearRect(0, 0, 10000, 10000);
     }
-  }, [isDrawing, saveCanvasData]);
+  }, [isDrawing, saveCanvasData, canvasElement]);
 
   useEffect(() => {
     if (!isDrawing || !startPoint || !currentPoint) return;

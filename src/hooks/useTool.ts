@@ -16,7 +16,6 @@ export const useTool = (
   const [, forceRender] = useState({});
   useEffect(() => {
     forceRender({});
-    console.log(canvasElement);
   }, [canvasElement]);
 
   const {
@@ -24,6 +23,12 @@ export const useTool = (
     draw: brushDraw,
     stopDrawing: brushStopDrawing,
   } = useBrush(canvasElement);
+
+  const {
+    startDrawing: eraserStartDrawing,
+    draw: eraserDraw,
+    stopDrawing: eraserStopDrawing,
+  } = useBrush(canvasElement, true);
 
   const {
     startDrawing: lineStartDrawing,
@@ -58,7 +63,11 @@ export const useTool = (
   }
 
   if (tool === ToolKinds.Eraser) {
-    // Аналогично для ластика
+    return {
+      startDrawing: eraserStartDrawing,
+      draw: eraserDraw,
+      stopDrawing: eraserStopDrawing,
+    };
   }
 
   if (tool === ToolKinds.Circle) {

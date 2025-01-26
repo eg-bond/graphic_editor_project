@@ -7,6 +7,7 @@ export const {
   selectTool,
   selectColor,
   selectSecondaryColor,
+  setLineWidth,
 } = toolsSlice.actions;
 
 export { ToolKinds };
