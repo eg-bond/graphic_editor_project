@@ -1,60 +1,83 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSaveCanvasData } from './useSaveCanvasData';
 
 export const useLine = (canvasElement: HTMLCanvasElement | null) => {
-  const { saveCanvasData } = useSaveCanvasData(canvasElement);
+  const [isDrawing, setIsDrawing] = useState(false);
   const [startPoint, setStartPoint] = useState<{
     x: number; y: number;
   } | null>(null);
-  const [currentPoint, setCurrentPoint] = useState<{
-    x: number; y: number;
-  } | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
+  const { saveCanvasData } = useSaveCanvasData(canvasElement);
+
+  // Store the original canvas state to enable preview
+  const [originalImageData, setOriginalImageData] = useState<ImageData | null>(null);
 
   const startDrawing = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      setStartPoint({ x: event.clientX - rect.left, y: event.clientY - rect.top });
-      setIsDrawing(true);
-    }, []);
-
-  const draw = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!isDrawing) return;
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    setCurrentPoint({ x: event.clientX - rect.left, y: event.clientY - rect.top });
-  }, [isDrawing]);
-
-  const stopDrawing = useCallback(() => {
-    if (isDrawing) {
-      saveCanvasData();
-      setIsDrawing(false);
-      setStartPoint(null);
-      setCurrentPoint(null);
-
-      const canvasContext = canvasElement?.getContext('2d');
-
+      if (!canvasElement) return;
+      const canvasContext = canvasElement.getContext('2d');
       if (!canvasContext) return;
 
-      canvasContext.clearRect(0, 0, 10000, 10000);
-    }
-  }, [isDrawing, saveCanvasData, canvasElement]);
+      const { offsetX, offsetY } = event.nativeEvent;
 
-  useEffect(() => {
-    if (!isDrawing || !startPoint || !currentPoint) return;
+      // Save the starting point
+      setStartPoint({ x: offsetX, y: offsetY });
 
-    if (!canvasElement) return;
+      // Store the current canvas state
+      setOriginalImageData(
+        canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height),
+      );
+
+      setIsDrawing(true);
+      event.nativeEvent.preventDefault();
+    },
+    [canvasElement],
+  );
+
+  const draw = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!canvasElement || !isDrawing || !startPoint || !originalImageData) return;
     const canvasContext = canvasElement.getContext('2d');
-
     if (!canvasContext) return;
 
-    canvasContext.clearRect(0, 0, 10000, 10000);
+    const { offsetX, offsetY } = event.nativeEvent;
 
+    // Restore the original canvas state
+    canvasContext.putImageData(originalImageData, 0, 0);
+
+    // Draw the new line
     canvasContext.beginPath();
     canvasContext.moveTo(startPoint.x, startPoint.y);
-    canvasContext.lineTo(currentPoint.x, currentPoint.y);
+    canvasContext.lineTo(offsetX, offsetY);
     canvasContext.stroke();
-  }, [currentPoint, isDrawing, startPoint, canvasElement]);
 
-  return { startDrawing, draw, stopDrawing };
+    event.nativeEvent.preventDefault();
+  };
+
+  const stopDrawing = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!canvasElement || !isDrawing || !startPoint) return;
+    const canvasContext = canvasElement.getContext('2d');
+    if (!canvasContext) return;
+
+    const { offsetX, offsetY } = event.nativeEvent;
+
+    // Draw the final line
+    canvasContext.beginPath();
+    canvasContext.moveTo(startPoint.x, startPoint.y);
+    canvasContext.lineTo(offsetX, offsetY);
+    canvasContext.stroke();
+    canvasContext.closePath();
+
+    // Reset states
+    setIsDrawing(false);
+    setStartPoint(null);
+    setOriginalImageData(null);
+
+    // Save the canvas state
+    saveCanvasData();
+  };
+
+  return {
+    startDrawing,
+    draw,
+    stopDrawing,
+  };
 };

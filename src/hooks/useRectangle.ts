@@ -32,6 +32,9 @@ export const useRectangle = (
       );
       setImageData(currentImageData);
 
+      canvasContext.lineCap = 'square';
+      canvasContext.lineJoin = 'miter';
+
       const { offsetX, offsetY } = event.nativeEvent;
       setStartPoint({ x: offsetX, y: offsetY });
       setIsDrawing(true);

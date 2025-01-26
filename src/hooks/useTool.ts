@@ -1,12 +1,12 @@
 import { useAppSelector } from '@/redux/hooks.ts';
-import { useBrush } from '@/hooks/useBrush.ts';
+import { useBrush } from '@/hooks/useBrush';
 import { ToolKinds } from '@/redux/tools';
-import { useLine } from '@/hooks/useLine.ts';
 import { useEffect, useState } from 'react';
-import { useRectangle } from './useRectangel';
+import { useRectangle } from './useRectangle';
 import { selectActiveLayer } from '@/redux/history';
 import { useCircle } from './useCircle';
 import { useTriangle } from './useTriangle';
+import { useLine } from './useLine';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
@@ -23,7 +23,7 @@ export const useTool = (
     startDrawing: brushStartDrawing,
     draw: brushDraw,
     stopDrawing: brushStopDrawing,
-  } = useBrush(canvasElement);
+  } = useBrush(canvasElement, false);
 
   const {
     startDrawing: eraserStartDrawing,

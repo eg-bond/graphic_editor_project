@@ -40,13 +40,15 @@ export const LayersCanvasData: FC = () => {
   }, [layersList, loadCanvasData]);
 
   // Memoize styles for better performance
-  const getCanvasStyle = useCallback((layer: LayerT, index: number) => ({
-    width: `${width}px`,
-    height: `${height}px`,
-    zIndex: 100 - index,
-    opacity: layer.opacity / 100,
-    display: layer.visible ? 'block' : 'none',
-  }), [width, height]);
+  const getCanvasStyle = useCallback((layer: LayerT, index: number) => {
+    return {
+      width: `${width}px`,
+      height: `${height}px`,
+      zIndex: 100 - index,
+      opacity: layer.opacity / 100,
+      display: !layer.visible ? 'none' : 'block',
+    };
+  }, [width, height]);
 
   return (
     <>
