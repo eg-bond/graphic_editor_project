@@ -21,7 +21,8 @@ export const Canvas: FC = () => {
     const ctx = canvasElementRef.current.getContext('2d');
     if (!ctx) return;
     ctx.lineWidth = lineWidth;
-  }, [lineWidth]);
+    // зависимости width и height нужны, чтобы при ресайзе холста lineWidth не сбрасывался
+  }, [lineWidth, width, height]);
 
   // Эффект, меняющий цвет кисти canvas элемента при изменении toolColor
   useEffect(() => {
@@ -30,6 +31,7 @@ export const Canvas: FC = () => {
     if (!ctx) return;
 
     ctx.strokeStyle = toolColor;
+    // зависимости width и height нужны, чтобы при ресайзе холста strokeStyle не сбрасывался
   }, [toolColor, width, height]);
 
   // Круглый курсор для холста

@@ -16,7 +16,6 @@ export const useTool = (
   const [, forceRender] = useState({});
   useEffect(() => {
     forceRender({});
-    console.log(canvasElement);
   }, [canvasElement]);
 
   const {
