@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { LayersList } from './LayersList';
 import { OpacitySlider } from './OpacitySlider';
 import { useAppDispatch } from '@/redux/hooks';
@@ -16,10 +16,10 @@ export function LayersMenu() {
   // Обработка горячих клавиш по перемещению активного слоя
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === 'z') {
+      if (e.ctrlKey && e.key === 'ArrowUp') {
         d(layerUp());
         e.preventDefault();
-      } else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
+      } else if (e.ctrlKey && e.key === 'ArrowDown') {
         d(layerDown());
         e.preventDefault();
       }

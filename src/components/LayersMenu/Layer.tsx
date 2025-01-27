@@ -6,7 +6,6 @@ import {
   changeLayerVisibility,
   moveLayerDown,
   moveLayerUp,
-  selectActiveLayerIndex,
 } from '@/redux/history';
 import { LayerName } from './LayerName';
 import {
@@ -14,6 +13,7 @@ import {
   EyeOutlined, UpOutlined,
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/history/historySlice';
+import { selectActiveLayerIndex } from '@/redux/history/selectors';
 
 interface ILayerProps {
   i: number;

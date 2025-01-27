@@ -1,15 +1,12 @@
 import { memo } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { Layer } from './Layer';
+import { selectActiveLayerIndex, selectLayersList } from '@/redux/history/selectors';
 
 export const LayersList = memo(function LayersList() {
-  const layers = useAppSelector(
-    state => state.history.items?.[state.history.activeItemIndex]?.layersList ?? [],
-  );
+  const layers = useAppSelector(selectLayersList);
 
-  const activeLayerIndex = useAppSelector(
-    state => state.history.items[state.history.activeItemIndex]?.activeLayerIndex,
-  );
+  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
 
   return (
     <div className="flex flex-col justify-between overflow-y-auto">
