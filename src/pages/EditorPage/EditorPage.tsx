@@ -54,19 +54,16 @@ export function EditorPage() {
 
       {/* Main content area with right sidebar */}
       <div className="flex flex-1 relative">
-        {/* Голубой контейнер с холстом */}
-        <div
-          className="flex-1 bg-gray-200 relative overflow-auto"
-          style={{ width: 'calc(100% - 16.6666%)' }}
-        >
-
+        {/* Контейнер с инструментами и холстом */}
+        <div className="flex-1 bg-gray-200 relative overflow-hidden">
+          {/* Инструменты */}
           <div>
             <Tools />
           </div>
 
           {/* Голубой контейнер с холстом */}
-          <div className="h-[95vh] bg-blue-300 flex justify-center items-start overflow-auto">
-            <div className="m-auto">
+          <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto ">
+            <div className="relative max-w-full max-h-full">
               <Canvas />
             </div>
           </div>
