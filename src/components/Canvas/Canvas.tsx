@@ -1,48 +1,32 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { useTool } from '@/hooks/useTool.ts';
 import { LayersCanvasData } from './LayersCanvasData';
 import { selectActiveLayer, selectActiveLayerIndex } from '@/redux/history';
 import { useCircleCursor } from '@/hooks/useCircleCursor';
+import { loadCanvasData } from '@/utils/loadCanvasData';
 
-export const Canvas: FC = () => {
+export const Canvas = memo(() => {
   const { width, height } = useAppSelector(state => state.project);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const activeLayer = useAppSelector(selectActiveLayer);
   const toolColor = useAppSelector(state => state.tools.color);
   const lineWidth = useAppSelector(state => state.tools.lineWidth);
+  // layerCanvas - тот, который отрисовывается из слоев в redux
+  const [layerCanvasVisible, setLayerCanvasVisible] = useState(true);
 
   // Реф для хранения используемого для рисования canvas элемента
   const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Функция, отвечающая за загрузку и отрисовку данных из redux в canvas
-  const loadCanvasData = useCallback(async (): Promise<void> => {
-    const ctx = canvasElementRef.current?.getContext('2d');
-    if (!ctx) return;
-
-    const savedData = activeLayer.canvasData;
-
-    // Create a blob from the base64 data
-    const blob = await fetch(savedData).then(res => res.blob());
-    // Create bitmap (hardware accelerated)
-    const bitmap = await createImageBitmap(blob);
-
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(bitmap, 0, 0);
-
-    // Optional: release the bitmap when done
-    bitmap.close();
-  }, [activeLayer, width, height]);
-
   // Эффект, который загружает в рабочий canvas данные из активного слоя
   useEffect(() => {
-    if (!canvasElementRef.current) return;
-    const ctx = canvasElementRef.current.getContext('2d');
-    if (!ctx) return;
-
-    loadCanvasData();
-    // зависимости width и height нужны, чтобы при ресайзе холста lineWidth не сбрасывался
-  }, [activeLayerIndex, loadCanvasData]);
+    loadCanvasData({
+      canvasElement: canvasElementRef.current,
+      data: activeLayer?.canvasData,
+      width,
+      height,
+    });
+  }, [activeLayerIndex, width, height, canvasElementRef, activeLayer]);
 
   // Эффект, который устанавливавает lineWidth
   useEffect(() => {
@@ -58,7 +42,6 @@ export const Canvas: FC = () => {
     if (!canvasElementRef.current) return;
     const ctx = canvasElementRef.current.getContext('2d');
     if (!ctx) return;
-
     ctx.strokeStyle = toolColor;
     // зависимости width и height нужны, чтобы при ресайзе холста strokeStyle не сбрасывался
   }, [toolColor, width, height]);
@@ -87,15 +70,22 @@ export const Canvas: FC = () => {
           height: `${height}px`,
           cursor: 'none',
         }}
-        onMouseDown={startDrawing}
+        onMouseDown={(e) => {
+          setLayerCanvasVisible(false);
+          startDrawing(e);
+        }}
         onMouseMove={(e) => {
           draw(e);
           updateMousePosition(e);
         }}
-        onMouseUp={stopDrawing}
+        onMouseUp={(e) => {
+          stopDrawing(e);
+          setTimeout(() => setLayerCanvasVisible(true), 100);
+        }}
         onMouseLeave={(e) => {
           stopDrawing(e);
           handleMouseLeave();
+          setTimeout(() => setLayerCanvasVisible(true), 100);
         }}
         onMouseEnter={handleMouseEnter}
       >
@@ -103,7 +93,7 @@ export const Canvas: FC = () => {
         {cursorElement}
 
         {/* Canvas элементы, служащие для вывода canvas данных из слоев */}
-        <LayersCanvasData />
+        <LayersCanvasData layerCanvasVisible={layerCanvasVisible} />
 
         {/* Canvas элемент с на которым мы непосредственно взаимодействуем */}
         <canvas
@@ -112,7 +102,7 @@ export const Canvas: FC = () => {
             width,
             height,
             zIndex: 100 - activeLayerIndex,
-            opacity: activeLayer.opacity / 100,
+            opacity: activeLayer.opacity / 100 || 1,
             display: activeLayer.visible ? 'block' : 'none',
           }}
           width={width}
@@ -123,4 +113,4 @@ export const Canvas: FC = () => {
 
     </div>
   );
-};
+});
