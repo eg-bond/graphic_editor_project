@@ -6,3 +6,6 @@ export const EMPTY_CANVAS_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA
 
 export const DEFAULT_TOOLS_COLOR = '#000000';
 export const DEFAULT_TOOLS_SECONDARY_COLOR = '#FF000000';
+
+export const MENU_WIDTH = 150;
+export const MENU_HEIGHT = 100;
