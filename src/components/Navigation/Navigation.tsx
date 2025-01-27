@@ -5,6 +5,19 @@ import {
 } from '@/components/Navigation/CreateProjectButton.tsx';
 
 export const Navigation = () => {
+  const handleExport = () => {
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = `${Date.now()}.png`;
+      link.click();
+    } else {
+      console.error('Canvas элемент не найден!');
+    }
+  };
+
   const files: MenuItem[] = [
     {
       label: <CreateProjectButton />,
@@ -15,7 +28,11 @@ export const Navigation = () => {
       key: '1',
     },
     {
-      label: <Link to="/">Экспортировать</Link>,
+      label: (
+        <button onClick={handleExport}>
+          Экспортировать
+        </button>
+      ),
       key: '2',
     },
   ];
