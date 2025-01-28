@@ -1,22 +1,15 @@
 import React, { memo, useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Button, Dropdown, MenuProps } from 'antd';
+import { Button } from 'antd';
 import {
   activateLayer,
   changeLayerVisibility,
   moveLayerDown,
   moveLayerUp,
-  removeLayer,
   selectActiveLayerIndex,
 } from '@/redux/history';
 import { LayerName } from './LayerName';
-import {
-  DownOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
-  MenuOutlined,
-  UpOutlined,
-} from '@ant-design/icons';
+import { DownOutlined, EyeInvisibleOutlined, EyeOutlined, UpOutlined } from '@ant-design/icons';
 import { LayerT } from '@/redux/history/historySlice';
 
 interface ILayerProps {
@@ -52,10 +45,6 @@ export const Layer = memo<ILayerProps>(function Layer({
     d(changeLayerVisibility({ index: i }));
   }, [d, i]);
 
-  const handleRemoveLayer = useCallback(() => {
-    d(removeLayer({ index: i }));
-  }, [d, i]);
-
   const handleMoveLayerUp = useCallback(() => {
     if (i === 0) return;
     d(moveLayerUp({ index: i }));
@@ -65,20 +54,6 @@ export const Layer = memo<ILayerProps>(function Layer({
     if (i === lastElementIndex) return;
     d(moveLayerDown({ index: i }));
   }, [d, i, lastElementIndex]);
-
-  const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: 'Переименовать',
-      onClick: () => setRenameInputVisible(true),
-    },
-    {
-      key: '2',
-      label: 'Удалить',
-      danger: true,
-      onClick: () => handleRemoveLayer(),
-    },
-  ];
 
   const staticClasses =
     'flex justify-between items-center gap-2 px-2 py-1 ' +
@@ -118,10 +93,6 @@ export const Layer = memo<ILayerProps>(function Layer({
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           onClick={() => handleChangeVisibility()}
         />
-        {/* Menu button with 'rename' and 'delete' options */}
-        <Dropdown menu={{ items }} placement="bottomRight" trigger={['click']}>
-          <Button icon={<MenuOutlined />}></Button>
-        </Dropdown>
       </div>
     </div>
   );
