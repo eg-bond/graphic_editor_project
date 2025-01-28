@@ -13,7 +13,7 @@ import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 export function EditorPage() {
-  const { id } = useParams(); // Получаем id проекта из URL
+  const { id } = useParams();
   const dispatch = useAppDispatch();
   const [initialized, setInitialized] = useState(false);
 
@@ -22,10 +22,8 @@ export function EditorPage() {
       const { currentProject } = getProjectsFromLS(id);
 
       if (currentProject) {
-        // Загружаем проект в projectSlice
         dispatch(setProject(currentProject));
 
-        // Загружаем данные для истории (если необходимо)
         dispatch(setProjectData({ id, data: currentProject?.data }));
       } else {
         console.error('Проект не найден!');
@@ -48,28 +46,31 @@ export function EditorPage() {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col ">
+    <div className="h-screen w-full flex flex-col">
       {/* Top section */}
-      <div className="h-[5vh] w-full ">
+      <div className="h-[5vh] w-full">
         <Navigation />
       </div>
 
       {/* Main content area with right sidebar */}
-      <div className="flex flex-1 ">
-        <div className="flex-1 bg-gray-200 relative">
-          <div>
-            <Tools />
-          </div>
-          <div className="h-[95vh] bg-blue-300 flex justify-center items-start overflow-auto">
-            <div className="m-auto">
-              <Canvas />
-            </div>
+      <div className="flex flex-1 relative">
+        {/* Контейнер с инструментами и холстом */}
+        <div className="flex-1 bg-gray-200 relative overflow-hidden">
+          {/* Инструменты */}
+          <Tools />
 
+          {/* Голубой контейнер с холстом */}
+          <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto ">
+            <div className="relative max-w-full max-h-full flex">
+              <div className="p-4 pl-20 h-full">
+                <Canvas />
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Right vertical menu */}
-        <div className="w-1/6 h-[95vh] flex flex-col bg-slate-200">
+        <div className="w-1/6 h-[95vh] flex flex-col bg-slate-200 sticky top-[5vh] right-0">
           <LayersMenu />
           <HistoryMenu />
         </div>
