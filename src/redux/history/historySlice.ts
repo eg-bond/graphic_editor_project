@@ -231,5 +231,17 @@ export const historySlice = createSlice({
       });
       addNewHistoryItemToLS(state);
     },
+
+    layerUp: (state) => {
+      if (state.items[state.activeItemIndex].activeLayerIndex > 0) {
+        state.items[state.activeItemIndex].activeLayerIndex -= 1;
+      }
+    },
+    layerDown: (state) => {
+      const layersLength = state.items[state.activeItemIndex].layersList.length;
+      if (state.items[state.activeItemIndex].activeLayerIndex < layersLength - 1) {
+        state.items[state.activeItemIndex].activeLayerIndex += 1;
+      }
+    },
   },
 });

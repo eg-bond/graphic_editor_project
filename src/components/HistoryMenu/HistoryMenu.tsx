@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
 import { ActionIcon } from '../ActionIcon';
 import { getHistoryItemName } from '@/utils/getHistoryName';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export function HistoryMenu() {
   const d = useAppDispatch();
@@ -17,10 +17,31 @@ export function HistoryMenu() {
     [d, activeItemIndex],
   );
 
-  // Tailwind classes for history item
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'z') {
+        if (activeItemIndex > 0) {
+          handleActivateHistoryItem(activeItemIndex - 1);
+        }
+        e.preventDefault();
+      } else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
+        if (activeItemIndex < historyList.length - 1) {
+          handleActivateHistoryItem(activeItemIndex + 1);
+        }
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeItemIndex, historyList, handleActivateHistoryItem]);
+
   const staticClasses =
-   'flex justify-between p-2 border-b-2 border-gray-500 ' +
-   'first:border-t-2 hover: cursor-pointer ';
+    'flex justify-between p-2 border-b-2 border-gray-500 ' +
+    'first:border-t-2 hover: cursor-pointer ';
   const dynamicClasses = (i: number) => {
     const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
     const futureCl = activeItemIndex < i ? 'text-gray-500' : '';
