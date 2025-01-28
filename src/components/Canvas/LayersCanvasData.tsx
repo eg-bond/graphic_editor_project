@@ -1,52 +1,58 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
-import { selectLayersList } from '@/redux/history';
+import {
+  selectActiveLayerIndex,
+  selectLayersList,
+} from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
+import { loadCanvasData } from '@/utils/loadCanvasData';
 
-export const LayersCanvasData: FC = () => {
+interface ILayersCanvasData {
+  layerCanvasVisible: boolean;
+}
+
+export const LayersCanvasData = memo<ILayersCanvasData>(({ layerCanvasVisible }) => {
   const { width, height } = useAppSelector(state => state.project);
   const layersList = useAppSelector(selectLayersList);
+  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
 
   // Реф, хранящий ссылки на отрендеренные canvas элементы
   const canvasRefs = useRef<{
     [key: string]: HTMLCanvasElement | null;
   }>({});
 
-  // Функция, отвечающая за загрузку и отрисовку данных из redux в canvas
-  const loadCanvasData = useCallback(async (): Promise<void> => {
-    for (const index of Object.keys(canvasRefs.current)) {
-      const canvas = canvasRefs.current[index];
-      const context = canvas?.getContext('2d');
-      if (!canvas || !context) continue;
-
-      const savedData = layersList[+index].canvasData;
-
-      // Create a blob from the base64 data
-      const blob = await fetch(savedData).then(res => res.blob());
-      // Create bitmap (hardware accelerated)
-      const bitmap = await createImageBitmap(blob);
-
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.drawImage(bitmap, 0, 0);
-
-      // Optional: release the bitmap when done
-      bitmap.close();
-    }
-  }, [layersList]);
-
   // Обновляем содержимое canvas элементов при обновлении layersList
   useEffect(() => {
-    loadCanvasData();
-  }, [layersList, loadCanvasData]);
+    for (const index of Object.keys(canvasRefs.current)) {
+      const canvasElement = canvasRefs.current[index];
+      loadCanvasData({
+        canvasElement,
+        data: layersList[+index]?.canvasData,
+        width,
+        height,
+      });
+    }
+  }, [layersList, height, width]);
 
   // Memoize styles for better performance
-  const getCanvasStyle = useCallback((layer: LayerT, index: number) => ({
-    width: `${width}px`,
-    height: `${height}px`,
-    zIndex: 100 - index,
-    opacity: layer.opacity / 100,
-    display: layer.visible ? 'block' : 'none',
-  }), [width, height]);
+  const getCanvasStyle = useCallback(
+    (layer: LayerT, index: number) => {
+      const display = !layer.visible
+        ? 'none'
+        : layerCanvasVisible
+          ? 'block'
+          : activeLayerIndex === index
+            ? 'none'
+            : 'block';
+
+      return {
+        width: `${width}px`,
+        height: `${height}px`,
+        zIndex: 100 - index,
+        opacity: layer.opacity / 100 || 1,
+        display,
+      };
+    }, [width, height, activeLayerIndex, layerCanvasVisible]);
 
   return (
     <>
@@ -62,4 +68,4 @@ export const LayersCanvasData: FC = () => {
       ))}
     </>
   );
-};
+});

@@ -70,7 +70,7 @@ export function EditorPage() {
         </div>
 
         {/* Right vertical menu */}
-        <div className="w-1/6 h-[95vh] flex flex-col bg-slate-200 sticky top-[5vh] right-0">
+        <div className="w-1/6 h-[95vh] flex flex-col bg-slate-200">
           <LayersMenu />
           <HistoryMenu />
         </div>
