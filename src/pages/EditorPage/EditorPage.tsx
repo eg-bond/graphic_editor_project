@@ -57,14 +57,14 @@ export function EditorPage() {
         {/* Контейнер с инструментами и холстом */}
         <div className="flex-1 bg-gray-200 relative overflow-hidden">
           {/* Инструменты */}
-          <div>
-            <Tools />
-          </div>
+          <Tools />
 
           {/* Голубой контейнер с холстом */}
           <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto ">
-            <div className="relative max-w-full max-h-full">
-              <Canvas />
+            <div className="relative max-w-full max-h-full flex">
+              <div className="p-4 pl-20 h-full">
+                <Canvas />
+              </div>
             </div>
           </div>
         </div>

@@ -50,13 +50,12 @@ export const Canvas: FC = () => {
   } = useTool(canvasElementRef.current);
 
   return (
-    <div className="mt-20">
+    <div>
       <div
-        className=" relative border border-black bg-white mx-auto"
+        className=" relative border border-black bg-white"
         style={{
           width: `${width}px`,
           height: `${height}px`,
-          margin: '1rem',
           cursor: 'none',
         }}
         onMouseDown={startDrawing}
