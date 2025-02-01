@@ -15,17 +15,25 @@ const projectSlice = createSlice({
     setProject(_, action: PayloadAction<Project>) {
       return action.payload;
     },
-
-    // Обновляет разрешение холста
     updateResolution(state, action: PayloadAction<{
       width: number; height: number;
     }>) {
       state.width = Math.max(200, action.payload.width);
       state.height = Math.max(200, action.payload.height);
     },
+    setResolutionFromHistory(state, action: PayloadAction<{
+      width: number; height: number;
+    }>) {
+      console.log('Setting resolution from history:', action.payload);
+      state.width = action.payload.width;
+      state.height = action.payload.height;
+    },
   },
 });
 
-export const { setProject, updateResolution } = projectSlice.actions;
-
+export const {
+  setProject,
+  updateResolution,
+  setResolutionFromHistory,
+} = projectSlice.actions;
 export default projectSlice.reducer;

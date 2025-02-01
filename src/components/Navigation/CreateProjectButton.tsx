@@ -14,7 +14,7 @@ import { saveNewProjectToLS } from '@/utils/localStorageUtils';
 
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch(); // Подключаем диспетчер Redux
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const {
     open,
@@ -32,13 +32,10 @@ const CreateProjectButton1: FC = () => {
         name: values.name,
       };
 
-      // Сохраняем проект в Redux
       dispatch(setProject(newProject));
 
-      // Сохраняем проект в LocalStorage
       saveNewProjectToLS(newProject);
 
-      // Сбрасываем форму, закрываем модал и переходим к редактору
       form.resetFields();
       onClose();
       navigate(`/projects/${id}`, { state: newProject });

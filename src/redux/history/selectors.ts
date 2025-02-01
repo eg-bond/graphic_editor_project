@@ -15,3 +15,7 @@ export const selectLayersList = (state: RootState) => {
   const activeIndex = state.history.activeItemIndex;
   return state.history.items[activeIndex]?.layersList ?? [];
 };
+
+export const selectActiveHistoryItem = (state: RootState) => {
+  return state.history.items[state.history.activeItemIndex];
+};
