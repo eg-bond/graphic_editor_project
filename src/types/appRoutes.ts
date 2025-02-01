@@ -4,4 +4,5 @@ export enum AppRoutes {
   CurrentProject = 'projects/:id',
   SignIn = 'sign_in',
   SignUp = 'sign_up',
+  NotFound = '*',
 }

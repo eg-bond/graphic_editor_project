@@ -1,47 +1,30 @@
-import { db, auth } from '@/firebase';
-import { doc, setDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
-import { Form, Input, Button, Typography, Card, Row, Col, notification } from 'antd';
+import { Form, Input, Button, Card, Row, Col, notification } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-
-const { Title } = Typography;
+import { SignUpFormValues } from '@/types/authTypes';
+import { useAuthContext } from '@/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/types/appRoutes';
+import { SignInNavBtn } from '@/components/Buttons';
 
 export const SignUpPage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { signUp } = useAuthContext();
 
-  const onFinish = async (values: {
-    email: string;
-    password: string;
-    name: string;
-    confirmPassword: string;
-  }) => {
+  const onFinish = async (values: SignUpFormValues) => {
     try {
       setLoading(true);
-
-      // Создаем пользователя в Firebase
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password,
-      );
-
-      // Сохраняем дополнительные данные в Firestore
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        name: values.name,
-        email: values.email,
-        createdAt: new Date(),
-      });
-
+      await signUp(values);
       notification.success({
-        message: 'Registration Successful',
-        description: 'Welcome to our platform!',
+        message: 'Успешная регистрация',
+        description: 'Добро пожаловать на нашу платформу!',
       });
-      // TODO: Тут редирект сделать
+      navigate('/' + AppRoutes.Projects);
     } catch (error) {
       notification.error({
-        message: 'Registration Failed',
+        message: 'Ошибка при регистрации',
         description: (error as Error).message,
       });
     } finally {
@@ -58,7 +41,7 @@ export const SignUpPage = () => {
         lg={12}
         xl={8}
       >
-        <Card title={<Title level={2} style={{ textAlign: 'center' }}>Sign Up</Title>}>
+        <Card title={<h2 className="text-center text-xl">Регистрация</h2>}>
           <Form
             form={form}
             name="signup"
@@ -68,12 +51,12 @@ export const SignUpPage = () => {
             scrollToFirstError
           >
             <Form.Item
-              name="name"
-              rules={[{ required: true, message: 'Please input your name!' }]}
+              name="nickname"
+              rules={[{ required: true, message: 'Введите имя пользователя' }]}
             >
               <Input
                 prefix={<UserOutlined />}
-                placeholder="Full Name"
+                placeholder="Имя пользователя"
                 size="large"
               />
             </Form.Item>
@@ -81,8 +64,8 @@ export const SignUpPage = () => {
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please input your email!' },
-                { type: 'email', message: 'Please enter a valid email!' },
+                { required: true, message: 'Введите Email' },
+                { type: 'email', message: 'Введите корректный Email' },
               ]}
             >
               <Input
@@ -95,13 +78,13 @@ export const SignUpPage = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please input your password!' },
-                { min: 6, message: 'Password must be at least 6 characters!' },
+                { required: true, message: 'Введите пароль' },
+                { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Password"
+                placeholder="Пароль"
                 size="large"
               />
             </Form.Item>
@@ -110,20 +93,20 @@ export const SignUpPage = () => {
               name="confirmPassword"
               dependencies={['password']}
               rules={[
-                { required: true, message: 'Please confirm your password!' },
+                { required: true, message: 'Введите пароль' },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error('The two passwords do not match!'));
+                    return Promise.reject(new Error('Пароли не совпадают'));
                   },
                 }),
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Confirm Password"
+                placeholder="Подтвердите пароль"
                 size="large"
               />
             </Form.Item>
@@ -136,11 +119,18 @@ export const SignUpPage = () => {
                 block
                 size="large"
               >
-                Register
+                Зарегистрироаться
               </Button>
             </Form.Item>
           </Form>
         </Card>
+
+        <div className="flex flex-col items-center mt-5">
+          <p className="mb-2">
+            Уже есть аккаунт?
+          </p>
+          <SignInNavBtn />
+        </div>
       </Col>
     </Row>
   );

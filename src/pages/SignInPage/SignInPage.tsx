@@ -1,29 +1,30 @@
 import { useState } from 'react';
-import { Form, Input, Button, Typography, Card, Row, Col, notification } from 'antd';
+import { Form, Input, Button, Card, Row, Col, notification } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/firebase';
-
-const { Title } = Typography;
+import { useAuthContext } from '@/context/AuthContext';
+import { SignInFormValues } from '@/types/authTypes';
+import { SignUpNavBtn } from '@/components/Buttons';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/types/appRoutes';
 
 export const SignInPage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { signIn } = useAuthContext();
 
-  const onFinish = async (values: {
-    email: string; password: string;
-  }) => {
+  const onFinish = async (values: SignInFormValues) => {
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      await signIn(values);
       notification.success({
-        message: 'Login Successful',
-        description: 'Welcome back!',
+        message: 'Успешный вход в систему',
+        description: 'Добро пожаловать!',
       });
-      // TODO: Редирект??
+      navigate('/' + AppRoutes.Projects);
     } catch (error) {
       notification.error({
-        message: 'Login Failed',
+        message: 'Ошибка при входе в систему',
         description: (error as Error).message,
       });
     } finally {
@@ -40,7 +41,7 @@ export const SignInPage = () => {
         lg={12}
         xl={8}
       >
-        <Card title={<Title level={2} style={{ textAlign: 'center' }}>Login</Title>}>
+        <Card title={<h2 className="text-center text-xl">Вход</h2>}>
           <Form
             form={form}
             name="login"
@@ -51,8 +52,8 @@ export const SignInPage = () => {
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please input your email!' },
-                { type: 'email', message: 'Please enter a valid email!' },
+                { required: true, message: 'Введите Email' },
+                { type: 'email', message: 'Введите корректный Email' },
               ]}
             >
               <Input
@@ -64,11 +65,11 @@ export const SignInPage = () => {
 
             <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[{ required: true, message: 'Введите пароль' }]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Password"
+                placeholder="Пароль"
                 size="large"
               />
             </Form.Item>
@@ -81,11 +82,18 @@ export const SignInPage = () => {
                 block
                 size="large"
               >
-                Sign In
+                Войти
               </Button>
             </Form.Item>
           </Form>
         </Card>
+
+        <div className="flex flex-col items-center mt-5">
+          <p className="mb-2">
+            Нет аккаунта в системе?
+          </p>
+          <SignUpNavBtn />
+        </div>
       </Col>
     </Row>
   );

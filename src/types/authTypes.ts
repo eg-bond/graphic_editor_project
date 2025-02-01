@@ -1,5 +1,10 @@
-export interface UserData {
-  name: string;
+export type SignUpFormValues = {
+  nickname: string;
   email: string;
-  createdAt: Date;
-}
+  password: string;
+};
+
+export type SignInFormValues = {
+  email: string;
+  password: string;
+};
