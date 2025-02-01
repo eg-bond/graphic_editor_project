@@ -11,6 +11,7 @@ import {
 import {
   BrushIcon, CircleIcon,
   EraserIcon, LineIcon, RectIcon,
+  ResizeIcon,
   TriangleIcon,
 } from '../Tools/ToolsIcon';
 
@@ -46,6 +47,8 @@ export function ActionIcon({ kind }: IActionIconProps) {
       return <EraserIcon />;
     case HistoryItemKinds.OpenProject:
       return <FolderOpenOutlined />;
+    case HistoryItemKinds.ResizeCanvas:
+      return <ResizeIcon />;
     default:
       return <FileAddOutlined />;
   }

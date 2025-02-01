@@ -5,6 +5,7 @@ import LineIcon from './LineIcon';
 import RectIcon from './RectIcon';
 import LineWidthIcon from './LineWidthIcon';
 import TriangleIcon from './TriangeIcon';
+import ResizeIcon from './ResizeIcon';
 
 export {
   BrushIcon,
@@ -14,4 +15,5 @@ export {
   RectIcon,
   LineWidthIcon,
   TriangleIcon,
+  ResizeIcon,
 };

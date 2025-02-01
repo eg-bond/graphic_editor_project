@@ -15,4 +15,5 @@ export enum HistoryItemKinds {
   Triangle,
   // Other
   OpenProject,
+  ResizeCanvas,
 }
