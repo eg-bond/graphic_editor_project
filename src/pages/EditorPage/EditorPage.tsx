@@ -11,7 +11,6 @@ import { getProjectsFromLS } from '@/utils/localStorageUtils';
 import { Tools } from '@/components/Tools';
 import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { AuthStatus } from '@/components/AuthStatus';
 
 export function EditorPage() {
   const { id } = useParams();

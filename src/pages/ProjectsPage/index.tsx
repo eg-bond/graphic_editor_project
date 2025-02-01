@@ -1,5 +1,5 @@
 import { FC, memo, MouseEventHandler, useCallback, useState } from 'react';
-import { Button, Card, Col, Form, Popconfirm, Row, Typography } from 'antd';
+import { Button, Card, Col, Form, notification, Popconfirm, Row, Typography } from 'antd';
 import { Gutter } from 'antd/es/grid/row';
 import { getUid } from '@/utils/getUid.ts';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { PROJECTS_KEY } from '@/utils/constants.ts';
 import { Project } from '@/types/localStorageTypes';
 import { getProjectsFromLS, saveNewProjectToLS } from '@/utils/localStorageUtils';
 import { AuthStatus } from '@/components/AuthStatus';
+import { useAuthContext } from '@/context/AuthContext';
+import { createProject } from '@/utils/firebaseUtils';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
@@ -20,6 +22,7 @@ const { allProjects } = getProjectsFromLS();
 const gutter: [Gutter, Gutter] = [20, 20];
 
 const ProjectsPage1: FC = () => {
+  const { user } = useAuthContext();
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const {
@@ -29,8 +32,13 @@ const ProjectsPage1: FC = () => {
   } = useModal();
   const [projects, setProjects] = useState<Project[]>(allProjects);
 
-  const handleSubmit = useCallback((values: ProjectFormData) => {
+  const handleSubmit = useCallback(async (values: ProjectFormData) => {
+    if (!user) return;
+
+    // Сохранение проекта в LS (убрать)
+    // в firebase каждый новый документ получает свой уникальный id, думаю можно его использовать вместо getUid()
     const id = getUid();
+
     const newProject = {
       id,
       height: +values.height,
@@ -41,10 +49,26 @@ const ProjectsPage1: FC = () => {
     saveNewProjectToLS(newProject);
     setProjects(prevProjects => [{ ...newProject }, ...prevProjects]);
 
-    form.resetFields();
-    onClose();
-    navigate(`/projects/${id}`);
-  }, [form, navigate, onClose]);
+    // Сохранение проекта в Firebase (проверял работоспособность, решил уже оставить тут)
+    try {
+      await createProject({
+        name: values.name,
+        width: values.width,
+        height: values.height,
+      }, user.uid);
+
+      form.resetFields();
+      onClose();
+    } catch (error) {
+      notification.error({
+        message: 'Ошибка при создании проекта',
+        description: (error as Error).message,
+      });
+    }
+
+    // form.resetFields();
+    // onClose();
+  }, [form, user, onClose]);
 
   const handleDelete = (id: string) => {
     setProjects((prevState) => {

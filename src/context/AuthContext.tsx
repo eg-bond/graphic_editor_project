@@ -14,6 +14,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { SignInFormValues, SignUpFormValues } from '@/types/authTypes';
+import { FbCollectionNames } from '@/types/firebaseTypes';
 
 export interface ProviderProps {
   children: React.ReactNode;
@@ -67,16 +68,16 @@ export function AuthProvider({ children }: ProviderProps) {
   const signUp: IAuthContext['signUp'] = useCallback(
     async (values: SignUpFormValues) => {
       try {
-        // Создаем пользователя в Firebase
+        // Создаем пользователя в Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           values.email,
           values.password,
         );
 
-        // Сохраняем дополнительные данные в Firestore
-        await setDoc(doc(db, 'users', userCredential.user.uid), {
-          name: values.nickname,
+        // Сохраняем дополнительные данные о пользователе в Firestore
+        await setDoc(doc(db, FbCollectionNames.Users, userCredential.user.uid), {
+          nickname: values.nickname,
           email: values.email,
           createdAt: new Date(),
         });
