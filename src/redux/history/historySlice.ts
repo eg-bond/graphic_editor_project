@@ -118,6 +118,28 @@ export const historySlice = createSlice({
       });
       addNewHistoryItemToLS(state);
     },
+
+    moveLayer: (state, action: PayloadAction<{
+      from: number; to: number;
+    }>) => {
+      const { from, to } = action.payload;
+
+      if (from === to) return;
+
+      const activeElement = state.items[state.activeItemIndex];
+      activeElement.layersList = [...activeElement.layersList];
+      const movedLayer = activeElement.layersList.splice(from, 1)[0];
+      activeElement.layersList.splice(to, 0, movedLayer);
+
+      addNewHistoryItemToState(state, {
+        kind: HistoryItemKinds.Order,
+        layersList: activeElement.layersList,
+        activeLayerIndex: activeElement.activeLayerIndex,
+      });
+
+      addNewHistoryItemToLS(state);
+    },
+
     activateLayer: (state, action: PayloadAction<{
       index: number;
     }>) => {

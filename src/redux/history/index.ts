@@ -18,6 +18,7 @@ export const {
   setStateFromHistory,
   layerUp,
   layerDown,
+  moveLayer,
 } = historySlice.actions;
 
 export * from './selectors.ts';
