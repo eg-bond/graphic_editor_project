@@ -50,6 +50,7 @@ export function EditorPage() {
       {/* Top section */}
       <div className="h-[5vh] w-full">
         <Navigation />
+
       </div>
 
       {/* Main content area with right sidebar */}

@@ -13,7 +13,6 @@ export const loadCanvasData = async ({
 }: Props): Promise<void> => {
   const ctx = canvasElement?.getContext('2d');
   if (!ctx) return;
-  // console.log(ctx);
 
   // Create a blob from the base64 data
   const blob = await fetch(data).then(res => res.blob());
