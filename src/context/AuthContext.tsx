@@ -99,7 +99,6 @@ export function AuthProvider({ children }: ProviderProps) {
   const signOut: IAuthContext['signOut'] = useCallback(async () => {
     try {
       await auth.signOut();
-      console.log('signOut success ');
     } catch (error) {
       console.error('signOut error:', error);
     }

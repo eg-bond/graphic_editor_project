@@ -14,14 +14,13 @@ export const SignInNavBtn = () => {
     }
   };
 
-  const classes =
-  'px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 ' +
-  'transition-colors duration-200 font-medium min-w-[150px]';
-
   return (
     <button
       onClick={handleNavigateToSignIn}
-      className={classes}
+      className={
+        'px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 ' +
+        'transition-colors duration-200 font-medium min-w-[150px]'
+      }
     >
       Вход
     </button>
