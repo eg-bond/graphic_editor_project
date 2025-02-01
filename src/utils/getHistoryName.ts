@@ -5,7 +5,7 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
     case HistoryItemKinds.Add:
       return 'Новый слой';
     case HistoryItemKinds.Remove:
-      return 'Удалить слой';
+      return 'Удаление слоя';
     case HistoryItemKinds.Rename:
       return 'Имя слоя';
     case HistoryItemKinds.Opacity:

@@ -142,12 +142,6 @@ export function LayerName({
         >
           <Menu
             items={menuItems}
-            onClick={({ key }) => {
-              const selectedItem = menuItems.find(item => item.key === key);
-              if (selectedItem && selectedItem.onClick) {
-                selectedItem.onClick();
-              }
-            }}
           />
         </div>
 
