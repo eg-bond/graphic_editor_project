@@ -65,10 +65,10 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
                   message: 'Это поле обязательно',
                 },
                 {
-                  min: 1,
+                  min: 200,
                   type: 'number',
                   transform: v => +v,
-                  message: 'Минимальное значение 1 px',
+                  message: 'Минимальное значение 200 px',
                 },
                 {
                   max: 5000,
@@ -93,10 +93,10 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
                   message: 'Это поле обязательно',
                 },
                 {
-                  min: 1,
+                  min: 200,
                   type: 'number',
                   transform: v => +v,
-                  message: 'Минимальное значение 1 px',
+                  message: 'Минимальное значение 200 px',
                 },
                 {
                   max: 5000,

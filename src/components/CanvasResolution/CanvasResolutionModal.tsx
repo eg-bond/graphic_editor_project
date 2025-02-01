@@ -105,7 +105,7 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
           rules={[{ required: true, message: 'Введите ширину' }]}
         >
           <InputNumber
-            min={1}
+            min={200}
             max={5000}
             placeholder="Введите ширину"
             onKeyDown={allowOnlyNumbers}
@@ -117,7 +117,7 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
           rules={[{ required: true, message: 'Введите высоту' }]}
         >
           <InputNumber
-            min={1}
+            min={200}
             max={5000}
             placeholder="Введите высоту"
             onKeyDown={allowOnlyNumbers}

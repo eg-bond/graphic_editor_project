@@ -20,8 +20,8 @@ const projectSlice = createSlice({
     updateResolution(state, action: PayloadAction<{
       width: number; height: number;
     }>) {
-      state.width = action.payload.width;
-      state.height = action.payload.height;
+      state.width = Math.max(200, action.payload.width);
+      state.height = Math.max(200, action.payload.height);
     },
   },
 });
