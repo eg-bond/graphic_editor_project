@@ -56,6 +56,16 @@ export function AuthProvider({ children }: ProviderProps) {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (loading) {
+        setLoading(false);
+        console.warn('Auth state check timed out');
+      }
+    }, 10000);
+    return () => clearTimeout(timeoutId);
+  }, [loading]);
+
   const signIn: IAuthContext['signIn'] = useCallback(
     async (values: SignInFormValues) => {
       try {
