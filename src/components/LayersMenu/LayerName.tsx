@@ -45,6 +45,12 @@ export function LayerName({
 
   const handleSubmit = () => {
     const trimmedName = inputValue.trim() || `${NEW_LAYER_NAME}${i + 1}`;
+
+    if (trimmedName === name) {
+      setRenameInputVisible(false);
+      return;
+    }
+
     d(changeLayerName({ index: i, name: trimmedName }));
     setRenameInputVisible(false);
   };
