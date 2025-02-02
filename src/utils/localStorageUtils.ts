@@ -38,7 +38,14 @@ export const updateProjectInLS = (
   const { allProjects } = getProjectsFromLS();
 
   const updatedProjects = allProjects.map((project: Project) =>
-    project.id === id ? { ...project, ...dataToUpdate } : project,
+    project.id === id
+      ? {
+          ...project,
+          ...dataToUpdate,
+          width: Math.max(200, dataToUpdate.width ?? project.width),
+          height: Math.max(200, dataToUpdate.height ?? project.height),
+        }
+      : project,
   );
 
   localStorage.setItem(PROJECTS_KEY, JSON.stringify(updatedProjects));
