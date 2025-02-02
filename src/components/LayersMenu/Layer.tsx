@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef } from 'react';
+import React, { memo, useCallback, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Button } from 'antd';
 import {
@@ -35,22 +35,27 @@ export const Layer = memo<ILayerProps>(function Layer({
   const d = useAppDispatch();
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [{ isDragging }, dragRef] = useDrag({
     type: 'LAYER',
     item: { index: i },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
+    end: (_item, monitor) => {
+      if (!monitor.didDrop() || dragIndex === null || dragIndex === i) return;
+      d(moveLayer({ from: i, to: dragIndex }));
+      setDragIndex(null);
+    },
   });
 
   const [, dropRef] = useDrop({
     accept: 'LAYER',
-    hover: (draggedItem: {
+    drop: (draggedItem: {
       index: number;
     }) => {
       if (draggedItem.index !== i) {
         d(moveLayer({ from: draggedItem.index, to: i }));
-        draggedItem.index = i;
       }
     },
   });
