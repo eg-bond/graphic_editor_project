@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import { changeLayerName, removeLayer } from '@/redux/history';
+import { changeLayerName } from '@/redux/history';
 import { NEW_LAYER_NAME } from '@/utils/constants';
 
 export const handleRenameLayer = (
@@ -16,15 +16,6 @@ export const handleRenameLayer = (
 
   dispatch(changeLayerName({ index, name: trimmedName }));
   setRenameInputVisible(false);
-};
-
-export const handleDeleteLayer = (
-  dispatch: Dispatch,
-  index: number,
-  setContextMenuVisible: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
-  dispatch(removeLayer({ index }));
-  setContextMenuVisible(false);
 };
 
 export const handleLayerContextMenu = (
