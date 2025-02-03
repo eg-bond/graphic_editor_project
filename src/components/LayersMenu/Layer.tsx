@@ -33,6 +33,7 @@ export const Layer = memo<ILayerProps>(function Layer({
 }: ILayerProps) {
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const d = useAppDispatch();
+  const [renameInputVisible, setRenameInputVisible] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -110,8 +111,8 @@ export const Layer = memo<ILayerProps>(function Layer({
       <LayerName
         i={i}
         name={name}
-        renameInputVisible={false}
-        setRenameInputVisible={() => {}}
+        renameInputVisible={renameInputVisible}
+        setRenameInputVisible={setRenameInputVisible}
         onClick={handleActivateLayer}
       />
 
