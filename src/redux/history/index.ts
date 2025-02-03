@@ -11,13 +11,11 @@ export const {
   changeOpacity,
   changeLayerVisibility,
   changeLayerName,
-  moveLayerUp,
-  moveLayerDown,
   addDrawing,
-  resizeCanvas,
   setStateFromHistory,
   layerUp,
   layerDown,
+  moveLayer,
 } = historySlice.actions;
 
 export * from './selectors.ts';
