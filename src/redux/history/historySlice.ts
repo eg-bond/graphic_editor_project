@@ -211,15 +211,15 @@ export const historySlice = createSlice({
       if (from === to) return;
 
       const activeElement = state.items[state.activeItemIndex];
-      activeElement.layersList = [...activeElement.layersList];
-      const movedLayer = activeElement.layersList.splice(from, 1)[0];
-      activeElement.layersList.splice(to, 0, movedLayer);
+      const layers = [...(activeElement?.layersList ?? [])];
+      const movedLayer = layers.splice(from, 1)[0];
+      layers.splice(to, 0, movedLayer);
 
       activeElement.activeLayerIndex = to;
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Order,
-        layersList: activeElement.layersList,
+        layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
         width: state.items[state.activeItemIndex]?.width,
         height: state.items[state.activeItemIndex]?.height,
