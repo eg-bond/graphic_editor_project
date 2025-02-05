@@ -19,6 +19,8 @@ export const useLine = (canvasElement: HTMLCanvasElement | null) => {
 
       const { offsetX, offsetY } = event.nativeEvent;
 
+      canvasContext.lineCap = 'square';
+
       // Save the starting point
       setStartPoint({ x: offsetX, y: offsetY });
 

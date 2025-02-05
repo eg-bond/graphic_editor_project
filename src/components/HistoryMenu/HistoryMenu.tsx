@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
 import { HistoryItemIcon } from '../HistoryItemIcon';
 import { getHistoryItemName } from '@/utils/getHistoryName';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 export function HistoryMenu() {
   const d = useAppDispatch();
@@ -39,14 +39,29 @@ export function HistoryMenu() {
     };
   }, [activeItemIndex, historyList, handleActivateHistoryItem]);
 
-  const staticClasses =
-    'flex justify-between p-2 border-b-2 border-gray-500 ' +
-    'first:border-t-2 hover: cursor-pointer ';
-  const dynamicClasses = (i: number) => {
-    const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
-    const futureCl = activeItemIndex < i ? 'text-gray-500' : '';
-    return `${activeCl} ${futureCl}`;
-  };
+  // Стили для компоненты
+  const staticClasses = useMemo(() => {
+    return [
+      'relative',
+      'flex',
+      'justify-between',
+      'p-2',
+      'border-b-2',
+      'border-gray-500',
+      'first:border-t-2',
+      'hover:cursor-pointer',
+      'transition-all',
+    ].join(' ');
+  }, []);
+
+  const dynamicClasses = useCallback((i: number) => {
+    const classes = [
+      activeItemIndex === i && 'bg-slate-400',
+      activeItemIndex < i && 'text-gray-500',
+    ];
+
+    return classes.filter(Boolean).join(' ');
+  }, [activeItemIndex]);
 
   return (
     <div className="h-1/2">

@@ -103,6 +103,10 @@ export const historySlice = createSlice({
       const activeElement = state.items[state.activeItemIndex];
       const layers = [...(activeElement?.layersList ?? [])];
 
+      if (layers.length === 1) {
+        return;
+      }
+
       layers.splice(action.payload.index, 1);
 
       if (activeElement.activeLayerIndex !== 0) {

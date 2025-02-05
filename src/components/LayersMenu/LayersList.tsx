@@ -17,6 +17,7 @@ export const LayersList = memo(function LayersList() {
             index={i}
             name={layer.name}
             visible={layer.visible}
+            oneLayerLeft={layers.length === 1}
           />
         ))}
       </div>
