@@ -139,7 +139,7 @@ export function LayerName({
       {contextMenuVisible && (
         <div
           ref={menuRef}
-          className="absolute bg-white border border-gray-300 rounded-lg shadow-md"
+          className="fixed bg-white border border-gray-300 rounded-lg shadow-md"
           style={{
             left: menuPosition.x,
             top: menuPosition.y,

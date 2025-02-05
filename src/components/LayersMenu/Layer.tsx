@@ -1,10 +1,9 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Button } from 'antd';
 import {
   activateLayer,
   changeLayerVisibility,
-  moveLayer,
 } from '@/redux/history';
 import { LayerName } from './LayerName';
 import {
@@ -13,55 +12,33 @@ import {
 } from '@ant-design/icons';
 import { LayerT } from '@/redux/history/historySlice';
 import { selectActiveLayerIndex } from '@/redux/history/selectors';
-import { useDrag, useDrop } from 'react-dnd';
+import { useLayerDnD } from '@/hooks/useLayerDnD';
 
 interface ILayerProps {
-  i: number;
+  index: number;
   name: LayerT['name'];
   visible: LayerT['visible'];
 }
 
 export const Layer = memo<ILayerProps>(function Layer({
-  i,
+  index,
   name,
   visible,
 }: ILayerProps) {
-  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const d = useAppDispatch();
+  const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const [renameInputVisible, setRenameInputVisible] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
-
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [{ isDragging }, dragRef] = useDrag({
-    type: 'LAYER',
-    item: { index: i },
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
-    }),
-    end: (_item, monitor) => {
-      if (!monitor.didDrop() || dragIndex === null || dragIndex === i) return;
-      d(moveLayer({ from: i, to: dragIndex }));
-      setDragIndex(null);
-    },
-  });
-
-  const [, dropRef] = useDrop({
-    accept: 'LAYER',
-    drop: (draggedItem: {
-      index: number;
-    }) => {
-      if (draggedItem.index !== i) {
-        d(moveLayer({ from: draggedItem.index, to: i }));
-      }
-    },
-  });
-
-  dragRef(dropRef(ref));
+  const {
+    isDragging,
+    isOver,
+    dropPosition,
+  } = useLayerDnD({ ref, index, renameInputVisible });
 
   const handleActivateLayer = useCallback(() => {
-    if (activeLayerIndex === i) return;
-    d(activateLayer({ index: i }));
-  }, [d, activeLayerIndex, i]);
+    if (activeLayerIndex === index) return;
+    d(activateLayer({ index }));
+  }, [d, activeLayerIndex, index]);
 
   const handleLayerClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === e.currentTarget) {
@@ -70,25 +47,65 @@ export const Layer = memo<ILayerProps>(function Layer({
   };
 
   const handleChangeVisibility = useCallback(() => {
-    d(changeLayerVisibility({ index: i }));
-  }, [d, i]);
+    d(changeLayerVisibility({ index }));
+  }, [d, index]);
 
-  const staticClasses =
-    'flex justify-between items-center gap-2 px-2 py-1 border-b-2 border-gray-500 first:border-t-2 hover: cursor-pointer';
-  const dynamicClasses = (isActive: boolean) =>
-    isActive ? 'bg-slate-400' : '';
+  // Стили для компоненты
+  const staticClasses = useMemo(() => {
+    return [
+      'relative',
+      'flex',
+      'justify-between',
+      'items-center',
+      'gap-2',
+      'px-2',
+      'py-1',
+      'border-b-2',
+      'border-gray-500',
+      'first:border-t-2',
+      'hover:cursor-pointer',
+    ].join(' ');
+  }, []);
+
+  const dynamicClasses = useCallback((isActive: boolean) => {
+    const classes = [
+      isActive && 'bg-slate-400',
+      isDragging && 'opacity-50 ',
+      isOver && 'bg-blue-100',
+    ];
+
+    return classes.filter(Boolean).join(' ');
+  }, [isDragging, isOver]);
 
   return (
     <div
       ref={ref}
-      className={`${staticClasses} ${dynamicClasses(activeLayerIndex === i)} ${
-        isDragging ? 'opacity-50' : ''
-      }`}
+      className={`${staticClasses} ${dynamicClasses(activeLayerIndex === index)}`}
       onClick={handleLayerClick}
     >
+      {/* Линии для индикации drag and drop */}
+      {isOver && (
+        <>
+          {/* Верхняя линия */}
+          <div
+            className="absolute left-0 right-0 top-0 h-0.5 bg-blue-500"
+            style={{
+              opacity: dropPosition === 'top' ? 1 : 0,
+            }}
+          />
+          {/* Нижняя линия */}
+          <div
+            className="absolute left-0 right-0 bottom-0 h-0.5 bg-blue-500"
+            style={{
+              opacity: dropPosition === 'bottom' ? 1 : 0,
+            }}
+          />
+        </>
+      )}
+
       {/* Имя слоя */}
       <LayerName
-        i={i}
+        i={index}
         name={name}
         renameInputVisible={renameInputVisible}
         setRenameInputVisible={setRenameInputVisible}
