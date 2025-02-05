@@ -33,11 +33,19 @@ export const WIDTH_AND_HEIGHT_VALIDATION_RULES: Rule[] = [
   },
 ];
 
+export const FIRST_LAYER = {
+  id: 1,
+  name: NEW_LAYER_NAME + '0',
+  opacity: 100,
+  visible: true,
+  canvasData: EMPTY_CANVAS_DATA,
+};
+
 export const FIRST_HISTORY_ITEM = {
   id: 0,
   kind: HistoryItemKinds.OpenProject,
   layersList: [],
-  activeLayerIndex: -1,
+  activeLayerIndex: 0,
   width: MIN_CANVAS_WIDTH_AND_HEIGHT,
   height: MIN_CANVAS_WIDTH_AND_HEIGHT,
 };
