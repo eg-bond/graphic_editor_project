@@ -34,7 +34,7 @@ export const WIDTH_AND_HEIGHT_VALIDATION_RULES: Rule[] = [
 ];
 
 export const FIRST_LAYER = {
-  id: 1,
+  id: 0,
   name: NEW_LAYER_NAME + '0',
   opacity: 100,
   visible: true,
@@ -44,7 +44,7 @@ export const FIRST_LAYER = {
 export const FIRST_HISTORY_ITEM = {
   id: 0,
   kind: HistoryItemKinds.OpenProject,
-  layersList: [],
+  layersList: [{ ...FIRST_LAYER }],
   activeLayerIndex: 0,
   width: MIN_CANVAS_WIDTH_AND_HEIGHT,
   height: MIN_CANVAS_WIDTH_AND_HEIGHT,
