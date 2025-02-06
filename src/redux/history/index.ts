@@ -16,6 +16,7 @@ export const {
   layerUp,
   layerDown,
   moveLayer,
+  resizeCanvas,
 } = historySlice.actions;
 
 export * from './selectors.ts';

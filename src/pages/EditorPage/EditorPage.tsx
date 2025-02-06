@@ -4,7 +4,6 @@ import { HistoryMenu } from '@/components/HistoryMenu';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
-import { setProject } from '@/redux/project/projectSlice';
 import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
 import { getProjectsFromLS } from '@/utils/localStorageUtils';
@@ -22,8 +21,6 @@ export function EditorPage() {
       const { currentProject } = getProjectsFromLS(id);
 
       if (currentProject) {
-        dispatch(setProject(currentProject));
-
         dispatch(setProjectData({ id, data: currentProject?.data }));
       } else {
         console.error('Проект не найден!');

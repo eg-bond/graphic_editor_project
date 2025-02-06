@@ -2,13 +2,15 @@ import { RootState } from '../store';
 import { HistoryItemT } from './historySlice';
 
 export const addNewHistoryItemToState = (
-  state: RootState['history'], payload: Omit<HistoryItemT, 'id'>,
+  state: RootState['history'],
+  payload: Omit<HistoryItemT, 'id'>,
 ) => {
   // Manage history size
-  if (state.items.length >= state.maxHistoryLength) {
+  if (state.items.length > state.maxHistoryLength) {
     state.items.shift();
   }
   // Remove future history if we're not at the end
+
   if (state.activeItemIndex !== state.items.length - 1) {
     state.items = state.items.slice(0, state.activeItemIndex + 1);
   }
@@ -18,6 +20,8 @@ export const addNewHistoryItemToState = (
     kind: payload.kind,
     layersList: payload.layersList,
     activeLayerIndex: payload.activeLayerIndex,
+    width: payload.width ?? 0,
+    height: payload.height ?? 0,
   };
 
   state.historyIdCount++;

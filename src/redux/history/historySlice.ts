@@ -1,9 +1,8 @@
 import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { swapArrayElements } from '@/utils/swapArrayElements.ts';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
-import { EMPTY_CANVAS_DATA, NEW_LAYER_NAME } from '@/utils/constants';
+import { EMPTY_CANVAS_DATA, FIRST_HISTORY_ITEM, NEW_LAYER_NAME } from '@/utils/constants';
 import { addNewHistoryItemToLS } from '@/utils/localStorageUtils';
 
 export interface LayerT {
@@ -19,6 +18,8 @@ export type HistoryItemT = {
   kind: HistoryItemKinds;
   layersList: Array<LayerT>;
   activeLayerIndex: number;
+  width: number;
+  height: number;
 };
 
 export interface HistorySliceStateT {
@@ -34,12 +35,7 @@ const HISTORY_MAX_LENGTH = 10;
 
 const initialState: HistorySliceStateT = {
   projectId: null,
-  items: [{
-    id: 0,
-    kind: HistoryItemKinds.OpenProject,
-    layersList: [],
-    activeLayerIndex: -1,
-  }],
+  items: [{ ...FIRST_HISTORY_ITEM }],
   historyIdCount: 1,
   activeItemIndex: 0,
   layerIdCount: 0,
@@ -96,6 +92,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Add,
         layersList: layers,
         activeLayerIndex: layers.length - 1,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -115,6 +113,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Remove,
         layersList: layers,
         activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -139,6 +139,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Opacity,
         layersList: layers,
         activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -157,6 +159,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Visibility,
         layersList: layers,
         activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -173,6 +177,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Rename,
         layersList: layers,
         activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -191,6 +197,8 @@ export const historySlice = createSlice({
         kind: action.payload.kind,
         layersList: layers,
         activeLayerIndex: index ?? -1,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -213,6 +221,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Order,
         layersList: activeElement.layersList,
         activeLayerIndex: activeElement.activeLayerIndex,
+        width: state.items[state.activeItemIndex]?.width,
+        height: state.items[state.activeItemIndex]?.height,
       });
 
       addNewHistoryItemToLS(state);
@@ -230,5 +240,23 @@ export const historySlice = createSlice({
         state.items[state.activeItemIndex].activeLayerIndex += 1;
       }
     },
+
+    resizeCanvas: (state, action: PayloadAction<{
+      width: number; height: number; updatedLayers: LayerT[];
+    }>) => {
+      const { width, height } = action.payload;
+      const activeItem = state.items[state.activeItemIndex];
+
+      addNewHistoryItemToState(state, {
+        kind: HistoryItemKinds.ResizeCanvas,
+        layersList: action.payload.updatedLayers,
+        activeLayerIndex: activeItem.activeLayerIndex,
+        width,
+        height,
+      });
+
+      addNewHistoryItemToLS(state);
+    },
+
   },
 });

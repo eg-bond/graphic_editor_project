@@ -3,6 +3,7 @@ import { useAppSelector } from '@/redux/hooks';
 import {
   selectActiveLayerIndex,
   selectLayersList,
+  selectWidthAndHeight,
 } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { loadCanvasData } from '@/utils/loadCanvasData';
@@ -12,7 +13,7 @@ interface ILayersCanvasData {
 }
 
 export const LayersCanvasData = memo<ILayersCanvasData>(({ layerCanvasVisible }) => {
-  const { width, height } = useAppSelector(state => state.project);
+  const { width, height } = useAppSelector(selectWidthAndHeight);
   const layersList = useAppSelector(selectLayersList);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
 

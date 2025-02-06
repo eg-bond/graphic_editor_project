@@ -8,7 +8,7 @@ import {
   ProjectFormData,
 } from '@/components/CreateProjectModal';
 import { useModal } from '@/hooks/useModal.tsx';
-import { PROJECTS_KEY } from '@/utils/constants.ts';
+import { FIRST_HISTORY_ITEM, PROJECTS_KEY } from '@/utils/constants.ts';
 import { Project } from '@/types/localStorageTypes';
 import { getProjectsFromLS, saveNewProjectToLS } from '@/utils/localStorageUtils';
 import { AuthStatus } from '@/components/AuthStatus';
@@ -39,32 +39,37 @@ const ProjectsPage1: FC = () => {
     // в firebase каждый новый документ получает свой уникальный id, думаю можно его использовать вместо getUid()
     const id = getUid();
 
-    const newProject = {
+    const newProject: Project = {
       id,
-      height: +values.height,
-      width: +values.width,
       name: values.name,
+      data: {
+        historyItem: {
+          ...FIRST_HISTORY_ITEM,
+          width: +values.width,
+          height: +values.height,
+        },
+        historyIdCount: 1,
+        layerIdCount: 0,
+      },
     };
 
     saveNewProjectToLS(newProject);
     setProjects(prevProjects => [{ ...newProject }, ...prevProjects]);
 
     // Сохранение проекта в Firebase (проверял работоспособность, решил уже оставить тут)
-    try {
-      await createProject({
-        name: values.name,
-        width: values.width,
-        height: values.height,
-      }, user.uid);
+    // try {
+    //   await createProject({
+    //     name: values.name,
+    //   }, user.uid);
 
-      form.resetFields();
-      onClose();
-    } catch (error) {
-      notification.error({
-        message: 'Ошибка при создании проекта',
-        description: (error as Error).message,
-      });
-    }
+    //   form.resetFields();
+    //   onClose();
+    // } catch (error) {
+    //   notification.error({
+    //     message: 'Ошибка при создании проекта',
+    //     description: (error as Error).message,
+    //   });
+    // }
 
     // form.resetFields();
     // onClose();

@@ -19,7 +19,7 @@ export const getProjectsFromLS = (id?: string | null) => {
   return { allProjects, currentProject };
 };
 
-// Созраняет новый проект в LS
+// Сохраняет новый проект в LS
 export const saveNewProjectToLS = (newProject: Project) => {
   const { allProjects } = getProjectsFromLS();
 

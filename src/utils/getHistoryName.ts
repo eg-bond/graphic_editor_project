@@ -28,6 +28,8 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Открыть';
     case HistoryItemKinds.Triangle:
       return 'Треугольник';
+    case HistoryItemKinds.ResizeCanvas:
+      return 'Размер холста';
     default:
       return '';
   }

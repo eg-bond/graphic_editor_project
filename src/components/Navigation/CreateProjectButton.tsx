@@ -7,14 +7,12 @@ import {
 import { Form } from 'antd';
 import { getUid } from '@/utils/getUid.ts';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/redux/hooks';
-import { setProject } from '@/redux/project/projectSlice';
 import type { Project } from '@/types/localStorageTypes';
 import { saveNewProjectToLS } from '@/utils/localStorageUtils';
+import { FIRST_HISTORY_ITEM } from '@/utils/constants';
 
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch(); // Подключаем диспетчер Redux
   const [form] = Form.useForm();
   const {
     open,
@@ -27,23 +25,25 @@ const CreateProjectButton1: FC = () => {
       const id = getUid();
       const newProject: Project = {
         id,
-        height: +values.height,
-        width: +values.width,
         name: values.name,
+        data: {
+          historyItem: {
+            ...FIRST_HISTORY_ITEM,
+            width: +values.width,
+            height: +values.height,
+          },
+          historyIdCount: 1,
+          layerIdCount: 0,
+        },
       };
 
-      // Сохраняем проект в Redux
-      dispatch(setProject(newProject));
-
-      // Сохраняем проект в LocalStorage
       saveNewProjectToLS(newProject);
 
-      // Сбрасываем форму, закрываем модал и переходим к редактору
       form.resetFields();
       onClose();
       navigate(`/projects/${id}`, { state: newProject });
     },
-    [dispatch, form, onClose, navigate],
+    [form, onClose, navigate],
   );
 
   return (
