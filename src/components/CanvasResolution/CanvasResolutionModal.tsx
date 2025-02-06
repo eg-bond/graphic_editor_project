@@ -2,10 +2,10 @@ import { FC, useEffect } from 'react';
 import { Modal, Form, InputNumber, Button } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { updateResolution } from '@/redux/project/projectSlice';
-import { resizeCanvas, selectLayersList, setStateFromHistory } from '@/redux/history';
+import { resizeCanvas, selectLayersList } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
-import { updateProjectInLS } from '@/utils/localStorageUtils';
-import { useParams } from 'react-router-dom';
+// import { updateProjectInLS } from '@/utils/localStorageUtils';
+// import { useParams } from 'react-router-dom';
 import { allowOnlyNumbers } from '@/utils/formatInteger';
 
 interface CanvasResolutionModalProps {
@@ -16,7 +16,7 @@ interface CanvasResolutionModalProps {
 export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const { width, height } = useAppSelector(state => state.project);
   const layersList = useAppSelector(selectLayersList);
@@ -78,12 +78,15 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
         ),
       );
 
-      dispatch(setStateFromHistory({ layersList: updatedLayers }));
-
+      // TODO: Это нужно?
       dispatch(updateResolution({ width: values.width, height: values.height }));
-      dispatch(resizeCanvas({ width: values.width, height: values.height }));
+      dispatch(resizeCanvas({
+        width: values.width,
+        height: values.height,
+        updatedLayers,
+      }));
 
-      updateProjectInLS(id, { width: values.width, height: values.height });
+      // updateProjectInLS(id, { width: values.width, height: values.height });
 
       // Закрываем модальное окно
       onClose();

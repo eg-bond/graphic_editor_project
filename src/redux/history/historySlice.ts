@@ -241,42 +241,20 @@ export const historySlice = createSlice({
     },
 
     resizeCanvas: (state, action: PayloadAction<{
-      width: number; height: number;
+      width: number; height: number; updatedLayers: LayerT[];
     }>) => {
       const { width, height } = action.payload;
       const activeItem = state.items[state.activeItemIndex];
 
-      if (activeItem) {
-        activeItem.layersList = activeItem.layersList.map((layer) => {
-          const tempCanvas = document.createElement('canvas');
-          const tempContext = tempCanvas.getContext('2d');
-
-          tempCanvas.width = width;
-          tempCanvas.height = height;
-
-          const image = new Image();
-          image.src = layer.canvasData;
-
-          if (tempContext) {
-            tempContext.drawImage(image, 0, 0, width, height);
-            return {
-              ...layer,
-              canvasData: tempCanvas.toDataURL(),
-            };
-          }
-          return layer;
-        });
-
-        addNewHistoryItemToState(state, {
-          kind: HistoryItemKinds.ResizeCanvas,
-          layersList: activeItem.layersList,
-          activeLayerIndex: activeItem.activeLayerIndex,
-          width,
-          height,
-        });
-
-        addNewHistoryItemToLS(state);
-      }
+      addNewHistoryItemToState(state, {
+        kind: HistoryItemKinds.ResizeCanvas,
+        layersList: action.payload.updatedLayers,
+        activeLayerIndex: activeItem.activeLayerIndex,
+        width,
+        height,
+      });
+      // TODO: исправить
+      addNewHistoryItemToLS(state);
     },
 
   },
