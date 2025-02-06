@@ -2,7 +2,7 @@ import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
-import { EMPTY_CANVAS_DATA, NEW_LAYER_NAME } from '@/utils/constants';
+import { EMPTY_CANVAS_DATA, FIRST_HISTORY_ITEM, NEW_LAYER_NAME } from '@/utils/constants';
 import { addNewHistoryItemToLS } from '@/utils/localStorageUtils';
 
 export interface LayerT {
@@ -35,14 +35,7 @@ const HISTORY_MAX_LENGTH = 10;
 
 const initialState: HistorySliceStateT = {
   projectId: null,
-  items: [{
-    id: 0,
-    kind: HistoryItemKinds.OpenProject,
-    layersList: [],
-    activeLayerIndex: -1,
-    width: 0,
-    height: 0,
-  }],
+  items: [{ ...FIRST_HISTORY_ITEM }],
   historyIdCount: 1,
   activeItemIndex: 0,
   layerIdCount: 0,

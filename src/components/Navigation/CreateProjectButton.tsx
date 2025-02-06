@@ -11,6 +11,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setProject } from '@/redux/project/projectSlice';
 import type { Project } from '@/types/localStorageTypes';
 import { saveNewProjectToLS } from '@/utils/localStorageUtils';
+import { FIRST_HISTORY_ITEM } from '@/utils/constants';
 
 const CreateProjectButton1: FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,15 @@ const CreateProjectButton1: FC = () => {
         height: +values.height,
         width: +values.width,
         name: values.name,
+        data: {
+          historyItem: {
+            ...FIRST_HISTORY_ITEM,
+            width: +values.width,
+            height: +values.height,
+          },
+          historyIdCount: 1,
+          layerIdCount: 0,
+        },
       };
 
       dispatch(setProject(newProject));

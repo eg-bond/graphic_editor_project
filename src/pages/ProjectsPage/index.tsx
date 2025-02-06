@@ -8,7 +8,7 @@ import {
   ProjectFormData,
 } from '@/components/CreateProjectModal';
 import { useModal } from '@/hooks/useModal.tsx';
-import { PROJECTS_KEY } from '@/utils/constants.ts';
+import { FIRST_HISTORY_ITEM, PROJECTS_KEY } from '@/utils/constants.ts';
 import { Project } from '@/types/localStorageTypes';
 import { getProjectsFromLS, saveNewProjectToLS } from '@/utils/localStorageUtils';
 import { AuthStatus } from '@/components/AuthStatus';
@@ -39,11 +39,20 @@ const ProjectsPage1: FC = () => {
     // в firebase каждый новый документ получает свой уникальный id, думаю можно его использовать вместо getUid()
     const id = getUid();
 
-    const newProject = {
+    const newProject: Project = {
       id,
       height: +values.height,
       width: +values.width,
       name: values.name,
+      data: {
+        historyItem: {
+          ...FIRST_HISTORY_ITEM,
+          width: +values.width,
+          height: +values.height,
+        },
+        historyIdCount: 1,
+        layerIdCount: 0,
+      },
     };
 
     saveNewProjectToLS(newProject);
