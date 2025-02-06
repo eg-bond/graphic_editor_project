@@ -92,8 +92,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Add,
         layersList: layers,
         activeLayerIndex: layers.length - 1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: state.items[state.activeItemIndex].width,
+        height: state.items[state.activeItemIndex].height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -117,8 +117,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Remove,
         layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -141,8 +141,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Opacity,
         layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -166,8 +166,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Visibility,
         layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -184,8 +184,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Rename,
         layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -202,8 +202,8 @@ export const historySlice = createSlice({
         kind: action.payload.kind,
         layersList: layers,
         activeLayerIndex: index,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -226,8 +226,8 @@ export const historySlice = createSlice({
         kind: HistoryItemKinds.Order,
         layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
 
       addNewHistoryItemToLS(state);
