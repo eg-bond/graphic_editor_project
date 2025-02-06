@@ -1,22 +1,21 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppSelector } from '@/redux/hooks';
 import { useTool } from '@/hooks/useTool.ts';
 import { LayersCanvasData } from './LayersCanvasData';
-import { selectActiveHistoryItem, selectActiveLayer, selectActiveLayerIndex } from '@/redux/history';
+import {
+  selectActiveLayer,
+  selectActiveLayerIndex,
+  selectWidthAndHeight,
+} from '@/redux/history';
 import { useCircleCursor } from '@/hooks/useCircleCursor';
 import { loadCanvasData } from '@/utils/loadCanvasData';
-import { updateResolution } from '@/redux/project/projectSlice';
 
 export const Canvas = memo(() => {
-  const dispatch = useAppDispatch();
-
-  const { width, height } = useAppSelector(state => state.project);
+  const { width, height } = useAppSelector(selectWidthAndHeight);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const activeLayer = useAppSelector(selectActiveLayer);
   const toolColor = useAppSelector(state => state.tools.color);
   const lineWidth = useAppSelector(state => state.tools.lineWidth);
-  const activeHistoryItem = useAppSelector(selectActiveHistoryItem);
-
   const [layerCanvasVisible, setLayerCanvasVisible] = useState(true);
   const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -30,16 +29,6 @@ export const Canvas = memo(() => {
       });
     }
   }, [activeLayer, width, height]);
-
-  useEffect(() => {
-    const { width, height } = activeHistoryItem ?? {};
-
-    if (width && height) {
-      dispatch(updateResolution({ width, height }));
-    } else {
-      console.warn(' История без размеров:', activeHistoryItem);
-    }
-  }, [activeHistoryItem, dispatch]);
 
   useEffect(() => {
     if (!canvasElementRef.current) return;

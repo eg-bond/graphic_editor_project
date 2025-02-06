@@ -16,8 +16,7 @@ import { FbCollectionNames } from '@/types/firebaseTypes';
 interface ProjectInFirebase {
   userId: string;
   name: string;
-  width: number;
-  height: number;
+  // width и height теперь хранятся внутри historyItem
   createdAt: Date;
   updatedAt: Date;
   // Не стал добавлять туда поле data (как сейчас в LS),

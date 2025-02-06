@@ -9,8 +9,6 @@ export interface ProjectData {
 export interface Project {
   id: string;
   name: string;
-  width: number;
-  height: number;
   data?: ProjectData;
 }
 

@@ -41,8 +41,6 @@ const ProjectsPage1: FC = () => {
 
     const newProject: Project = {
       id,
-      height: +values.height,
-      width: +values.width,
       name: values.name,
       data: {
         historyItem: {
@@ -59,21 +57,19 @@ const ProjectsPage1: FC = () => {
     setProjects(prevProjects => [{ ...newProject }, ...prevProjects]);
 
     // Сохранение проекта в Firebase (проверял работоспособность, решил уже оставить тут)
-    try {
-      await createProject({
-        name: values.name,
-        width: values.width,
-        height: values.height,
-      }, user.uid);
+    // try {
+    //   await createProject({
+    //     name: values.name,
+    //   }, user.uid);
 
-      form.resetFields();
-      onClose();
-    } catch (error) {
-      notification.error({
-        message: 'Ошибка при создании проекта',
-        description: (error as Error).message,
-      });
-    }
+    //   form.resetFields();
+    //   onClose();
+    // } catch (error) {
+    //   notification.error({
+    //     message: 'Ошибка при создании проекта',
+    //     description: (error as Error).message,
+    //   });
+    // }
 
     // form.resetFields();
     // onClose();

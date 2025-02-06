@@ -68,6 +68,7 @@ export const historySlice = createSlice({
       index: number;
     }>) => {
       state.activeItemIndex = action.payload.index;
+      addNewHistoryItemToLS(state);
     },
     setStateFromHistory: (state, action: PayloadAction<{
       layersList: LayerT[];
@@ -253,7 +254,7 @@ export const historySlice = createSlice({
         width,
         height,
       });
-      // TODO: исправить
+
       addNewHistoryItemToLS(state);
     },
 
