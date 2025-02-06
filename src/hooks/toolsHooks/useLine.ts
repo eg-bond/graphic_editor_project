@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useSaveCanvasData } from './useSaveCanvasData';
+import { useSaveCanvasData } from '../useSaveCanvasData';
 
 export const useLine = (canvasElement: HTMLCanvasElement | null) => {
   const [isDrawing, setIsDrawing] = useState(false);

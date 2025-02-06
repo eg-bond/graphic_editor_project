@@ -2,7 +2,8 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
 import { HistoryItemIcon } from '../HistoryItemIcon';
 import { getHistoryItemName } from '@/utils/getHistoryName';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useHistoryHotkeys } from '@/hooks/hotkeyHooks/useHistoryHotkeys';
 
 export function HistoryMenu() {
   const d = useAppDispatch();
@@ -17,27 +18,7 @@ export function HistoryMenu() {
     [d, activeItemIndex],
   );
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === 'z') {
-        if (activeItemIndex > 0) {
-          handleActivateHistoryItem(activeItemIndex - 1);
-        }
-        e.preventDefault();
-      } else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
-        if (activeItemIndex < historyList.length - 1) {
-          handleActivateHistoryItem(activeItemIndex + 1);
-        }
-        e.preventDefault();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [activeItemIndex, historyList, handleActivateHistoryItem]);
+  useHistoryHotkeys({ activeItemIndex, historyList, handleActivateHistoryItem });
 
   // Стили для компоненты
   const staticClasses = useMemo(() => {

@@ -1,13 +1,13 @@
 import { useAppSelector } from '@/redux/hooks';
 import React, { useCallback, useState } from 'react';
-import { useSaveCanvasData } from './useSaveCanvasData';
+import { useSaveCanvasData } from '../useSaveCanvasData';
 
 interface Point {
   x: number;
   y: number;
 }
 
-export const useCircle = (
+export const useRectangle = (
   canvasElement: HTMLCanvasElement | null,
 ) => {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -23,6 +23,7 @@ export const useCircle = (
       const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
       if (!canvasContext) return;
 
+      // Save the current canvas state when starting to draw
       const currentImageData = canvasContext.getImageData(
         0,
         0,
@@ -30,6 +31,9 @@ export const useCircle = (
         canvasContext.canvas.height,
       );
       setImageData(currentImageData);
+
+      canvasContext.lineCap = 'square';
+      canvasContext.lineJoin = 'miter';
 
       const { offsetX, offsetY } = event.nativeEvent;
       setStartPoint({ x: offsetX, y: offsetY });
@@ -45,20 +49,21 @@ export const useCircle = (
 
       const { offsetX, offsetY } = event.nativeEvent;
 
+      // Restore the previous state (without the preview rectangle)
       canvasContext.putImageData(imageData, 0, 0);
 
-      const radiusX = Math.abs(offsetX - startPoint.x) / 2;
-      const radiusY = Math.abs(offsetY - startPoint.y) / 2;
-      const centerX = startPoint.x + (offsetX - startPoint.x) / 2;
-      const centerY = startPoint.y + (offsetY - startPoint.y) / 2;
+      // Calculate rectangle dimensions
+      const width = offsetX - startPoint.x;
+      const height = offsetY - startPoint.y;
 
+      // Set styles
       canvasContext.strokeStyle = color;
       canvasContext.fillStyle = secondaryColor;
 
+      // Draw preview rectangle
       canvasContext.beginPath();
-      canvasContext.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
-      canvasContext.fill();
-      canvasContext.stroke();
+      canvasContext.fillRect(startPoint.x, startPoint.y, width, height);
+      canvasContext.strokeRect(startPoint.x, startPoint.y, width, height);
 
       event.nativeEvent.preventDefault();
     }, [isDrawing, canvasElement, startPoint, imageData, color, secondaryColor]);

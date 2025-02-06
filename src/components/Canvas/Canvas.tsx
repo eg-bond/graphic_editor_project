@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
-import { useTool } from '@/hooks/useTool.ts';
 import {
   selectActiveLayerIndex,
   selectLayersList,
@@ -9,6 +8,7 @@ import {
 import { useCircleCursor } from '@/hooks/useCircleCursor';
 import { loadCanvasData } from '@/utils/loadCanvasData';
 import { LayerT } from '@/redux/history/historySlice';
+import { useTool } from '@/hooks/toolsHooks/useTool';
 
 export const Canvas = memo(() => {
   const { width, height } = useAppSelector(selectWidthAndHeight);

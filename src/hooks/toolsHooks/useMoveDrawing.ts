@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useSaveCanvasData } from './useSaveCanvasData';
+import { useSaveCanvasData } from '../useSaveCanvasData';
 
 export const useMoveDrawing = (
   canvasElement: HTMLCanvasElement | null,

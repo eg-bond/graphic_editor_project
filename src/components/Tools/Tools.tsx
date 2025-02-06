@@ -10,10 +10,10 @@ import {
   DEFAULT_TOOLS_COLOR,
   DEFAULT_TOOLS_SECONDARY_COLOR,
 } from '@/utils/constants';
-import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon } from './ToolsIcon';
+import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon, MoveIcon } from './ToolsIcon';
 import { Tooltip } from 'antd';
 import { LineWidthChanger } from '@/components/Tools/LineWidthChanger.tsx';
-import MoveIcon from './ToolsIcon/MoveIcon';
+import { useToolsHotkeys } from '@/hooks/hotkeyHooks/useToolsHotkeys';
 
 const TOOLS = [
   {
@@ -56,6 +56,7 @@ const TOOLS = [
 export function Tools() {
   const d = useAppDispatch();
   const tool = useAppSelector(state => state.tools.tool);
+  useToolsHotkeys();
 
   const onColorChange = (e: AggregationColor) => {
     d(selectColor({ color: e.toHexString() }));

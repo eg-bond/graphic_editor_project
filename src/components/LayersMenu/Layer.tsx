@@ -32,6 +32,7 @@ export const Layer = memo<ILayerProps>(function Layer({
   const d = useAppDispatch();
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
   const [renameInputVisible, setRenameInputVisible] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   // Логика для функционирования drag and drop
   const {
@@ -63,8 +64,6 @@ export const Layer = memo<ILayerProps>(function Layer({
     d(changeLayerVisibility({ index }));
   }, [d, index]);
 
-  const [showWarning, setShowWarning] = useState(false);
-
   const menuItems = [
     {
       key: 'rename',
@@ -81,9 +80,7 @@ export const Layer = memo<ILayerProps>(function Layer({
       onClick: () => {
         if (oneLayerLeft) {
           setShowWarning(true);
-          setTimeout(() => {
-            setShowWarning(false);
-          }, 500);
+          setTimeout(() => setShowWarning(false), 500);
         } else {
           d(removeLayer({ index }));
         }

@@ -148,11 +148,18 @@ export const historySlice = createSlice({
     },
 
     changeLayerVisibility: (state, action: PayloadAction<{
-      index: number;
+      index?: number;
     }>) => {
       const activeElement = state.items[state.activeItemIndex];
       const layers = [...activeElement.layersList];
-      const index = action.payload.index;
+      let index;
+
+      if (!action.payload.index) {
+        index = activeElement.activeLayerIndex;
+      } else {
+        index = action.payload.index;
+      }
+
       layers[index] = { ...layers[index], visible: !layers[index].visible };
 
       addNewHistoryItemToState(state, {

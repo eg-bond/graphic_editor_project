@@ -1,5 +1,3 @@
-import { useAppSelector } from '@/redux/hooks.ts';
-import { useBrush } from '@/hooks/useBrush';
 import { ToolKinds } from '@/redux/tools';
 import { useEffect, useState } from 'react';
 import { useRectangle } from './useRectangle';
@@ -8,6 +6,8 @@ import { useCircle } from './useCircle';
 import { useTriangle } from './useTriangle';
 import { useLine } from './useLine';
 import { useMoveDrawing } from './useMoveDrawing';
+import { useBrush } from './useBrush';
+import { useAppSelector } from '@/redux/hooks';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
