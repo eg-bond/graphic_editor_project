@@ -3,7 +3,8 @@ import {
   Button, Col, Form, Input, InputNumber,
   Modal, Row, Typography, FormInstance,
 } from 'antd';
-import { formatInteger } from '@/utils/formatInteger.ts';
+import { allowOnlyNumbers } from '@/utils/formatInteger.ts';
+import { WIDTH_AND_HEIGHT_VALIDATION_RULES } from '@/utils/constants';
 
 export interface ProjectFormData {
   name: string;
@@ -24,10 +25,22 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
   form,
   handleSubmit,
 }) => {
+  const onClick = async () => {
+    try {
+      await form.validateFields();
+      onClose();
+    } catch (error) {
+      console.error('Error while creating project:', error);
+    }
+  };
+
   return (
     <Modal
       open={open}
-      onCancel={onClose}
+      onCancel={() => {
+        form.resetFields();
+        onClose();
+      }}
       footer={null}
       width={750}
       forceRender
@@ -45,7 +58,6 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
           <Col span={8}>
             <Form.Item
               name="name"
-              required
               rules={[{
                 required: true,
                 message: 'Это поле обязательно',
@@ -58,64 +70,34 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
           <Col span={8}>
             <Form.Item
               name="width"
-              required
-              rules={[
-                {
-                  required: true,
-                  message: 'Это поле обязательно',
-                },
-                {
-                  min: 200,
-                  type: 'number',
-                  transform: v => +v,
-                  message: 'Минимальное значение 200 px',
-                },
-                {
-                  max: 5000,
-                  type: 'number',
-                  transform: v => +v,
-                  message: 'Максимальное значение 5000 px',
-                },
-              ]}
+              rules={WIDTH_AND_HEIGHT_VALIDATION_RULES}
               label="Ширина"
-              normalize={formatInteger}
             >
-              <InputNumber placeholder="px" type="number" />
+              <InputNumber
+                placeholder="Введите ширину"
+                type="number"
+                onKeyDown={allowOnlyNumbers}
+              />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
               name="height"
-              required
-              rules={[
-                {
-                  required: true,
-                  message: 'Это поле обязательно',
-                },
-                {
-                  min: 200,
-                  type: 'number',
-                  transform: v => +v,
-                  message: 'Минимальное значение 200 px',
-                },
-                {
-                  max: 5000,
-                  type: 'number',
-                  transform: v => +v,
-                  message: 'Максимальное значение 5000 px',
-                },
-              ]}
+              rules={WIDTH_AND_HEIGHT_VALIDATION_RULES}
               label="Высота"
-              normalize={formatInteger}
             >
-              <InputNumber placeholder="px" type="number" />
+              <InputNumber
+                placeholder="Введите высоту"
+                type="number"
+                onKeyDown={allowOnlyNumbers}
+              />
             </Form.Item>
           </Col>
         </Row>
 
         <div className="flex justify-end">
           <Button
-            onClick={onClose}
+            onClick={onClick}
             htmlType="submit"
             className="!bg-green-500"
             type="primary"
