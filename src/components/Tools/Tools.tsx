@@ -13,6 +13,7 @@ import {
 import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon } from './ToolsIcon';
 import { Tooltip } from 'antd';
 import { LineWidthChanger } from '@/components/Tools/LineWidthChanger.tsx';
+import MoveIcon from './ToolsIcon/MoveIcon';
 
 const TOOLS = [
   {
@@ -44,6 +45,11 @@ const TOOLS = [
     title: 'Треугольник',
     icon: <TriangleIcon />,
     type: ToolKinds.Triangle,
+  },
+  {
+    title: 'Перемещение',
+    icon: <MoveIcon />,
+    type: ToolKinds.Move,
   },
 ] as const;
 

@@ -7,6 +7,7 @@ import { selectWidthAndHeight } from '@/redux/history';
 import { useCircle } from './useCircle';
 import { useTriangle } from './useTriangle';
 import { useLine } from './useLine';
+import { useMoveDrawing } from './useMoveDrawing';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
@@ -71,6 +72,12 @@ export const useTool = (
     stopDrawing: triangleStopDrawing,
   } = useTriangle(canvasElement);
 
+  const {
+    startMoving,
+    move,
+    stopMoving,
+  } = useMoveDrawing(canvasElement);
+
   if (tool === ToolKinds.Brush) {
     return {
       startDrawing: brushStartDrawing,
@@ -116,6 +123,14 @@ export const useTool = (
       startDrawing: rectStartDrawing,
       draw: rectDraw,
       stopDrawing: rectStopDrawing,
+    };
+  }
+
+  if (tool === ToolKinds.Move) {
+    return {
+      startDrawing: startMoving,
+      draw: move,
+      stopDrawing: stopMoving,
     };
   }
 
