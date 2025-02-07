@@ -1,13 +1,11 @@
-import { FC, useEffect } from 'react';
-import { Modal, Form, InputNumber, Button } from 'antd';
+import { FC, useEffect, useState } from 'react';
+import { Modal, Form, InputNumber, Button, Switch, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  resizeCanvas,
-  selectLayersList,
-  selectWidthAndHeight,
-} from '@/redux/history';
+import { resizeCanvas, selectLayersList, selectWidthAndHeight } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { allowOnlyNumbers } from '@/utils/formatInteger';
+
+const { Text } = Typography;
 
 interface CanvasResolutionModalProps {
   open: boolean;
@@ -21,11 +19,28 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
   const { width, height } = useAppSelector(selectWidthAndHeight);
   const layersList = useAppSelector(selectLayersList);
 
+  const [keepRatio, setKeepRatio] = useState(false);
+  const aspectRatio = width / height;
+
   useEffect(() => {
     if (open) {
       form.setFieldsValue({ width, height });
     }
   }, [form, open, width, height]);
+
+  const handleWidthChange = (newWidth: number | null) => {
+    if (newWidth === null) return;
+    if (keepRatio) {
+      form.setFieldsValue({ height: Math.round(newWidth / aspectRatio) });
+    }
+  };
+
+  const handleHeightChange = (newHeight: number | null) => {
+    if (newHeight === null) return;
+    if (keepRatio) {
+      form.setFieldsValue({ width: Math.round(newHeight * aspectRatio) });
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -46,7 +61,6 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
               canvas.width = width;
               canvas.height = height;
 
-              // Загружаем данные слоя
               const image = new Image();
               image.src = layer.canvasData;
 
@@ -84,7 +98,6 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
         updatedLayers,
       }));
 
-      // Закрываем модальное окно
       onClose();
     } catch (error) {
       console.error('Error while resizing canvas layers:', error);
@@ -99,35 +112,38 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
       footer={null}
     >
       <Form form={form} layout="vertical">
-        <Form.Item
-          label="Ширина"
-          name="width"
-          rules={[{ required: true, message: 'Введите ширину' }]}
-        >
+        <div className="flex items-center gap-2 mb-4">
+          <Text strong>Сохранить пропорции</Text>
+          <Switch checked={keepRatio} onChange={setKeepRatio} />
+        </div>
+
+        {/* Поля для ширины и высоты */}
+        <Form.Item label="Ширина" name="width" rules={[{ required: true, message: 'Введите ширину' }]}>
           <InputNumber
             min={200}
             max={5000}
             placeholder="Введите ширину"
             onKeyDown={allowOnlyNumbers}
+            onChange={handleWidthChange}
+            style={{ width: '100%' }}
           />
         </Form.Item>
-        <Form.Item
-          label="Высота"
-          name="height"
-          rules={[{ required: true, message: 'Введите высоту' }]}
-        >
+
+        <Form.Item label="Высота" name="height" rules={[{ required: true, message: 'Введите высоту' }]}>
           <InputNumber
             min={200}
             max={5000}
             placeholder="Введите высоту"
             onKeyDown={allowOnlyNumbers}
+            onChange={handleHeightChange}
+            style={{ width: '100%' }}
           />
         </Form.Item>
-        <div className="flex justify-end gap-2">
+
+        {/* Кнопки */}
+        <div className="flex justify-center mt-4 gap-4">
           <Button onClick={onClose}>Отмена</Button>
-          <Button type="primary" onClick={handleSave}>
-            Сохранить
-          </Button>
+          <Button type="primary" onClick={handleSave}>Сохранить</Button>
         </div>
       </Form>
     </Modal>
