@@ -20,8 +20,8 @@ export const addNewHistoryItemToState = (
     kind: payload.kind,
     layersList: payload.layersList,
     activeLayerIndex: payload.activeLayerIndex,
-    width: payload.width ?? 0,
-    height: payload.height ?? 0,
+    width: payload.width,
+    height: payload.height,
   };
 
   state.historyIdCount++;

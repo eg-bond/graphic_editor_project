@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/redux/hooks';
 import React, { useCallback, useState } from 'react';
-import { useSaveCanvasData } from './useSaveCanvasData';
+import { useSaveCanvasData } from '../useSaveCanvasData';
 
 interface Point {
   x: number;

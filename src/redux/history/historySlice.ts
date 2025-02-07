@@ -85,15 +85,15 @@ export const historySlice = createSlice({
         canvasData: EMPTY_CANVAS_DATA,
       };
 
-      const layers = [...(state.items[state.activeItemIndex]?.layersList ?? [])];
+      const layers = [...state.items[state.activeItemIndex].layersList];
       layers.push(newLayer);
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Add,
         layersList: layers,
         activeLayerIndex: layers.length - 1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: state.items[state.activeItemIndex].width,
+        height: state.items[state.activeItemIndex].height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -101,7 +101,11 @@ export const historySlice = createSlice({
       index: number;
     }>) => {
       const activeElement = state.items[state.activeItemIndex];
-      const layers = [...(activeElement?.layersList ?? [])];
+      const layers = [...activeElement.layersList];
+
+      if (layers.length === 1) {
+        return;
+      }
 
       layers.splice(action.payload.index, 1);
 
@@ -112,9 +116,9 @@ export const historySlice = createSlice({
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Remove,
         layersList: layers,
-        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        activeLayerIndex: activeElement.activeLayerIndex,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -126,41 +130,44 @@ export const historySlice = createSlice({
     },
 
     changeOpacity: (state, action: PayloadAction<{
-      activeLayerIndex: number; opacity: number;
+      opacity: number;
     }>) => {
       const activeElement = state.items[state.activeItemIndex];
-      const layers = [...(activeElement?.layersList ?? [])];
-
-      const index = action.payload.activeLayerIndex;
-
+      const layers = [...activeElement.layersList];
+      const index = activeElement.activeLayerIndex;
       layers[index] = { ...layers[index], opacity: action.payload.opacity };
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Opacity,
         layersList: layers,
-        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        activeLayerIndex: activeElement.activeLayerIndex,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
 
     changeLayerVisibility: (state, action: PayloadAction<{
-      index: number;
+      index?: number;
     }>) => {
       const activeElement = state.items[state.activeItemIndex];
-      const layers = [...(activeElement?.layersList ?? [])];
+      const layers = [...activeElement.layersList];
+      let index;
 
-      const index = action.payload.index;
+      if (!action.payload.index) {
+        index = activeElement.activeLayerIndex;
+      } else {
+        index = action.payload.index;
+      }
 
       layers[index] = { ...layers[index], visible: !layers[index].visible };
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Visibility,
         layersList: layers,
-        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        activeLayerIndex: activeElement.activeLayerIndex,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -168,17 +175,17 @@ export const historySlice = createSlice({
     changeLayerName: (state, action: PayloadAction<{
       index: number; name: string;
     }>) => {
-      const i = action.payload.index;
       const activeElement = state.items[state.activeItemIndex];
-      const layers = [...(activeElement?.layersList ?? [])];
-      layers[i] = { ...layers[i], name: action.payload.name };
+      const layers = [...activeElement.layersList];
+      const index = action.payload.index;
+      layers[index] = { ...layers[index], name: action.payload.name };
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Rename,
         layersList: layers,
-        activeLayerIndex: activeElement?.activeLayerIndex ?? -1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        activeLayerIndex: activeElement.activeLayerIndex,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -187,18 +194,16 @@ export const historySlice = createSlice({
       canvasData: string; kind: HistoryItemKinds;
     }>) => {
       const activeElement = state.items[state.activeItemIndex];
-      const layers = [...(activeElement?.layersList ?? [])];
-
-      const index = activeElement?.activeLayerIndex;
-
+      const layers = [...activeElement.layersList];
+      const index = activeElement.activeLayerIndex;
       layers[index] = { ...layers[index], canvasData: action.payload.canvasData };
 
       addNewHistoryItemToState(state, {
         kind: action.payload.kind,
         layersList: layers,
-        activeLayerIndex: index ?? -1,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        activeLayerIndex: index,
+        width: activeElement.width,
+        height: activeElement.height,
       });
       addNewHistoryItemToLS(state);
     },
@@ -211,18 +216,18 @@ export const historySlice = createSlice({
       if (from === to) return;
 
       const activeElement = state.items[state.activeItemIndex];
-      activeElement.layersList = [...activeElement.layersList];
-      const movedLayer = activeElement.layersList.splice(from, 1)[0];
-      activeElement.layersList.splice(to, 0, movedLayer);
+      const layers = [...activeElement.layersList];
+      const movedLayer = layers.splice(from, 1)[0];
+      layers.splice(to, 0, movedLayer);
 
       activeElement.activeLayerIndex = to;
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Order,
-        layersList: activeElement.layersList,
+        layersList: layers,
         activeLayerIndex: activeElement.activeLayerIndex,
-        width: state.items[state.activeItemIndex]?.width,
-        height: state.items[state.activeItemIndex]?.height,
+        width: activeElement.width,
+        height: activeElement.height,
       });
 
       addNewHistoryItemToLS(state);

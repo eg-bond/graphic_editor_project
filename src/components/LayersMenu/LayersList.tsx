@@ -14,9 +14,10 @@ export const LayersList = memo(function LayersList() {
         {layers.map((layer, i) => (
           <Layer
             key={layer.id}
-            i={i}
+            index={i}
             name={layer.name}
             visible={layer.visible}
+            oneLayerLeft={layers.length === 1}
           />
         ))}
       </div>

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useSaveCanvasData } from './useSaveCanvasData';
+import { useSaveCanvasData } from '../useSaveCanvasData';
 
 export const useLine = (canvasElement: HTMLCanvasElement | null) => {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -18,6 +18,8 @@ export const useLine = (canvasElement: HTMLCanvasElement | null) => {
       if (!canvasContext) return;
 
       const { offsetX, offsetY } = event.nativeEvent;
+
+      canvasContext.lineCap = 'square';
 
       // Save the starting point
       setStartPoint({ x: offsetX, y: offsetY });

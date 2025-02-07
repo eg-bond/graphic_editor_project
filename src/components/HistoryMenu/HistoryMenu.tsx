@@ -2,7 +2,8 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
 import { HistoryItemIcon } from '../HistoryItemIcon';
 import { getHistoryItemName } from '@/utils/getHistoryName';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useHistoryHotkeys } from '@/hooks/hotkeyHooks/useHistoryHotkeys';
 
 export function HistoryMenu() {
   const d = useAppDispatch();
@@ -17,36 +18,31 @@ export function HistoryMenu() {
     [d, activeItemIndex],
   );
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === 'z') {
-        if (activeItemIndex > 0) {
-          handleActivateHistoryItem(activeItemIndex - 1);
-        }
-        e.preventDefault();
-      } else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z') {
-        if (activeItemIndex < historyList.length - 1) {
-          handleActivateHistoryItem(activeItemIndex + 1);
-        }
-        e.preventDefault();
-      }
-    };
+  useHistoryHotkeys({ activeItemIndex, historyList, handleActivateHistoryItem });
 
-    window.addEventListener('keydown', handleKeyDown);
+  // Стили для компоненты
+  const staticClasses = useMemo(() => {
+    return [
+      'relative',
+      'flex',
+      'justify-between',
+      'p-2',
+      'border-b-2',
+      'border-gray-500',
+      'first:border-t-2',
+      'hover:cursor-pointer',
+      'transition-all',
+    ].join(' ');
+  }, []);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [activeItemIndex, historyList, handleActivateHistoryItem]);
+  const dynamicClasses = useCallback((i: number) => {
+    const classes = [
+      activeItemIndex === i && 'bg-slate-400',
+      activeItemIndex < i && 'text-gray-500',
+    ];
 
-  const staticClasses =
-    'flex justify-between p-2 border-b-2 border-gray-500 ' +
-    'first:border-t-2 hover: cursor-pointer ';
-  const dynamicClasses = (i: number) => {
-    const activeCl = activeItemIndex === i ? 'bg-slate-400' : '';
-    const futureCl = activeItemIndex < i ? 'text-gray-500' : '';
-    return `${activeCl} ${futureCl}`;
-  };
+    return classes.filter(Boolean).join(' ');
+  }, [activeItemIndex]);
 
   return (
     <div className="h-1/2">
