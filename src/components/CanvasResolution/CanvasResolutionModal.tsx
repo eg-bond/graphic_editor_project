@@ -19,7 +19,7 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
   const { width, height } = useAppSelector(selectWidthAndHeight);
   const layersList = useAppSelector(selectLayersList);
 
-  const [keepRatio, setKeepRatio] = useState(false);
+  const [keepRatio, setKeepRatio] = useState(true);
   const aspectRatio = width / height;
 
   useEffect(() => {
