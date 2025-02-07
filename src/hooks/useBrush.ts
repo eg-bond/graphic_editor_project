@@ -11,7 +11,7 @@ export const useBrush = (
   const startDrawing = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (!canvasElement) return;
-      const canvasContext = canvasElement.getContext('2d');
+      const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
       if (!canvasContext) return;
 
       const { offsetX, offsetY } = event.nativeEvent;
@@ -37,7 +37,7 @@ export const useBrush = (
 
   const draw = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!canvasElement) return;
-    const canvasContext = canvasElement.getContext('2d');
+    const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
     if (!isDrawing || !canvasContext) return;
 
     const { strokeStyle } = canvasContext;

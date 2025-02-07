@@ -14,12 +14,13 @@ import {
   ResizeIcon,
   TriangleIcon,
 } from '../Tools/ToolsIcon';
+import MoveIcon from '../Tools/ToolsIcon/MoveIcon';
 
-interface IActionIconProps {
+interface IHistoryItemIcon {
   kind: HistoryItemKinds;
 }
 
-export function ActionIcon({ kind }: IActionIconProps) {
+export function HistoryItemIcon({ kind }: IHistoryItemIcon) {
   switch (kind) {
     case HistoryItemKinds.Add:
       return <FileAddOutlined />;
@@ -45,6 +46,8 @@ export function ActionIcon({ kind }: IActionIconProps) {
       return <CircleIcon />;
     case HistoryItemKinds.Eraser:
       return <EraserIcon />;
+    case HistoryItemKinds.Move:
+      return <MoveIcon />;
     case HistoryItemKinds.OpenProject:
       return <FolderOpenOutlined />;
     case HistoryItemKinds.ResizeCanvas:

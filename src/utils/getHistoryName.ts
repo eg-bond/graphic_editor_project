@@ -24,10 +24,12 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Квадрат';
     case HistoryItemKinds.Eraser:
       return 'Ластик';
-    case HistoryItemKinds.OpenProject:
-      return 'Открыть';
     case HistoryItemKinds.Triangle:
       return 'Треугольник';
+    case HistoryItemKinds.Move:
+      return 'Перемещение';
+    case HistoryItemKinds.OpenProject:
+      return 'Открыть';
     case HistoryItemKinds.ResizeCanvas:
       return 'Размер холста';
     default:

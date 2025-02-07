@@ -13,6 +13,7 @@ export enum HistoryItemKinds {
   Eraser,
   Circle,
   Triangle,
+  Move,
   // Other
   OpenProject,
   ResizeCanvas,

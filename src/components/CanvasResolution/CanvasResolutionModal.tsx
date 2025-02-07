@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { resizeCanvas, selectLayersList, selectWidthAndHeight } from '@/redux/history';
 import { LayerT } from '@/redux/history/historySlice';
 import { allowOnlyNumbers } from '@/utils/formatInteger';
+import { WIDTH_AND_HEIGHT_VALIDATION_RULES } from '@/utils/constants';
 
 const { Text } = Typography;
 
@@ -44,7 +45,7 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
 
   const handleSave = async () => {
     try {
-      const values = form.getFieldsValue();
+      const values = await form.validateFields();
 
       const updatedLayers = await Promise.all(
         layersList.map(
@@ -118,10 +119,12 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
         </div>
 
         {/* Поля для ширины и высоты */}
-        <Form.Item label="Ширина" name="width" rules={[{ required: true, message: 'Введите ширину' }]}>
+        <Form.Item
+          label="Ширина"
+          name="width"
+          rules={WIDTH_AND_HEIGHT_VALIDATION_RULES}
+        >
           <InputNumber
-            min={200}
-            max={5000}
             placeholder="Введите ширину"
             onKeyDown={allowOnlyNumbers}
             onChange={handleWidthChange}
@@ -129,10 +132,12 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
           />
         </Form.Item>
 
-        <Form.Item label="Высота" name="height" rules={[{ required: true, message: 'Введите высоту' }]}>
+        <Form.Item
+          label="Высота"
+          name="height"
+          rules={WIDTH_AND_HEIGHT_VALIDATION_RULES}
+        >
           <InputNumber
-            min={200}
-            max={5000}
             placeholder="Введите высоту"
             onKeyDown={allowOnlyNumbers}
             onChange={handleHeightChange}

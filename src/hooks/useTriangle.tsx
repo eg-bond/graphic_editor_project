@@ -20,7 +20,7 @@ export const useTriangle = (
   const startDrawing = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (!canvasElement) return;
-      const canvasContext = canvasElement.getContext('2d');
+      const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
       if (!canvasContext) return;
 
       const currentImageData = canvasContext.getImageData(
@@ -45,7 +45,7 @@ export const useTriangle = (
   const draw = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (!isDrawing || !canvasElement || !startPoint || !imageData) return;
-      const canvasContext = canvasElement.getContext('2d');
+      const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
       if (!canvasContext) return;
 
       const { offsetX, offsetY } = event.nativeEvent;

@@ -3,13 +3,12 @@ import {
 } from '@/redux/history';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
-import { getHistoryItemKind } from '@/utils/getHistoryItemKind';
+import { getHistoryItemKindFromTool } from '@/utils/getHistoryItemKindFromTool';
 
 export const useSaveCanvasData = (
   canvasElement: HTMLCanvasElement | null,
 ) => {
   const d = useAppDispatch();
-
   const tool = useAppSelector(state => state.tools.tool);
 
   const saveCanvasData = (): void => {
@@ -18,7 +17,7 @@ export const useSaveCanvasData = (
     if (!ctx) return;
 
     const canvasData = canvasElement.toDataURL('image/png');
-    d(addDrawing({ canvasData, kind: getHistoryItemKind(tool) }));
+    d(addDrawing({ canvasData, kind: getHistoryItemKindFromTool(tool) }));
   };
 
   return { saveCanvasData };

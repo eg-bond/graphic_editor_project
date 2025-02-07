@@ -56,6 +56,8 @@ const ProjectsPage1: FC = () => {
     saveNewProjectToLS(newProject);
     setProjects(prevProjects => [{ ...newProject }, ...prevProjects]);
 
+    form.resetFields();
+    onClose();
     // Сохранение проекта в Firebase (проверял работоспособность, решил уже оставить тут)
     // try {
     //   await createProject({
@@ -70,9 +72,6 @@ const ProjectsPage1: FC = () => {
     //     description: (error as Error).message,
     //   });
     // }
-
-    // form.resetFields();
-    // onClose();
   }, [form, user, onClose]);
 
   const handleDelete = (id: string) => {

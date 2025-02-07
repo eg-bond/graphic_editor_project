@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { activateHistoryItem } from '@/redux/history';
-import { ActionIcon } from '../ActionIcon';
+import { HistoryItemIcon } from '../HistoryItemIcon';
 import { getHistoryItemName } from '@/utils/getHistoryName';
 import { useCallback, useEffect } from 'react';
 
@@ -60,8 +60,8 @@ export function HistoryMenu() {
               onClick={() => handleActivateHistoryItem(i)}
               className={`${staticClasses} ${dynamicClasses(i)}`}
             >
-              {/* Action icon of history item */}
-              <ActionIcon kind={item.kind} />
+              {/* Icon of history item */}
+              <HistoryItemIcon kind={item.kind} />
               {/* Name of history item */}
               <span className="basis-3/4 flex justify-end">
                 {getHistoryItemName(item.kind)}
