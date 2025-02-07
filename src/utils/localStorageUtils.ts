@@ -28,29 +28,6 @@ export const saveNewProjectToLS = (newProject: Project) => {
   localStorage.setItem(PROJECTS_KEY, JSON.stringify(newProjects));
 };
 
-// Обновляет данные существующего проекта в LS (width, height, name)
-export const updateProjectInLS = (
-  id: string | null | undefined,
-  dataToUpdate: Partial<Project>,
-) => {
-  if (!id) return;
-
-  const { allProjects } = getProjectsFromLS();
-
-  const updatedProjects = allProjects.map((project: Project) =>
-    project.id === id
-      ? {
-          ...project,
-          ...dataToUpdate,
-          width: Math.max(200, dataToUpdate.width ?? project.width),
-          height: Math.max(200, dataToUpdate.height ?? project.height),
-        }
-      : project,
-  );
-
-  localStorage.setItem(PROJECTS_KEY, JSON.stringify(updatedProjects));
-};
-
 // Обновляет data конкретного проекта в LS (historyItem, historyIdCount, layerIdCount)
 export const addNewHistoryItemToLS = (
   historyState: RootState['history'],

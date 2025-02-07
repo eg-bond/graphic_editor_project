@@ -14,7 +14,7 @@ export const useLine = (canvasElement: HTMLCanvasElement | null) => {
   const startDrawing = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (!canvasElement) return;
-      const canvasContext = canvasElement.getContext('2d');
+      const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
       if (!canvasContext) return;
 
       const { offsetX, offsetY } = event.nativeEvent;
@@ -35,7 +35,7 @@ export const useLine = (canvasElement: HTMLCanvasElement | null) => {
 
   const draw = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!canvasElement || !isDrawing || !startPoint || !originalImageData) return;
-    const canvasContext = canvasElement.getContext('2d');
+    const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
     if (!canvasContext) return;
 
     const { offsetX, offsetY } = event.nativeEvent;
@@ -54,7 +54,7 @@ export const useLine = (canvasElement: HTMLCanvasElement | null) => {
 
   const stopDrawing = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!canvasElement || !isDrawing || !startPoint) return;
-    const canvasContext = canvasElement.getContext('2d');
+    const canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
     if (!canvasContext) return;
 
     const { offsetX, offsetY } = event.nativeEvent;
