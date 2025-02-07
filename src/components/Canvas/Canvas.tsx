@@ -1,48 +1,49 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { useTool } from '@/hooks/useTool.ts';
-import { LayersCanvasData } from './LayersCanvasData';
 import {
-  selectActiveLayer,
   selectActiveLayerIndex,
+  selectLayersList,
   selectWidthAndHeight,
 } from '@/redux/history';
 import { useCircleCursor } from '@/hooks/useCircleCursor';
 import { loadCanvasData } from '@/utils/loadCanvasData';
+import { LayerT } from '@/redux/history/historySlice';
 
 export const Canvas = memo(() => {
   const { width, height } = useAppSelector(selectWidthAndHeight);
   const activeLayerIndex = useAppSelector(selectActiveLayerIndex);
-  const activeLayer = useAppSelector(selectActiveLayer);
-  const toolColor = useAppSelector(state => state.tools.color);
-  const lineWidth = useAppSelector(state => state.tools.lineWidth);
-  const [layerCanvasVisible, setLayerCanvasVisible] = useState(true);
-  const canvasElementRef = useRef<HTMLCanvasElement | null>(null);
+  const layersList = useAppSelector(selectLayersList);
 
+  // Реф, хранящий ссылки на отрендеренные canvas элементы
+  const canvasRefs = useRef<{
+    [key: string]: HTMLCanvasElement | null;
+  }>({});
+
+  // Обновляем содержимое canvas элементов при обновлении layersList
   useEffect(() => {
-    if (canvasElementRef.current && activeLayer) {
+    for (const index of Object.keys(canvasRefs.current)) {
+      const canvasElement = canvasRefs.current[index];
       loadCanvasData({
-        canvasElement: canvasElementRef.current,
-        data: activeLayer.canvasData,
+        canvasElement,
+        data: layersList[+index]?.canvasData,
         width,
         height,
       });
     }
-  }, [activeLayer, width, height]);
+  }, [layersList, height, width]);
 
-  useEffect(() => {
-    if (!canvasElementRef.current) return;
-    const ctx = canvasElementRef.current.getContext('2d');
-    if (!ctx) return;
-    ctx.lineWidth = lineWidth;
-  }, [lineWidth, width, height]);
-
-  useEffect(() => {
-    if (!canvasElementRef.current) return;
-    const ctx = canvasElementRef.current.getContext('2d');
-    if (!ctx) return;
-    ctx.strokeStyle = toolColor;
-  }, [toolColor, width, height]);
+  // Memoize styles for better performance
+  const getCanvasStyle = useCallback(
+    (layer: LayerT, index: number) => {
+      return {
+        width: `${width}px`,
+        height: `${height}px`,
+        zIndex: 100 - index,
+        opacity: layer.opacity / 100 || 1,
+        display: !layer.visible ? 'none' : 'block',
+      };
+    }, [width, height]);
 
   const {
     updateMousePosition,
@@ -55,7 +56,7 @@ export const Canvas = memo(() => {
     startDrawing,
     draw,
     stopDrawing,
-  } = useTool(canvasElementRef.current);
+  } = useTool(canvasRefs.current[activeLayerIndex]);
 
   return (
     <div>
@@ -65,41 +66,31 @@ export const Canvas = memo(() => {
           width: `${width}px`,
           height: `${height}px`,
           cursor: 'none',
+          overflow: 'hidden',
         }}
-        onMouseDown={(e) => {
-          setLayerCanvasVisible(false);
-          startDrawing(e);
-        }}
+        onMouseDown={e => startDrawing(e)}
         onMouseMove={(e) => {
           draw(e);
           updateMousePosition(e);
         }}
-        onMouseUp={(e) => {
-          stopDrawing(e);
-          setTimeout(() => setLayerCanvasVisible(true), 100);
-        }}
+        onMouseUp={e => stopDrawing(e)}
         onMouseLeave={(e) => {
           stopDrawing(e);
           handleMouseLeave();
-          setTimeout(() => setLayerCanvasVisible(true), 100);
         }}
         onMouseEnter={handleMouseEnter}
       >
         {cursorElement}
-        <LayersCanvasData layerCanvasVisible={layerCanvasVisible} />
-        <canvas
-          className="absolute top-0 left-0"
-          style={{
-            width,
-            height,
-            zIndex: 100 - activeLayerIndex,
-            opacity: activeLayer.opacity / 100 || 1,
-            display: activeLayer.visible ? 'block' : 'none',
-          }}
-          width={width}
-          height={height}
-          ref={canvasElementRef}
-        />
+        {layersList.map((layer, i) => (
+          <canvas
+            key={layer.id}
+            className="absolute top-0 left-0"
+            style={getCanvasStyle(layer, i)}
+            width={width}
+            height={height}
+            ref={el => canvasRefs.current[i] = el}
+          />
+        ))}
       </div>
     </div>
   );

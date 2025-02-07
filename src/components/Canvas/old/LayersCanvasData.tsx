@@ -57,7 +57,20 @@ export const LayersCanvasData = memo<ILayersCanvasData>(({ layerCanvasVisible })
 
   return (
     <>
-      {layersList.map((layer, i) => (
+      {layersList.map((layer, i) => {
+        return (
+          <canvas
+            key={layer.id}
+            className="absolute top-0 left-0"
+            style={getCanvasStyle(layer, i)}
+            width={width}
+            height={height}
+            ref={el => canvasRefs.current[i] = el}
+          />
+        );
+      },
+      )}
+      {/* {layersList.map((layer, i) => (
         <canvas
           key={layer.id}
           className="absolute top-0 left-0"
@@ -66,7 +79,7 @@ export const LayersCanvasData = memo<ILayersCanvasData>(({ layerCanvasVisible })
           height={height}
           ref={el => canvasRefs.current[i] = el}
         />
-      ))}
+      ))} */}
     </>
   );
 });

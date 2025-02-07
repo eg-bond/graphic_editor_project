@@ -3,7 +3,7 @@ import { useBrush } from '@/hooks/useBrush';
 import { ToolKinds } from '@/redux/tools';
 import { useEffect, useState } from 'react';
 import { useRectangle } from './useRectangle';
-import { selectActiveLayer } from '@/redux/history';
+import { selectWidthAndHeight } from '@/redux/history';
 import { useCircle } from './useCircle';
 import { useTriangle } from './useTriangle';
 import { useLine } from './useLine';
@@ -12,7 +12,23 @@ export const useTool = (
   canvasElement: HTMLCanvasElement | null,
 ) => {
   const tool = useAppSelector(state => state.tools.tool);
-  const activeLayer = useAppSelector(selectActiveLayer);
+  const toolColor = useAppSelector(state => state.tools.color);
+  const lineWidth = useAppSelector(state => state.tools.lineWidth);
+  const { width, height } = useAppSelector(selectWidthAndHeight);
+
+  useEffect(() => {
+    if (!canvasElement) return;
+    const ctx = canvasElement.getContext('2d');
+    if (!ctx) return;
+    ctx.lineWidth = lineWidth;
+  }, [lineWidth, width, height, canvasElement]);
+
+  useEffect(() => {
+    if (!canvasElement) return;
+    const ctx = canvasElement.getContext('2d');
+    if (!ctx) return;
+    ctx.strokeStyle = toolColor;
+  }, [toolColor, width, height, canvasElement]);
 
   const [, forceRender] = useState({});
   useEffect(() => {
@@ -54,10 +70,6 @@ export const useTool = (
     draw: triangleDraw,
     stopDrawing: triangleStopDrawing,
   } = useTriangle(canvasElement);
-
-  if (!activeLayer) return {
-    startDrawing: () => {}, draw: () => {}, stopDrawing: () => {},
-  };
 
   if (tool === ToolKinds.Brush) {
     return {
