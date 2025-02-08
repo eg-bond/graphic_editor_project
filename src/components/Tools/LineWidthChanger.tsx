@@ -8,10 +8,10 @@ import { useLineWidthHotkeys } from '@/hooks/hotkeyHooks/useLineWidthHotkeys.ts'
 
 const marks = (() => {
   const result: {
-    [key: number]: string;
-  } = {};
-  for (let i = LINE_WIDTH_MIN; i <= LINE_WIDTH_MAX; i += 5) {
-    result[i] = String(i);
+    [key: number]: number;
+  } = { [LINE_WIDTH_MIN]: LINE_WIDTH_MIN };
+  for (let i = LINE_WIDTH_MIN + (5 - LINE_WIDTH_MIN % 5); i <= LINE_WIDTH_MAX; i += 5) {
+    result[i] = i;
   }
   return result;
 })();
