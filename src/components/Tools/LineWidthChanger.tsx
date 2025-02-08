@@ -3,19 +3,22 @@ import { Button, Popover, Slider, Tooltip } from 'antd';
 import { LineWidthIcon } from '@/components/Tools/ToolsIcon';
 import { useAppDispatch } from '@/redux/hooks.ts';
 import { setLineWidth } from '@/redux/tools';
+import { LINE_WIDTH_MIN, LINE_WIDTH_MAX } from '@/redux/tools/toolsSlice.ts';
+import { useLineWidthHotkeys } from '@/hooks/hotkeyHooks/useLineWidthHotkeys.ts';
 
-const marks = {
-  1: '1',
-  5: '5',
-  10: '10',
-  15: '15',
-  20: '20',
-  25: '25',
-};
+const marks = (() => {
+  const result: {
+    [key: number]: number;
+  } = { [LINE_WIDTH_MIN]: LINE_WIDTH_MIN };
+  for (let i = LINE_WIDTH_MIN + (5 - LINE_WIDTH_MIN % 5); i <= LINE_WIDTH_MAX; i += 5) {
+    result[i] = i;
+  }
+  return result;
+})();
 
 const LineWidthChanger1: FC = () => {
   const d = useAppDispatch();
-
+  useLineWidthHotkeys();
   const handleChange = useCallback((value: number) => {
     d(setLineWidth(value));
   }, [d]);
@@ -28,8 +31,8 @@ const LineWidthChanger1: FC = () => {
         content={(
           <Slider
             onChangeComplete={handleChange}
-            min={1}
-            max={25}
+            min={LINE_WIDTH_MIN}
+            max={LINE_WIDTH_MAX}
             className="w-[200px]"
             marks={marks}
             defaultValue={5}

@@ -8,6 +8,8 @@ export const {
   selectColor,
   selectSecondaryColor,
   setLineWidth,
+  lineWidthUp,
+  lineWidthDown,
 } = toolsSlice.actions;
 
 export { ToolKinds };

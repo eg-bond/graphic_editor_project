@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { DropDownNav, MenuItem } from './DropDownNav';
 import { CreateProjectButton } from '@/components/Navigation/CreateProjectButton.tsx';
-import { useSaveToLs } from '@/hooks/useSaveToLs';
+import { useSaveProject } from '@/hooks/useSaveProject.tsx';
 import { CanvasResolutionModal } from '@/components/CanvasResolution/CanvasResolutionModal';
 import { useModal } from '@/hooks/useModal';
 import { AuthStatus } from '../AuthStatus';
 import { AppRoutes } from '@/types/appRoutes';
 
 export const Navigation = () => {
-  const { handleSave, notificationCtx } = useSaveToLs();
+  const { handleSave, notificationCtx } = useSaveProject();
   const {
     open,
     onOpen,

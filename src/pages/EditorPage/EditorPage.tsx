@@ -1,33 +1,40 @@
 import { Navigation } from '@/components/Navigation';
 import { LayersMenu } from '@/components/LayersMenu';
 import { HistoryMenu } from '@/components/HistoryMenu';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
 import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
-import { getProjectsFromLS } from '@/utils/localStorageUtils';
 import { Tools } from '@/components/Tools';
 import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { getProjectData } from '@/utils/firebaseUtils.ts';
 
 export function EditorPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      const { currentProject } = getProjectsFromLS(id);
-
-      if (currentProject) {
-        dispatch(setProjectData({ id, data: currentProject?.data }));
-      } else {
-        console.error('Проект не найден!');
+    (async () => {
+      if (!id) {
+        return;
       }
-    }
-    setInitialized(true);
-  }, [dispatch, id]);
+
+      try {
+        const data = await getProjectData(id);
+        if (data) {
+          dispatch(setProjectData({ id: data.id, data: data.data }));
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (e) {
+        navigate('/404');
+      }
+      setInitialized(true);
+    })();
+  }, [dispatch, id, navigate]);
 
   if (!initialized) {
     return (

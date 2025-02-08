@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
 import { EMPTY_CANVAS_DATA, FIRST_HISTORY_ITEM, NEW_LAYER_NAME } from '@/utils/constants';
-import { addNewHistoryItemToLS } from '@/utils/localStorageUtils';
+import { updateProjectData } from '@/utils/firebaseUtils.ts';
 
 export interface LayerT {
   id: number;
@@ -23,7 +23,7 @@ export type HistoryItemT = {
 };
 
 export interface HistorySliceStateT {
-  projectId: string | null;
+  projectDataId: string | null;
   maxHistoryLength: number;
   items: Array<HistoryItemT>;
   historyIdCount: number;
@@ -34,7 +34,7 @@ export interface HistorySliceStateT {
 const HISTORY_MAX_LENGTH = 10;
 
 const initialState: HistorySliceStateT = {
-  projectId: null,
+  projectDataId: null,
   items: [{ ...FIRST_HISTORY_ITEM }],
   historyIdCount: 1,
   activeItemIndex: 0,
@@ -49,7 +49,7 @@ export const historySlice = createSlice({
     setProjectData: (state, action: PayloadAction<{
       id: string; data?: ProjectData;
     }>) => {
-      state.projectId = action.payload.id;
+      state.projectDataId = action.payload.id;
       state.activeItemIndex = initialState.activeItemIndex;
       if (action.payload.data) {
         state.items = [{
@@ -68,7 +68,7 @@ export const historySlice = createSlice({
       index: number;
     }>) => {
       state.activeItemIndex = action.payload.index;
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
     setStateFromHistory: (state, action: PayloadAction<{
       layersList: LayerT[];
@@ -95,7 +95,7 @@ export const historySlice = createSlice({
         width: state.items[state.activeItemIndex].width,
         height: state.items[state.activeItemIndex].height,
       });
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
     removeLayer: (state, action: PayloadAction<{
       index: number;
@@ -120,7 +120,7 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
     activateLayer: (state, action: PayloadAction<{
@@ -144,7 +144,7 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
     changeLayerVisibility: (state, action: PayloadAction<{
@@ -169,7 +169,7 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
     changeLayerName: (state, action: PayloadAction<{
@@ -187,7 +187,7 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
     addDrawing: (state, action: PayloadAction<{
@@ -205,7 +205,7 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
     moveLayer: (state, action: PayloadAction<{
@@ -230,7 +230,7 @@ export const historySlice = createSlice({
         height: activeElement.height,
       });
 
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
     layerUp: (state) => {
@@ -260,7 +260,7 @@ export const historySlice = createSlice({
         height,
       });
 
-      addNewHistoryItemToLS(state);
+      updateProjectData(state);
     },
 
   },
