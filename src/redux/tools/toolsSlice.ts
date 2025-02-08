@@ -22,6 +22,9 @@ interface ToolsSliceState {
   lineWidth: number;
 }
 
+export const LINE_WIDTH_MIN = 1;
+export const LINE_WIDTH_MAX = 25;
+
 const initialState: ToolsSliceState = {
   tool: ToolKinds.Brush,
   color: DEFAULT_TOOLS_COLOR,
@@ -50,6 +53,16 @@ export const toolsSlice = createSlice({
     },
     setLineWidth: (state, action: PayloadAction<number>) => {
       state.lineWidth = action.payload;
+    },
+    lineWidthUp: (state) => {
+      if (state.lineWidth < LINE_WIDTH_MAX) {
+        state.lineWidth++;
+      }
+    },
+    lineWidthDown: (state) => {
+      if (state.lineWidth > LINE_WIDTH_MIN) {
+        state.lineWidth--;
+      }
     },
   },
 });

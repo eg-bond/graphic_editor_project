@@ -12,7 +12,6 @@ export const {
   changeLayerVisibility,
   changeLayerName,
   addDrawing,
-  setStateFromHistory,
   layerUp,
   layerDown,
   moveLayer,

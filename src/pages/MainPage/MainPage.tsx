@@ -1,6 +1,18 @@
 import { SignInNavBtn, SignUpNavBtn } from '@/components/Buttons';
+import { useAuthContext } from '@/context/AuthContext.tsx';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const MainPage = () => {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.uid) {
+      navigate('/projects', { replace: true });
+    }
+  }, [navigate, user?.uid]);
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Main Content */}
