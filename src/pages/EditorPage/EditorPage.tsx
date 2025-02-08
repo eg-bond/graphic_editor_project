@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
 import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
-import { getProjectsFromLS } from '@/utils/localStorageUtils';
 import { Tools } from '@/components/Tools';
-import { Flex, Spin } from 'antd';
+import { Flex, notification, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { getProjectData } from '@/utils/firebaseUtils.ts';
 
 export function EditorPage() {
   const { id } = useParams();
@@ -17,16 +17,24 @@ export function EditorPage() {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      const { currentProject } = getProjectsFromLS(id);
-
-      if (currentProject) {
-        dispatch(setProjectData({ id, data: currentProject?.data }));
-      } else {
-        console.error('Проект не найден!');
+    (async () => {
+      if (!id) {
+        return;
       }
-    }
-    setInitialized(true);
+
+      try {
+        const data = await getProjectData(id);
+        if (data) {
+          dispatch(setProjectData({ id: data.id, data: data.data }));
+        }
+      } catch (e) {
+        notification.error({
+          message: 'Ошибка при создании проекта',
+          description: (e as Error).message,
+        });
+      }
+      setInitialized(true);
+    })();
   }, [dispatch, id]);
 
   if (!initialized) {

@@ -1,10 +1,10 @@
-import { FC, memo } from 'react';
-import {
-  Button, Col, Form, Input, InputNumber,
-  Modal, Row, Typography, FormInstance,
-} from 'antd';
+import { FC, memo, useCallback, useState } from 'react';
+import { Button, Col, Form, FormInstance, Input, InputNumber, Modal, notification, Row, Typography } from 'antd';
 import { allowOnlyNumbers } from '@/utils/formatInteger.ts';
-import { WIDTH_AND_HEIGHT_VALIDATION_RULES } from '@/utils/constants';
+import { FIRST_HISTORY_ITEM, WIDTH_AND_HEIGHT_VALIDATION_RULES } from '@/utils/constants';
+import type { Project } from '@/types/localStorageTypes.ts';
+import { createProject } from '@/utils/firebaseUtils.ts';
+import { useAuthContext } from '@/context/AuthContext.tsx';
 
 export interface ProjectFormData {
   name: string;
@@ -16,23 +16,51 @@ interface CreateProjectModalProps {
   open: boolean;
   onClose: () => void;
   form: FormInstance<ProjectFormData>;
-  handleSubmit: (data: ProjectFormData) => void;
+  handleSubmit: (data: Project) => void;
 }
 
-const _CreateProjectModal: FC<CreateProjectModalProps> = ({
+const CreateProjectModal1: FC<CreateProjectModalProps> = ({
   open,
   onClose,
   form,
   handleSubmit,
 }) => {
-  const onClick = async () => {
+  const { user } = useAuthContext();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onSubmit = useCallback(async (values: ProjectFormData) => {
+    if (!user) return;
+
     try {
-      await form.validateFields();
+      setLoading(true);
+
+      const newProject: Omit<Project, 'id'> = {
+        name: values.name,
+        data: {
+          historyItem: {
+            ...FIRST_HISTORY_ITEM,
+            width: +values.width,
+            height: +values.height,
+          },
+          historyIdCount: 1,
+          layerIdCount: 0,
+        },
+      };
+
+      const id = await createProject(newProject, user.uid);
+
+      form.resetFields();
       onClose();
+      handleSubmit?.({ id, ...newProject });
     } catch (error) {
-      console.error('Error while creating project:', error);
+      notification.error({
+        message: 'Ошибка при создании проекта',
+        description: (error as Error).message,
+      });
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
   return (
     <Modal
@@ -41,6 +69,7 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
         form.resetFields();
         onClose();
       }}
+      loading={loading}
       footer={null}
       width={750}
       forceRender
@@ -52,7 +81,7 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
       <Form<ProjectFormData>
         layout="vertical"
         form={form}
-        onFinish={handleSubmit}
+        onFinish={onSubmit}
       >
         <Row gutter={[20, 20]}>
           <Col span={8}>
@@ -97,7 +126,6 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
 
         <div className="flex justify-end">
           <Button
-            onClick={onClick}
             htmlType="submit"
             className="!bg-green-500"
             type="primary"
@@ -111,4 +139,4 @@ const _CreateProjectModal: FC<CreateProjectModalProps> = ({
   );
 };
 
-export const CreateProjectModal = memo(_CreateProjectModal);
+export const CreateProjectModal = memo(CreateProjectModal1);
