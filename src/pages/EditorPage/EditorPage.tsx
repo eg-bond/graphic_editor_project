@@ -1,18 +1,19 @@
 import { Navigation } from '@/components/Navigation';
 import { LayersMenu } from '@/components/LayersMenu';
 import { HistoryMenu } from '@/components/HistoryMenu';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks.ts';
 import { setProjectData } from '@/redux/history';
 import { Canvas } from '@/components/Canvas';
 import { Tools } from '@/components/Tools';
-import { Flex, notification, Spin } from 'antd';
+import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { getProjectData } from '@/utils/firebaseUtils.ts';
 
 export function EditorPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [initialized, setInitialized] = useState(false);
 
@@ -27,15 +28,13 @@ export function EditorPage() {
         if (data) {
           dispatch(setProjectData({ id: data.id, data: data.data }));
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
-        notification.error({
-          message: 'Ошибка при создании проекта',
-          description: (e as Error).message,
-        });
+        navigate('/404');
       }
       setInitialized(true);
     })();
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
 
   if (!initialized) {
     return (
