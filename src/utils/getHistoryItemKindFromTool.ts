@@ -7,6 +7,8 @@ export function getHistoryItemKindFromTool(
   switch (toolKind) {
     case ToolKinds.Brush:
       return HistoryItemKinds.Brush;
+    case ToolKinds.Fill:
+      return HistoryItemKinds.Fill;
     case ToolKinds.Line:
       return HistoryItemKinds.Line;
     case ToolKinds.Rect:

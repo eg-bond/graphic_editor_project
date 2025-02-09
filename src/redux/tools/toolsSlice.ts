@@ -6,6 +6,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export enum ToolKinds {
   Brush = 'brush',
+  Fill = 'fill',
   Line = 'line',
   Rect = 'rect',
   Circle = 'circle',

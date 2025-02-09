@@ -7,6 +7,7 @@ import LineWidthIcon from './LineWidthIcon';
 import TriangleIcon from './TriangeIcon';
 import ResizeIcon from './ResizeIcon';
 import MoveIcon from './MoveIcon';
+import FillIcon from './FillIcon';
 
 export {
   BrushIcon,
@@ -18,4 +19,5 @@ export {
   TriangleIcon,
   ResizeIcon,
   MoveIcon,
+  FillIcon,
 };

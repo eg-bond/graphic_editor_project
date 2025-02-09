@@ -8,6 +8,7 @@ export enum HistoryItemKinds {
   Order,
   // History item kinds related to tools
   Brush,
+  Fill,
   Line,
   Rect,
   Eraser,

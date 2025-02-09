@@ -16,6 +16,8 @@ export function getHistoryItemName(action: HistoryItemKinds): string {
       return 'Порядок слоев';
     case HistoryItemKinds.Brush:
       return 'Кисть';
+    case HistoryItemKinds.Fill:
+      return 'Заливка';
     case HistoryItemKinds.Line:
       return 'Линия';
     case HistoryItemKinds.Circle:
