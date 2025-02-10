@@ -41,7 +41,7 @@ export const Navigation = () => {
   return (
     <>
       <div className="flex justify-between items-center w-full h-[5vh]">
-        <nav className="flex items-center gap-4 h-full px-2 ">
+        <nav className="flex items-center gap-4 px-2 ">
           <DropDownNav title="Файл" items={files} />
           <Link to={'/' + AppRoutes.Projects}>Все проекты</Link>
           {notificationCtx}

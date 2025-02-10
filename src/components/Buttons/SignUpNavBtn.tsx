@@ -13,7 +13,7 @@ export const SignUpNavBtn = () => {
       onClick={handleNavigateToSignUp}
       className={
         'px-8 py-3 bg-cBlue text-white rounded-lg hover:bg-cBlueHov ' +
-        'transition-colors duration-200 font-medium min-w-[150px]'
+        'transition-colors duration-200 font-medium text-base min-w-[150px]'
       }
     >
       Регистрация

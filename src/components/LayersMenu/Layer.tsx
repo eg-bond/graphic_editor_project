@@ -100,19 +100,20 @@ export const Layer = memo<ILayerProps>(function Layer({
       'px-2',
       'py-1',
       'border-b-2',
-      'border-gray-500',
+      'border-cBlueHov',
       'first:border-t-2',
       'hover:cursor-pointer',
       'transition-all',
+      'duration-200',
     ].join(' ');
   }, []);
 
   const dynamicClasses = useCallback((isActive: boolean) => {
     const classes = [
-      isActive && 'bg-slate-400',
+      isActive && 'bg-cBlue',
       isDragging && 'opacity-50 ',
       isOver && 'bg-blue-100',
-      showWarning && 'border-red-400',
+      showWarning && 'bg-cRed border-cRed',
     ];
 
     return classes.filter(Boolean).join(' ');

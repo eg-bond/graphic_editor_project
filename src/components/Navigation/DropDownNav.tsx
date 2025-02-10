@@ -12,7 +12,11 @@ export interface MyMenuProps extends MenuProps {
 
 export const DropDownNav = ({ title, items }: MyMenuProps) => {
   return (
-    <Dropdown menu={{ items }} className="cursor-pointer">
+    <Dropdown
+      menu={{ items }}
+      trigger={['click']}
+      className="cursor-pointer"
+    >
       <Space>{title}</Space>
     </Dropdown>
   );

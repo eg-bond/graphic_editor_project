@@ -70,10 +70,10 @@ const ProjectsPage1: FC = () => {
   return (
     <main>
       <AuthStatus />
-      <div className="max-w-[1500px] mx-auto mt-32">
+      <div className="max-w-[1500px] mx-auto mt-32 px-12">
         {loading && (
           <div className="flex justify-center">
-            <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+            <Spin className="text-cBlue" indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
           </div>
         )}
         {!loading && (
@@ -83,8 +83,8 @@ const ProjectsPage1: FC = () => {
                 {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
               </Typography.Title>
               <Button
+                className="!bg-emerald-600 hover:!bg-emerald-700 font-medium"
                 onClick={onOpen}
-                className="!bg-green-500"
                 type="primary"
                 size="large"
               >
@@ -94,7 +94,13 @@ const ProjectsPage1: FC = () => {
 
             <Row gutter={gutter} wrap>
               {projects.map((project, i) => (
-                <Col span={6} key={project.id}>
+                <Col
+                  xs={24}
+                  sm={12}
+                  lg={8}
+                  xl={6}
+                  key={project.id}
+                >
                   <div
                     className="opacity-0 animate-fadeInDown"
                     style={{ animationDelay: animationDelay(0.1, i) }}
@@ -109,12 +115,12 @@ const ProjectsPage1: FC = () => {
                         {project.name}
                       </Typography.Title>
 
-                      <div className="flex justify-between">
+                      <div className="flex justify-between gap-4">
                         <Button
                           onClick={() =>
                             navigate(`/projects/${project.id}`, { state: project })}
                           className={
-                            'px-10 text-white font-medium border-none ' +
+                            'w-[100px] text-white font-medium border-none ' +
                             '!bg-cBlue hover:!bg-cBlueHov !text-white'
                           }
                           size="large"
@@ -122,7 +128,7 @@ const ProjectsPage1: FC = () => {
                           Вход
                         </Button>
 
-                        <div className="z-20" onClick={stopPropagation}>
+                        <div className="w-[100px] z-20" onClick={stopPropagation}>
                           <Popconfirm
                             title="Удалить проект"
                             description="Вы уверены, что хотите удалить проект?"
@@ -135,7 +141,7 @@ const ProjectsPage1: FC = () => {
                           >
                             <Button
                               className={
-                                'px-8 text-white font-medium border-none ' +
+                                'w-full text-white font-medium border-none ' +
                                 '!bg-cRed hover:!bg-cRedHov !text-white'
                               }
                               size="large"

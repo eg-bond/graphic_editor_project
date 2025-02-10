@@ -44,7 +44,10 @@ export function EditorPage() {
         align="center"
         gap="middle"
       >
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+        <Spin
+          className="text-cBlue"
+          indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />}
+        />
       </Flex>
     );
   }

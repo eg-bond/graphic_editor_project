@@ -115,6 +115,7 @@ export const SignUpPage = () => {
 
               <Form.Item>
                 <Button
+                  className="!bg-cBlue hover:!bg-cBlueHov"
                   type="primary"
                   htmlType="submit"
                   loading={loading}

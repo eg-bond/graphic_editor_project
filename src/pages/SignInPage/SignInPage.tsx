@@ -78,6 +78,7 @@ export const SignInPage = () => {
 
               <Form.Item>
                 <Button
+                  className="!bg-emerald-600 hover:!bg-emerald-700"
                   type="primary"
                   htmlType="submit"
                   loading={loading}
