@@ -16,11 +16,21 @@ export const MainPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Main Content */}
-      <main className="container mx-auto px-4">
+      <img className="w-screen h-screen absolute bg-contain blur-md opacity-80" src="bg-1.png" alt="" />
+      <main className="relative container mx-auto px-4">
         <div className="flex flex-col items-center justify-center min-h-[80vh] gap-4">
-          <h2 className="text-3xl font-semibold text-gray-700 mb-6">
+          <h2 className="text-3xl font-semibold text-gray-700 mb-2">
             Графический редактор
           </h2>
+
+          <p className="text-center text-gray-600">
+            Создавайте и редактируйте изображения с легкостью!
+            <br />
+            Наш графический редактор предлагает мощные инструменты
+            <br />
+            для работы
+            с изображениями: слои, кисти, фигуры и многое другое.
+          </p>
 
           {/* Buttons Container */}
           <div className="flex flex-col sm:flex-row gap-4">

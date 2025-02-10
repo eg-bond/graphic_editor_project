@@ -33,105 +33,108 @@ export const SignUpPage = () => {
   };
 
   return (
-    <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
-      <Col
-        xs={24}
-        sm={20}
-        md={16}
-        lg={12}
-        xl={8}
-      >
-        <Card title={<h2 className="text-center text-xl">Регистрация</h2>}>
-          <Form
-            form={form}
-            name="signup"
-            onFinish={onFinish}
-            layout="vertical"
-            initialValues={{ remember: true }}
-            scrollToFirstError
-          >
-            <Form.Item
-              name="nickname"
-              rules={[{ required: true, message: 'Введите имя пользователя' }]}
+    <>
+      <img className="w-screen h-screen absolute bg-contain blur-md opacity-80" src="bg-1.png" alt="" />
+      <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+        <Col
+          xs={24}
+          sm={20}
+          md={16}
+          lg={12}
+          xl={8}
+        >
+          <Card title={<h2 className="text-center text-2xl">Регистрация</h2>}>
+            <Form
+              form={form}
+              name="signup"
+              onFinish={onFinish}
+              layout="vertical"
+              initialValues={{ remember: true }}
+              scrollToFirstError
             >
-              <Input
-                prefix={<UserOutlined />}
-                placeholder="Имя пользователя"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="email"
-              rules={[
-                { required: true, message: 'Введите Email' },
-                { type: 'email', message: 'Введите корректный Email' },
-              ]}
-            >
-              <Input
-                prefix={<MailOutlined />}
-                placeholder="Email"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: 'Введите пароль' },
-                { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                placeholder="Пароль"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="confirmPassword"
-              dependencies={['password']}
-              rules={[
-                { required: true, message: 'Введите пароль' },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('Пароли не совпадают'));
-                  },
-                }),
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                placeholder="Подтвердите пароль"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={loading}
-                block
-                size="large"
+              <Form.Item
+                name="nickname"
+                rules={[{ required: true, message: 'Введите имя пользователя' }]}
               >
-                Зарегистрироаться
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
+                <Input
+                  prefix={<UserOutlined />}
+                  placeholder="Имя пользователя"
+                  size="large"
+                />
+              </Form.Item>
 
-        <div className="flex flex-col items-center mt-5">
-          <p className="mb-2">
-            Уже есть аккаунт?
-          </p>
-          <SignInNavBtn />
-        </div>
-      </Col>
-    </Row>
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Введите Email' },
+                  { type: 'email', message: 'Введите корректный Email' },
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined />}
+                  placeholder="Email"
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: 'Введите пароль' },
+                  { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  placeholder="Пароль"
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="confirmPassword"
+                dependencies={['password']}
+                rules={[
+                  { required: true, message: 'Введите пароль' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('Пароли не совпадают'));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  placeholder="Подтвердите пароль"
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  size="large"
+                >
+                  Зарегистрироаться
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+
+          <div className="flex flex-col items-center mt-5">
+            <p className="mb-2 text-base">
+              Уже есть аккаунт?
+            </p>
+            <SignInNavBtn />
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 };

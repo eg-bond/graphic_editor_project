@@ -9,6 +9,7 @@ import { AuthStatus } from '@/components/AuthStatus';
 import { useAuthContext } from '@/context/AuthContext';
 import { deleteProject, getProjectsByUser } from '@/utils/firebaseUtils';
 import { LoadingOutlined } from '@ant-design/icons';
+import { motion } from 'framer-motion';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
@@ -78,7 +79,7 @@ const ProjectsPage1: FC = () => {
             )
           : (
               <>
-                <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8`}>
+                <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8 `}>
                   <Typography.Title>
                     {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
                   </Typography.Title>
@@ -95,41 +96,48 @@ const ProjectsPage1: FC = () => {
                 <Row gutter={gutter} wrap>
                   {projects.map(project => (
                     <Col span={6} key={project.id}>
-                      <Card
-                        onClick={() =>
-                          navigate(`/projects/${project.id}`, { state: project })}
-                        className="cursor-pointer"
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
                       >
-                        <Typography.Title level={2} className="!mb-12">
-                          {project.name}
-                        </Typography.Title>
+                        <Card
+                          onClick={() =>
+                            navigate(`/projects/${project.id}`, { state: project })}
+                          className="cursor-pointer border border-slate-400 relative"
+                        >
+                          <img className="absolute left-0 bottom-0 h-full w-full" src="bg-card-4.png" alt="" />
+                          <Typography.Title level={2} className="!mb-12">
+                            {project.name}
+                          </Typography.Title>
 
-                        <div className="flex justify-between">
-                          <Button
-                            color="primary"
-                            type="primary"
-                            size="large"
-                            onClick={() =>
-                              navigate(`/projects/${project.id}`, { state: project })}
-                          >
-                            Открыть
-                          </Button>
-
-                          <div onClick={stopPropagation}>
-                            <Popconfirm
-                              title="Удалить проект"
-                              description="Вы уверены, что хотите удалить проект?"
-                              okText="Удалить"
-                              cancelText="Отмена"
-                              onConfirm={() => handleDelete(project.id)}
+                          <div className="flex justify-between">
+                            <Button
+                              color="primary"
+                              type="primary"
+                              size="large"
+                              onClick={() =>
+                                navigate(`/projects/${project.id}`, { state: project })}
                             >
-                              <Button danger size="large">
-                                Удалить
-                              </Button>
-                            </Popconfirm>
+                              Открыть
+                            </Button>
+
+                            <div onClick={stopPropagation}>
+                              <Popconfirm
+                                title="Удалить проект"
+                                description="Вы уверены, что хотите удалить проект?"
+                                okText="Удалить"
+                                cancelText="Отмена"
+                                onConfirm={() => handleDelete(project.id)}
+                              >
+                                <Button danger size="large">
+                                  Удалить
+                                </Button>
+                              </Popconfirm>
+                            </div>
                           </div>
-                        </div>
-                      </Card>
+                        </Card>
+                      </motion.div>
                     </Col>
                   ))}
                 </Row>

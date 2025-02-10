@@ -10,7 +10,7 @@ export const LayersList = memo(function LayersList() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col justify-between overflow-y-auto">
+      <div className="flex flex-col justify-between overflow-y-auto custom-scrollbar">
         {layers.map((layer, i) => (
           <Layer
             key={layer.id}

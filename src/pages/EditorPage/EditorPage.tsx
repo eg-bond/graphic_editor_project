@@ -52,7 +52,7 @@ export function EditorPage() {
   return (
     <div className="h-screen w-full flex flex-col">
       {/* Top section */}
-      <div className="h-[5vh] w-full">
+      <div className="w-full">
         <Navigation />
 
       </div>
@@ -65,7 +65,7 @@ export function EditorPage() {
           <Tools />
 
           {/* Голубой контейнер с холстом */}
-          <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto ">
+          <div className="h-[95vh] bg-gray-300 flex justify-center items-center overflow-auto ">
             <div className="relative max-w-full max-h-full flex">
               <div className="p-4 pl-20 h-full">
                 <Canvas />
@@ -75,7 +75,7 @@ export function EditorPage() {
         </div>
 
         {/* Right vertical menu */}
-        <div className="w-1/6 h-[95vh] flex flex-col bg-slate-200">
+        <div className="w-1/5 h-[95vh] flex flex-col bg-slate-200">
           <LayersMenu />
           <HistoryMenu />
         </div>

@@ -49,7 +49,7 @@ export function HistoryMenu() {
       <div className="h-full flex flex-col ">
         <h1 className="m-2 text-2xl text-center">История</h1>
         {/* List of history items */}
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto custom-scrollbar">
           {historyList.map((item, i) => (
             <div
               key={item.id}

@@ -21,7 +21,9 @@ function App() {
   }
 
   return (
-    <Routing />
+    <div>
+      <Routing />
+    </div>
   );
 }
 

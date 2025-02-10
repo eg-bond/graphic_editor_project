@@ -33,68 +33,71 @@ export const SignInPage = () => {
   };
 
   return (
-    <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
-      <Col
-        xs={24}
-        sm={20}
-        md={16}
-        lg={12}
-        xl={8}
-      >
-        <Card title={<h2 className="text-center text-xl">Вход</h2>}>
-          <Form
-            form={form}
-            name="login"
-            onFinish={onFinish}
-            layout="vertical"
-            initialValues={{ remember: true }}
-          >
-            <Form.Item
-              name="email"
-              rules={[
-                { required: true, message: 'Введите Email' },
-                { type: 'email', message: 'Введите корректный Email' },
-              ]}
+    <>
+      <img className="w-screen h-screen absolute bg-contain blur-md opacity-80" src="bg-1.png" alt="" />
+      <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+        <Col
+          xs={24}
+          sm={20}
+          md={16}
+          lg={12}
+          xl={8}
+        >
+          <Card title={<h2 className="text-center text-2xl">Вход</h2>}>
+            <Form
+              form={form}
+              name="login"
+              onFinish={onFinish}
+              layout="vertical"
+              initialValues={{ remember: true }}
             >
-              <Input
-                prefix={<MailOutlined />}
-                placeholder="Email"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="password"
-              rules={[{ required: true, message: 'Введите пароль' }]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                placeholder="Пароль"
-                size="large"
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={loading}
-                block
-                size="large"
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Введите Email' },
+                  { type: 'email', message: 'Введите корректный Email' },
+                ]}
               >
-                Войти
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
+                <Input
+                  prefix={<MailOutlined />}
+                  placeholder="Email"
+                  size="large"
+                />
+              </Form.Item>
 
-        <div className="flex flex-col items-center mt-5">
-          <p className="mb-2">
-            Нет аккаунта в системе?
-          </p>
-          <SignUpNavBtn />
-        </div>
-      </Col>
-    </Row>
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: 'Введите пароль' }]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  placeholder="Пароль"
+                  size="large"
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  size="large"
+                >
+                  Войти
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+
+          <div className="flex flex-col items-center mt-5">
+            <p className="mb-2 text-base">
+              Нет аккаунта в системе?
+            </p>
+            <SignUpNavBtn />
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 };
