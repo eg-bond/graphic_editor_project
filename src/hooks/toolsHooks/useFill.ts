@@ -13,8 +13,12 @@ const setPixelColor = (x: number, y: number, color: number[], data: ImageData['d
   [data[index], data[index + 1], data[index + 2], data[index + 3]] = color;
 };
 
-const colorsMatch = <T>(c1: T[], c2: T[]) => {
-  return c1.every((val, i) => val === c2[i]);
+// const colorsMatch = <T>(c1: T[], c2: T[]) => {
+//   return c1.every((val, i) => val === c2[i]);
+// };
+
+const colorsMatch = (c1: number[], c2: number[], tolerance: number = 150) => {
+  return c1.every((val, i) => Math.abs(val - c2[i]) <= tolerance);
 };
 
 const floodFill = (x: number, y: number, targetColor: number[], fillColor: number[], data: ImageData['data'], canvas: HTMLCanvasElement) => {
