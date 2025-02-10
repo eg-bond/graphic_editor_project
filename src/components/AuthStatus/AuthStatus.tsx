@@ -25,6 +25,7 @@ export const AuthStatus = () => {
                 <Text strong>{user.email}</Text>
               </Text>
               <Button
+                className="!bg-cRed hover:!bg-cRedHov font-medium"
                 type="primary"
                 danger
                 icon={<LogoutOutlined />}

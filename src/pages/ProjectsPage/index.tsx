@@ -71,78 +71,88 @@ const ProjectsPage1: FC = () => {
     <main>
       <AuthStatus />
       <div className="max-w-[1500px] mx-auto mt-32">
-        {loading
-          ? (
-              <div className="flex justify-center">
-                <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
-              </div>
-            )
-          : (
-              <>
-                <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8 `}>
-                  <Typography.Title>
-                    {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
-                  </Typography.Title>
-                  <Button
-                    onClick={onOpen}
-                    className="!bg-green-500"
-                    type="primary"
-                    size="large"
-                  >
-                    Новый проект
-                  </Button>
-                </div>
+        {loading && (
+          <div className="flex justify-center">
+            <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+          </div>
+        )}
+        {!loading && (
+          <>
+            <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8 `}>
+              <Typography.Title className="!text-cBlueHov">
+                {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
+              </Typography.Title>
+              <Button
+                onClick={onOpen}
+                className="!bg-green-500"
+                type="primary"
+                size="large"
+              >
+                Новый проект
+              </Button>
+            </div>
 
-                <Row gutter={gutter} wrap>
-                  {projects.map(project => (
-                    <Col span={6} key={project.id}>
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        <Card
+            <Row gutter={gutter} wrap>
+              {projects.map(project => (
+                <Col span={6} key={project.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Card
+                      onClick={() =>
+                        navigate(`/projects/${project.id}`, { state: project })}
+                      className="cursor-pointer border border-slate-400 relative"
+                    >
+                      <img className="absolute left-0 bottom-0 h-full w-full" src="bg-card-4.png" alt="" />
+                      <Typography.Title level={2} className="!mb-12 !text-cBlueHov">
+                        {project.name}
+                      </Typography.Title>
+
+                      <div className="flex justify-between">
+                        <Button
                           onClick={() =>
                             navigate(`/projects/${project.id}`, { state: project })}
-                          className="cursor-pointer border border-slate-400 relative"
+                          className={
+                            'px-10 text-white font-medium border-none ' +
+                            '!bg-cBlue hover:!bg-cBlueHov !text-white'
+                          }
+                          size="large"
                         >
-                          <img className="absolute left-0 bottom-0 h-full w-full" src="bg-card-4.png" alt="" />
-                          <Typography.Title level={2} className="!mb-12">
-                            {project.name}
-                          </Typography.Title>
+                          Вход
+                        </Button>
 
-                          <div className="flex justify-between">
+                        <div className="z-20" onClick={stopPropagation}>
+                          <Popconfirm
+                            title="Удалить проект"
+                            description="Вы уверены, что хотите удалить проект?"
+                            okText="Удалить"
+                            cancelText="Отмена"
+                            onConfirm={() => handleDelete(project.id)}
+                            okButtonProps={{
+                              className: '!bg-cRed hover:!bg-cRedHov',
+                            }}
+                          >
                             <Button
-                              color="primary"
-                              type="primary"
+                              className={
+                                'px-8 text-white font-medium border-none ' +
+                                '!bg-cRed hover:!bg-cRedHov !text-white'
+                              }
                               size="large"
-                              onClick={() =>
-                                navigate(`/projects/${project.id}`, { state: project })}
                             >
-                              Открыть
+                              Удалить
                             </Button>
-
-                            <div onClick={stopPropagation}>
-                              <Popconfirm
-                                title="Удалить проект"
-                                description="Вы уверены, что хотите удалить проект?"
-                                okText="Удалить"
-                                cancelText="Отмена"
-                                onConfirm={() => handleDelete(project.id)}
-                              >
-                                <Button danger size="large">
-                                  Удалить
-                                </Button>
-                              </Popconfirm>
-                            </div>
-                          </div>
-                        </Card>
-                      </motion.div>
-                    </Col>
-                  ))}
-                </Row>
-              </>
-            )}
+                          </Popconfirm>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          </>
+        )}
         <CreateProjectModal
           open={open}
           onClose={onClose}
