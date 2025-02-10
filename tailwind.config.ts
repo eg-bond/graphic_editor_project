@@ -13,7 +13,21 @@ export default {
         cBlueHov: '#536ea8',
         cRed: '#ba6565',
         cRedHov: '#a85353',
-        // ... other colors
+      },
+      keyframes: {
+        fadeInDown: {
+          from: {
+            opacity: '0',
+            transform: 'translate3d(0, -20%, 0)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'none',
+          },
+        },
+      },
+      animation: {
+        fadeInDown: 'fadeInDown 0.7s ease forwards',
       },
     },
   },

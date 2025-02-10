@@ -65,7 +65,7 @@ export function EditorPage() {
           <Tools />
 
           {/* Голубой контейнер с холстом */}
-          <div className="h-[95vh] bg-gray-300 flex justify-center items-center overflow-auto ">
+          <div className="h-[95vh] bg-gray-300 flex justify-center items-center overflow-auto custom-scrollbar ">
             <div className="relative max-w-full max-h-full flex">
               <div className="p-4 pl-20 h-full">
                 <Canvas />

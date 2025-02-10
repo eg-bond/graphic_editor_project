@@ -9,7 +9,7 @@ import { AuthStatus } from '@/components/AuthStatus';
 import { useAuthContext } from '@/context/AuthContext';
 import { deleteProject, getProjectsByUser } from '@/utils/firebaseUtils';
 import { LoadingOutlined } from '@ant-design/icons';
-import { motion } from 'framer-motion';
+import { animationDelay } from '@/utils/animationDelay';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
@@ -93,12 +93,11 @@ const ProjectsPage1: FC = () => {
             </div>
 
             <Row gutter={gutter} wrap>
-              {projects.map(project => (
+              {projects.map((project, i) => (
                 <Col span={6} key={project.id}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                  <div
+                    className="opacity-0 animate-fadeInDown"
+                    style={{ animationDelay: animationDelay(0.1, i) }}
                   >
                     <Card
                       onClick={() =>
@@ -147,7 +146,7 @@ const ProjectsPage1: FC = () => {
                         </div>
                       </div>
                     </Card>
-                  </motion.div>
+                  </div>
                 </Col>
               ))}
             </Row>
