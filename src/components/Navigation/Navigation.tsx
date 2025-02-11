@@ -11,8 +11,10 @@ import { selectLayersList, selectWidthAndHeight } from '@/redux/history';
 
 export const Navigation = () => {
   const layersList = useAppSelector(selectLayersList);
+  console.log('LAYER LIST: ', layersList);
 
   const { width, height } = useAppSelector(selectWidthAndHeight);
+  console.log('WIDTH, HEIGHT: ', width, height);
 
   const handleExport = () => {
     const offscreenCanvas = document.createElement('canvas');
