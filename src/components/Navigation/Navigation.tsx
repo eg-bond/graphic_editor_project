@@ -6,8 +6,10 @@ import { CanvasResolutionModal } from '@/components/CanvasResolution/CanvasResol
 import { useModal } from '@/hooks/useModal';
 import { AuthStatus } from '../AuthStatus';
 import { AppRoutes } from '@/types/appRoutes';
+import { useExportDrawing } from '@/hooks/useExportDrawing';
 
 export const Navigation = () => {
+  const { exportDrawing } = useExportDrawing();
   const { handleSave, notificationCtx } = useSaveProject();
   const {
     open,
@@ -25,7 +27,11 @@ export const Navigation = () => {
       key: '1',
     },
     {
-      label: <Link to="/">Экспортировать</Link>,
+      label: (
+        <button onClick={exportDrawing}>
+          Экспортировать
+        </button>
+      ),
       key: '2',
     },
     {
