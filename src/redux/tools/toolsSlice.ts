@@ -36,6 +36,7 @@ export const toolsSlice = createSlice({
   name: 'tools',
   initialState,
   reducers: {
+    resetTools: () => initialState,
     selectTool: (state, action: PayloadAction<{
       tool: ToolKinds;
     }>) => {

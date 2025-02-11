@@ -23,17 +23,17 @@ interface IHistoryItemIcon {
 export function HistoryItemIcon({ kind }: IHistoryItemIcon) {
   switch (kind) {
     case HistoryItemKinds.Add:
-      return <FileAddOutlined />;
+      return <FileAddOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Remove:
-      return <DeleteOutlined />;
+      return <DeleteOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Rename:
-      return <FontSizeOutlined />;
+      return <FontSizeOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Opacity:
-      return <SmallDashOutlined />;
+      return <SmallDashOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Visibility:
-      return <EyeOutlined />;
+      return <EyeOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Order:
-      return <VerticalAlignMiddleOutlined />;
+      return <VerticalAlignMiddleOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Brush:
       return <BrushIcon />;
     case HistoryItemKinds.Triangle:
@@ -49,7 +49,7 @@ export function HistoryItemIcon({ kind }: IHistoryItemIcon) {
     case HistoryItemKinds.Move:
       return <MoveIcon />;
     case HistoryItemKinds.OpenProject:
-      return <FolderOpenOutlined />;
+      return <FolderOpenOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.ResizeCanvas:
       return <ResizeIcon />;
     default:

@@ -22,6 +22,10 @@ export function LayersMenu() {
         {/* Add layer button */}
         <div className="m-2">
           <Button
+            className={
+              'w-full text-white font-medium border-none ' +
+              '!bg-cBlue hover:!bg-cBlueDark !text-white'
+            }
             icon={<PlusOutlined />}
             block
             onClick={() => handleAddLayer()}

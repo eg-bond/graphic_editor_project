@@ -14,6 +14,7 @@ import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon, Mo
 import { Tooltip } from 'antd';
 import { LineWidthChanger } from '@/components/Tools/LineWidthChanger.tsx';
 import { useToolsHotkeys } from '@/hooks/hotkeyHooks/useToolsHotkeys';
+import { Styles } from '@/types/themeTypes';
 
 const TOOLS = [
   {
@@ -69,10 +70,10 @@ export function Tools() {
   return (
     <div
       className={
-        'absolute left-4 top-4 flex flex-col ' +
-        'gap-2 bg-white p-2 rounded-lg shadow-md'
+        'absolute left-4 top-4 flex flex-col border-2 border-cBlue ' +
+        'bg-cSlate gap-2 p-2 rounded-lg shadow-md'
       }
-      style={{ zIndex: 1000 }}
+      style={{ zIndex: 150 }}
     >
       {TOOLS.map(({
         title,
@@ -93,6 +94,7 @@ export function Tools() {
           <ColorPicker
             defaultValue={DEFAULT_TOOLS_COLOR}
             onChangeComplete={onColorChange}
+            style={{ backgroundColor: Styles.Slate }}
           />
         </div>
       </Tooltip>
@@ -102,6 +104,7 @@ export function Tools() {
           <ColorPicker
             defaultValue={DEFAULT_TOOLS_SECONDARY_COLOR}
             onChangeComplete={onSecondaryColorChange}
+            style={{ backgroundColor: Styles.Slate }}
           />
         </div>
       </Tooltip>

@@ -19,8 +19,14 @@ const CreateProjectButton1: FC = () => {
   }, [navigate]);
 
   return (
-    <>
-      <button onClick={onOpen}>Новый проект</button>
+    <div>
+      <button onClick={() => {
+        console.log('uuus');
+        onOpen();
+      }}
+      >
+        Новый проект
+      </button>
 
       <CreateProjectModal
         open={open}
@@ -28,7 +34,7 @@ const CreateProjectButton1: FC = () => {
         form={form}
         handleSubmit={handleSubmit}
       />
-    </>
+    </div>
   );
 };
 

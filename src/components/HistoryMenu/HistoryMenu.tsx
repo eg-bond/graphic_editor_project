@@ -28,7 +28,7 @@ export function HistoryMenu() {
       'justify-between',
       'p-2',
       'border-b-2',
-      'border-gray-500',
+      'border-cBlueDark',
       'first:border-t-2',
       'hover:cursor-pointer',
       'transition-all',
@@ -37,7 +37,7 @@ export function HistoryMenu() {
 
   const dynamicClasses = useCallback((i: number) => {
     const classes = [
-      activeItemIndex === i && 'bg-slate-400',
+      activeItemIndex === i && 'bg-cBlue',
       activeItemIndex < i && 'text-gray-500',
     ];
 
