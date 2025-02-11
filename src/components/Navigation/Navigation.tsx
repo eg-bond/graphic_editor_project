@@ -6,8 +6,40 @@ import { CanvasResolutionModal } from '@/components/CanvasResolution/CanvasResol
 import { useModal } from '@/hooks/useModal';
 import { AuthStatus } from '../AuthStatus';
 import { AppRoutes } from '@/types/appRoutes';
+import { useAppSelector } from '@/redux/hooks';
+import { selectLayersList, selectWidthAndHeight } from '@/redux/history';
 
 export const Navigation = () => {
+  const layersList = useAppSelector(selectLayersList);
+
+  const { width, height } = useAppSelector(selectWidthAndHeight);
+
+  const handleExport = () => {
+    const offscreenCanvas = document.createElement('canvas');
+    offscreenCanvas.width = width;
+    offscreenCanvas.height = height;
+    const ctx = offscreenCanvas.getContext('2d');
+    if (ctx) {
+      layersList.forEach((layer) => {
+        const image = new Image();
+        image.src = layer.canvasData;
+        image.onload = () => {
+          ctx.drawImage(image, 0, 0);
+        };
+      });
+
+      setTimeout(() => {
+        const dataURL = offscreenCanvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = `${Date.now()}.png`;
+        link.click();
+      }, 1000);
+    } else {
+      console.error('Canvas context не найден!');
+    }
+  };
+
   const { handleSave, notificationCtx } = useSaveProject();
   const {
     open,
@@ -25,7 +57,11 @@ export const Navigation = () => {
       key: '1',
     },
     {
-      label: <Link to="/">Экспортировать</Link>,
+      label: (
+        <button onClick={handleExport}>
+          Экспортировать
+        </button>
+      ),
       key: '2',
     },
     {
