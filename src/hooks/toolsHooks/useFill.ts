@@ -40,6 +40,7 @@ export const useFill = (
     if (!ctx || !canvas) {
       return;
     }
+
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imgData.data;
 
