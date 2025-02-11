@@ -17,7 +17,7 @@ export const ToolButton: React.FC<ToolButtonProps> = ({
     <Button
       type="text"
       icon={icon}
-      className={`hover:bg-gray-100 ${isSelected ? 'bg-gray-200' : ''}`}
+      className={`hover:!bg-cBlue ${isSelected ? 'bg-cBlue' : ''}`}
       onClick={onClick}
     />
   </Tooltip>

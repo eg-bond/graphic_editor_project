@@ -15,13 +15,18 @@ function App() {
         align="center"
         gap="middle"
       >
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+        <Spin
+          className="text-cBlue"
+          indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />}
+        />
       </Flex>
     );
   }
 
   return (
-    <Routing />
+    <div>
+      <Routing />
+    </div>
   );
 }
 

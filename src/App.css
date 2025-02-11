@@ -1,7 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-family: Montserrat, system-ui, sans-serif;
+  }
+}
+
+:root {
+  --stylesBlue: #658aba;
+  --stylesBlueDark: #536ea8;
+}
+
+
+.ant-color-picker-trigger {  
+  &:hover {
+    border-color: var(--stylesBlueDark);
+  }
+}
+.ant-color-picker-trigger-active {  
+  border-color: var(--stylesBlueDark) !important;  
+}
+.ant-input, .ant-input-number, .ant-input-affix-wrapper {  
+  &:hover {
+    border-color: var(--stylesBlueDark) !important;
+  } 
+}
+.ant-input {    
+  &:focus {
+    border-color: var(--stylesBlueDark) !important;
+  }
+}
+.ant-input-number-focused, .ant-input-affix-wrapper-focused {  
+    border-color: var(--stylesBlueDark) !important;  
+}
+
+.cBtn {
+  &:hover {
+    color: var(--stylesBlueDark) !important;
+    border-color: var(--stylesBlueDark) !important;
+  } 
+}
+
+.ant-typography,
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-dropdown-menu,
+.ant-menu,
+.ant-modal-content,
+.ant-form,
+.ant-table,
+.ant-card,
+.ant-picker,
+.ant-tabs {
+  font-family: Montserrat, system-ui, sans-serif !important;
+}
+
 .ant-input-number {
   width: 100% !important;
 }
+
+.custom-scrollbar::-webkit-scrollbar {  
+  width: 10px;
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: none;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--stylesBlue);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--stylesBlueDark);
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: none;  
+}
+
+
+
+
+

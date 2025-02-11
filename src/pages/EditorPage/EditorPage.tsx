@@ -10,6 +10,7 @@ import { Tools } from '@/components/Tools';
 import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { getProjectData } from '@/utils/firebaseUtils.ts';
+import { resetTools } from '@/redux/tools';
 
 export function EditorPage() {
   const { id } = useParams();
@@ -27,6 +28,7 @@ export function EditorPage() {
         const data = await getProjectData(id);
         if (data) {
           dispatch(setProjectData({ id: data.id, data: data.data }));
+          dispatch(resetTools());
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
@@ -44,7 +46,10 @@ export function EditorPage() {
         align="center"
         gap="middle"
       >
-        <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+        <Spin
+          className="text-cBlue"
+          indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />}
+        />
       </Flex>
     );
   }
@@ -52,20 +57,19 @@ export function EditorPage() {
   return (
     <div className="h-screen w-full flex flex-col">
       {/* Top section */}
-      <div className="h-[5vh] w-full">
+      <div className="w-full bg-cBlue">
         <Navigation />
-
       </div>
 
       {/* Main content area with right sidebar */}
       <div className="flex flex-1 relative">
         {/* Контейнер с инструментами и холстом */}
-        <div className="flex-1 bg-gray-200 relative overflow-hidden">
+        <div className="flex-1 relative overflow-hidden">
           {/* Инструменты */}
           <Tools />
 
           {/* Голубой контейнер с холстом */}
-          <div className="h-[95vh] bg-blue-300 flex justify-center items-center overflow-auto ">
+          <div className="h-[95vh] bg-sky-200 flex justify-center items-center overflow-auto custom-scrollbar ">
             <div className="relative max-w-full max-h-full flex">
               <div className="p-4 pl-20 h-full">
                 <Canvas />
@@ -75,7 +79,7 @@ export function EditorPage() {
         </div>
 
         {/* Right vertical menu */}
-        <div className="w-1/6 h-[95vh] flex flex-col bg-slate-200">
+        <div className="w-1/5 h-[95vh] flex flex-col bg-cSlate border-l-2 border-l-cBlue">
           <LayersMenu />
           <HistoryMenu />
         </div>

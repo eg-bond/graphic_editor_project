@@ -126,8 +126,8 @@ const CreateProjectModal1: FC<CreateProjectModalProps> = ({
 
         <div className="flex justify-end">
           <Button
+            className="!bg-emerald-600 hover:!bg-emerald-700 font-medium"
             htmlType="submit"
-            className="!bg-green-500"
             type="primary"
             size="large"
           >

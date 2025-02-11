@@ -115,7 +115,11 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
       <Form form={form} layout="vertical">
         <div className="flex items-center gap-2 mb-4">
           <Text strong>Сохранить пропорции</Text>
-          <Switch checked={keepRatio} onChange={setKeepRatio} />
+          <Switch
+            className="[&.ant-switch-checked]:!bg-cBlue [&.ant-switch-checked]:hover:!bg-cBlueDark"
+            checked={keepRatio}
+            onChange={setKeepRatio}
+          />
         </div>
 
         {/* Поля для ширины и высоты */}
@@ -147,8 +151,14 @@ export const CanvasResolutionModal: FC<CanvasResolutionModalProps> = ({ open, on
 
         {/* Кнопки */}
         <div className="flex justify-center mt-4 gap-4">
-          <Button onClick={onClose}>Отмена</Button>
-          <Button type="primary" onClick={handleSave}>Сохранить</Button>
+          <Button className="cBtn" onClick={onClose}>Отмена</Button>
+          <Button
+            className="!bg-cBlue hover:!bg-cBlueDark"
+            type="primary"
+            onClick={handleSave}
+          >
+            Сохранить
+          </Button>
         </div>
       </Form>
     </Modal>

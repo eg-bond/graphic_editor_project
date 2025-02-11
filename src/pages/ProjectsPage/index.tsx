@@ -9,6 +9,7 @@ import { AuthStatus } from '@/components/AuthStatus';
 import { useAuthContext } from '@/context/AuthContext';
 import { deleteProject, getProjectsByUser } from '@/utils/firebaseUtils';
 import { LoadingOutlined } from '@ant-design/icons';
+import { animationDelay } from '@/utils/animationDelay';
 
 const stopPropagation: MouseEventHandler = e => e.stopPropagation();
 
@@ -68,73 +69,101 @@ const ProjectsPage1: FC = () => {
 
   return (
     <main>
-      <AuthStatus />
-      <div className="max-w-[1500px] mx-auto mt-32">
-        {loading
-          ? (
-              <div className="flex justify-center">
-                <Spin indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
-              </div>
-            )
-          : (
-              <>
-                <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8`}>
-                  <Typography.Title>
-                    {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
-                  </Typography.Title>
-                  <Button
-                    onClick={onOpen}
-                    className="!bg-green-500"
-                    type="primary"
-                    size="large"
+
+      <div className="w-full bg-cBlue">
+        <AuthStatus />
+      </div>
+      <div className="max-w-[1500px] mx-auto mt-32 px-12">
+        {loading && (
+          <div className="flex justify-center">
+            <Spin className="text-cBlue" indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />} />
+          </div>
+        )}
+        {!loading && (
+          <>
+            <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8 `}>
+              <Typography.Title className="!text-cBlueDark">
+                {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
+              </Typography.Title>
+              <Button
+                className="!bg-emerald-600 hover:!bg-emerald-700 font-medium"
+                onClick={onOpen}
+                type="primary"
+                size="large"
+              >
+                Новый проект
+              </Button>
+            </div>
+
+            <Row gutter={gutter} wrap>
+              {projects.map((project, i) => (
+                <Col
+                  xs={24}
+                  sm={12}
+                  lg={8}
+                  xl={6}
+                  key={project.id}
+                >
+                  <div
+                    className="opacity-0 animate-fadeInDown"
+                    style={{ animationDelay: animationDelay(0.1, i) }}
                   >
-                    Новый проект
-                  </Button>
-                </div>
+                    <Card
+                      onClick={() =>
+                        navigate(`/projects/${project.id}`, { state: project })}
+                      className="cursor-pointer border border-slate-400 relative"
+                    >
+                      <img className="absolute left-0 bottom-0 h-full w-full" src="bg-card-4.png" alt="" />
+                      <Typography.Title level={2} className="!mb-12 !text-cBlueDark">
+                        {project.name}
+                      </Typography.Title>
 
-                <Row gutter={gutter} wrap>
-                  {projects.map(project => (
-                    <Col span={6} key={project.id}>
-                      <Card
-                        onClick={() =>
-                          navigate(`/projects/${project.id}`, { state: project })}
-                        className="cursor-pointer"
-                      >
-                        <Typography.Title level={2} className="!mb-12">
-                          {project.name}
-                        </Typography.Title>
+                      <div className="flex justify-between gap-4">
+                        <Button
+                          onClick={() =>
+                            navigate(`/projects/${project.id}`, { state: project })}
+                          className={
+                            'w-[100px] text-white font-medium border-none ' +
+                            '!bg-cBlue hover:!bg-cBlueDark !text-white'
+                          }
+                          size="large"
+                        >
+                          Вход
+                        </Button>
 
-                        <div className="flex justify-between">
-                          <Button
-                            color="primary"
-                            type="primary"
-                            size="large"
-                            onClick={() =>
-                              navigate(`/projects/${project.id}`, { state: project })}
+                        <div className="w-[100px] z-20" onClick={stopPropagation}>
+                          <Popconfirm
+                            title="Удалить проект"
+                            description="Вы уверены, что хотите удалить проект?"
+                            okText="Удалить"
+                            cancelText="Отмена"
+                            onConfirm={() => handleDelete(project.id)}
+                            cancelButtonProps={{
+                              className: 'cBtn ',
+                            }}
+                            okButtonProps={{
+                              className: '!bg-cRed hover:!bg-cRedDark',
+                            }}
                           >
-                            Открыть
-                          </Button>
-
-                          <div onClick={stopPropagation}>
-                            <Popconfirm
-                              title="Удалить проект"
-                              description="Вы уверены, что хотите удалить проект?"
-                              okText="Удалить"
-                              cancelText="Отмена"
-                              onConfirm={() => handleDelete(project.id)}
+                            <Button
+                              className={
+                                'w-full text-white font-medium border-none ' +
+                                '!bg-cRed hover:!bg-cRedDark !text-white'
+                              }
+                              size="large"
                             >
-                              <Button danger size="large">
-                                Удалить
-                              </Button>
-                            </Popconfirm>
-                          </div>
+                              Удалить
+                            </Button>
+                          </Popconfirm>
                         </div>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </>
-            )}
+                      </div>
+                    </Card>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </>
+        )}
         <CreateProjectModal
           open={open}
           onClose={onClose}

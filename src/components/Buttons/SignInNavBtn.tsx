@@ -18,8 +18,8 @@ export const SignInNavBtn = () => {
     <button
       onClick={handleNavigateToSignIn}
       className={
-        'px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 ' +
-        'transition-colors duration-200 font-medium min-w-[150px]'
+        'px-8 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 ' +
+        'transition-colors duration-200 font-medium text-base min-w-[150px]'
       }
     >
       Вход

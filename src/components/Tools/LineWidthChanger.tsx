@@ -39,7 +39,7 @@ const LineWidthChanger1: FC = () => {
           />
         )}
       >
-        <Button type="text" icon={<LineWidthIcon />} className="hover:bg-gray-100" />
+        <Button type="text" icon={<LineWidthIcon />} className="hover:!bg-cBlue" />
       </Popover>
     </Tooltip>
   );
