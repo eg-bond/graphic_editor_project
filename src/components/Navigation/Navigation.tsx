@@ -6,42 +6,10 @@ import { CanvasResolutionModal } from '@/components/CanvasResolution/CanvasResol
 import { useModal } from '@/hooks/useModal';
 import { AuthStatus } from '../AuthStatus';
 import { AppRoutes } from '@/types/appRoutes';
-import { useAppSelector } from '@/redux/hooks';
-import { selectLayersList, selectWidthAndHeight } from '@/redux/history';
+import { useExportDrawing } from '@/hooks/useExportDrawing';
 
 export const Navigation = () => {
-  const layersList = useAppSelector(selectLayersList);
-  console.log('LAYER LIST: ', layersList);
-
-  const { width, height } = useAppSelector(selectWidthAndHeight);
-  console.log('WIDTH, HEIGHT: ', width, height);
-
-  const handleExport = () => {
-    const offscreenCanvas = document.createElement('canvas');
-    offscreenCanvas.width = width;
-    offscreenCanvas.height = height;
-    const ctx = offscreenCanvas.getContext('2d');
-    if (ctx) {
-      layersList.forEach((layer) => {
-        const image = new Image();
-        image.src = layer.canvasData;
-        image.onload = () => {
-          ctx.drawImage(image, 0, 0);
-        };
-      });
-
-      setTimeout(() => {
-        const dataURL = offscreenCanvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = dataURL;
-        link.download = `${Date.now()}.png`;
-        link.click();
-      }, 1000);
-    } else {
-      console.error('Canvas context не найден!');
-    }
-  };
-
+  const { exportDrawing } = useExportDrawing();
   const { handleSave, notificationCtx } = useSaveProject();
   const {
     open,
@@ -60,7 +28,7 @@ export const Navigation = () => {
     },
     {
       label: (
-        <button onClick={handleExport}>
+        <button onClick={exportDrawing}>
           Экспортировать
         </button>
       ),
