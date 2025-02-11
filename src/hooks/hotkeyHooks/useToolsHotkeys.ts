@@ -12,6 +12,7 @@ export const useToolsHotkeys = () => {
     ['c', ToolKinds.Circle],
     ['r', ToolKinds.Rect],
     ['t', ToolKinds.Triangle],
+    ['m', ToolKinds.Move],
   ]), []);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {

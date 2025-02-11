@@ -9,6 +9,7 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  orderBy,
 } from 'firebase/firestore';
 import { FbCollectionNames } from '@/types/firebaseTypes';
 import { RootState } from '@/redux/store.ts';
@@ -44,6 +45,7 @@ export const getProjectsByUser = async (userId: string): Promise<Project[]> => {
   const q = query(
     collection(db, FbCollectionNames.Projects),
     where('userId', '==', userId),
+    orderBy('createdAt', 'desc'),
   );
 
   const querySnapshot = await getDocs(q);
