@@ -40,7 +40,7 @@ export const Navigation = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center w-full h-[5vh] border-2 border-cBlueDark">
+      <div className="flex justify-between items-center w-full h-[5vh] border-b-2 border-b-cBlueDark">
         <nav className="flex items-center gap-4 px-2 text-white font-medium">
           <DropdownNav title="Файл" items={items} />
           <Link to={'/' + AppRoutes.Projects}>Все проекты</Link>

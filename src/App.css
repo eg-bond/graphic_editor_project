@@ -75,12 +75,12 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--stylesBlue);
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--stylesBlueDark);
 }
 
 .custom-scrollbar::-webkit-scrollbar-corner {

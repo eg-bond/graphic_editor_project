@@ -4,6 +4,7 @@ import { ToolKinds } from './toolsSlice.ts';
 export const toolsReducer = toolsSlice.reducer;
 
 export const {
+  resetTools,
   selectTool,
   selectColor,
   selectSecondaryColor,

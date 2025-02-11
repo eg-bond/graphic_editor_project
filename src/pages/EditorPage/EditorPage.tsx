@@ -10,6 +10,7 @@ import { Tools } from '@/components/Tools';
 import { Flex, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { getProjectData } from '@/utils/firebaseUtils.ts';
+import { resetTools } from '@/redux/tools';
 
 export function EditorPage() {
   const { id } = useParams();
@@ -27,6 +28,7 @@ export function EditorPage() {
         const data = await getProjectData(id);
         if (data) {
           dispatch(setProjectData({ id: data.id, data: data.data }));
+          dispatch(resetTools());
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
