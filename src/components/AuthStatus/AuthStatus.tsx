@@ -22,10 +22,10 @@ export const AuthStatus = () => {
           {user && (
             <>
               <Text style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
-                <Text strong>{user.email}</Text>
+                <Text className="text-white" strong>{user.email}</Text>
               </Text>
               <Button
-                className="!bg-cRed hover:!bg-cRedHov font-medium"
+                className="!bg-cRed hover:!bg-cRedDark font-medium"
                 type="primary"
                 danger
                 icon={<LogoutOutlined />}

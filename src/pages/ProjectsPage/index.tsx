@@ -69,7 +69,10 @@ const ProjectsPage1: FC = () => {
 
   return (
     <main>
-      <AuthStatus />
+
+      <div className="w-full bg-cBlue">
+        <AuthStatus />
+      </div>
       <div className="max-w-[1500px] mx-auto mt-32 px-12">
         {loading && (
           <div className="flex justify-center">
@@ -79,7 +82,7 @@ const ProjectsPage1: FC = () => {
         {!loading && (
           <>
             <div className={`flex ${projects.length ? 'justify-between' : 'items-center flex-col'} mb-8 `}>
-              <Typography.Title className="!text-cBlueHov">
+              <Typography.Title className="!text-cBlueDark">
                 {!projects.length ? 'Проекты отсутствуют' : 'Мои проекты'}
               </Typography.Title>
               <Button
@@ -111,7 +114,7 @@ const ProjectsPage1: FC = () => {
                       className="cursor-pointer border border-slate-400 relative"
                     >
                       <img className="absolute left-0 bottom-0 h-full w-full" src="bg-card-4.png" alt="" />
-                      <Typography.Title level={2} className="!mb-12 !text-cBlueHov">
+                      <Typography.Title level={2} className="!mb-12 !text-cBlueDark">
                         {project.name}
                       </Typography.Title>
 
@@ -121,7 +124,7 @@ const ProjectsPage1: FC = () => {
                             navigate(`/projects/${project.id}`, { state: project })}
                           className={
                             'w-[100px] text-white font-medium border-none ' +
-                            '!bg-cBlue hover:!bg-cBlueHov !text-white'
+                            '!bg-cBlue hover:!bg-cBlueDark !text-white'
                           }
                           size="large"
                         >
@@ -135,14 +138,17 @@ const ProjectsPage1: FC = () => {
                             okText="Удалить"
                             cancelText="Отмена"
                             onConfirm={() => handleDelete(project.id)}
+                            cancelButtonProps={{
+                              className: 'cBtn ',
+                            }}
                             okButtonProps={{
-                              className: '!bg-cRed hover:!bg-cRedHov',
+                              className: '!bg-cRed hover:!bg-cRedDark',
                             }}
                           >
                             <Button
                               className={
                                 'w-full text-white font-medium border-none ' +
-                                '!bg-cRed hover:!bg-cRedHov !text-white'
+                                '!bg-cRed hover:!bg-cRedDark !text-white'
                               }
                               size="large"
                             >

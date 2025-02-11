@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { Styles } from './src/types/themeTypes';
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -9,10 +10,11 @@ export default {
         montserrat: ['Montserrat', 'sans-serif'],
       },
       colors: {
-        cBlue: '#658aba',
-        cBlueHov: '#536ea8',
-        cRed: '#ba6565',
-        cRedHov: '#a85353',
+        cBlue: Styles.Blue,
+        cBlueDark: Styles.BlueDark,
+        cRed: Styles.Red,
+        cRedDark: Styles.RedDark,
+        cSlate: Styles.Slate,
       },
       keyframes: {
         fadeInDown: {

@@ -100,7 +100,7 @@ export const Layer = memo<ILayerProps>(function Layer({
       'px-2',
       'py-1',
       'border-b-2',
-      'border-cBlueHov',
+      'border-cBlueDark',
       'first:border-t-2',
       'hover:cursor-pointer',
       'transition-all',
@@ -139,6 +139,7 @@ export const Layer = memo<ILayerProps>(function Layer({
       {/* Кнопка скрытия слоя */}
       <div className="flex-[0.25] flex justify-end gap-2">
         <Button
+          className="cBtn"
           icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           onClick={handleChangeVisibility}
         />

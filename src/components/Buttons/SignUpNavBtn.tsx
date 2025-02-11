@@ -12,7 +12,7 @@ export const SignUpNavBtn = () => {
     <button
       onClick={handleNavigateToSignUp}
       className={
-        'px-8 py-3 bg-cBlue text-white rounded-lg hover:bg-cBlueHov ' +
+        'px-8 py-3 bg-cBlue text-white rounded-lg hover:bg-cBlueDark ' +
         'transition-colors duration-200 font-medium text-base min-w-[150px]'
       }
     >

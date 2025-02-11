@@ -43,7 +43,10 @@ export const SignInPage = () => {
           lg={12}
           xl={8}
         >
-          <Card title={<h2 className="text-center text-2xl">Вход</h2>}>
+          <Card
+            className="border-2 border-black"
+            title={<h2 className="text-center text-2xl">Вход</h2>}
+          >
             <Form
               form={form}
               name="login"

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { DropDownNav, MenuItem } from './DropDownNav';
+import { DropdownNav, MenuItem } from './DropDownNav';
 import { CreateProjectButton } from '@/components/Navigation/CreateProjectButton.tsx';
 import { useSaveProject } from '@/hooks/useSaveProject.tsx';
 import { CanvasResolutionModal } from '@/components/CanvasResolution/CanvasResolutionModal';
@@ -15,7 +15,7 @@ export const Navigation = () => {
     onClose,
   } = useModal();
 
-  const files: MenuItem[] = [
+  const items: MenuItem[] = [
     {
       label: <CreateProjectButton />,
       key: '0',
@@ -40,9 +40,9 @@ export const Navigation = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center w-full h-[5vh]">
-        <nav className="flex items-center gap-4 px-2 ">
-          <DropDownNav title="Файл" items={files} />
+      <div className="flex justify-between items-center w-full h-[5vh] border-2 border-cBlueDark">
+        <nav className="flex items-center gap-4 px-2 text-white font-medium">
+          <DropdownNav title="Файл" items={items} />
           <Link to={'/' + AppRoutes.Projects}>Все проекты</Link>
           {notificationCtx}
         </nav>

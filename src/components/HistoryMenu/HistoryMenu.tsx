@@ -28,7 +28,7 @@ export function HistoryMenu() {
       'justify-between',
       'p-2',
       'border-b-2',
-      'border-cBlueHov',
+      'border-cBlueDark',
       'first:border-t-2',
       'hover:cursor-pointer',
       'transition-all',
