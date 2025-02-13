@@ -8,6 +8,7 @@ import { useLine } from './useLine';
 import { useMoveDrawing } from './useMoveDrawing';
 import { useBrush } from './useBrush';
 import { useAppSelector } from '@/redux/hooks';
+import { useFill } from '@/hooks/toolsHooks/useFill.ts';
 
 export const useTool = (
   canvasElement: HTMLCanvasElement | null,
@@ -41,6 +42,12 @@ export const useTool = (
     draw: brushDraw,
     stopDrawing: brushStopDrawing,
   } = useBrush(canvasElement, false);
+
+  const {
+    startDrawing: fillStartDrawing,
+    draw: fillDraw,
+    stopDrawing: fillStopDrawing,
+  } = useFill(canvasElement);
 
   const {
     startDrawing: eraserStartDrawing,
@@ -83,6 +90,14 @@ export const useTool = (
       startDrawing: brushStartDrawing,
       draw: brushDraw,
       stopDrawing: brushStopDrawing,
+    };
+  }
+
+  if (tool === ToolKinds.Fill) {
+    return {
+      startDrawing: fillStartDrawing,
+      draw: fillDraw,
+      stopDrawing: fillStopDrawing,
     };
   }
 

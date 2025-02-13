@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import {
   BrushIcon, CircleIcon,
-  EraserIcon, LineIcon, RectIcon,
+  EraserIcon, FillIcon, LineIcon, RectIcon,
   ResizeIcon,
   TriangleIcon,
 } from '../Tools/ToolsIcon';
@@ -36,6 +36,8 @@ export function HistoryItemIcon({ kind }: IHistoryItemIcon) {
       return <VerticalAlignMiddleOutlined style={{ fontSize: '20px' }} />;
     case HistoryItemKinds.Brush:
       return <BrushIcon />;
+    case HistoryItemKinds.Fill:
+      return <FillIcon />;
     case HistoryItemKinds.Triangle:
       return <TriangleIcon />;
     case HistoryItemKinds.Line:

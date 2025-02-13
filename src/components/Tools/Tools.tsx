@@ -10,7 +10,7 @@ import {
   DEFAULT_TOOLS_COLOR,
   DEFAULT_TOOLS_SECONDARY_COLOR,
 } from '@/utils/constants';
-import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon, MoveIcon } from './ToolsIcon';
+import { BrushIcon, CircleIcon, EraserIcon, LineIcon, RectIcon, TriangleIcon, MoveIcon, FillIcon } from './ToolsIcon';
 import { Tooltip } from 'antd';
 import { LineWidthChanger } from '@/components/Tools/LineWidthChanger.tsx';
 import { useToolsHotkeys } from '@/hooks/hotkeyHooks/useToolsHotkeys';
@@ -21,6 +21,11 @@ const TOOLS = [
     title: 'Кисть',
     icon: <BrushIcon />,
     type: ToolKinds.Brush,
+  },
+  {
+    title: 'Заливка',
+    icon: <FillIcon />,
+    type: ToolKinds.Fill,
   },
   {
     title: 'Ластик',

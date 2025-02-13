@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { CSSProperties, memo, useCallback, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import {
   selectActiveLayerIndex,
@@ -42,6 +42,7 @@ export const Canvas = memo(() => {
         zIndex: 100 - index,
         opacity: layer.opacity / 100 || 1,
         display: !layer.visible ? 'none' : 'block',
+        imageRendering: 'pixelated' as CSSProperties['imageRendering'],
       };
     }, [width, height]);
 
@@ -57,6 +58,16 @@ export const Canvas = memo(() => {
     draw,
     stopDrawing,
   } = useTool(canvasRefs.current[activeLayerIndex]);
+
+  useEffect(() => {
+    Object.values(canvasRefs.current ?? {}).forEach((c) => {
+      const ctx = c?.getContext('2d');
+      if (ctx) {
+        ctx.imageSmoothingEnabled = false;
+        ctx.filter = 'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxmaWx0ZXIgaWQ9ImZpbHRlciIgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj48ZmVDb21wb25lbnRUcmFuc2Zlcj48ZmVGdW5jUiB0eXBlPSJpZGVudGl0eSIvPjxmZUZ1bmNHIHR5cGU9ImlkZW50aXR5Ii8+PGZlRnVuY0IgdHlwZT0iaWRlbnRpdHkiLz48ZmVGdW5jQSB0eXBlPSJkaXNjcmV0ZSIgdGFibGVWYWx1ZXM9IjAgMSIvPjwvZmVDb21wb25lbnRUcmFuc2Zlcj48L2ZpbHRlcj48L3N2Zz4=#filter)';
+      }
+    });
+  }, [activeLayerIndex]);
 
   return (
     <div>
