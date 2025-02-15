@@ -8,6 +8,7 @@ import {
   getDocs,
   doc,
   deleteDoc,
+  orderBy,
   updateDoc,
 } from 'firebase/firestore';
 import { FbCollectionNames } from '@/types/firebaseTypes';
@@ -44,6 +45,7 @@ export const getProjectsByUser = async (userId: string): Promise<Project[]> => {
   const q = query(
     collection(db, FbCollectionNames.Projects),
     where('userId', '==', userId),
+    orderBy('createdAt', 'desc'),
   );
 
   const querySnapshot = await getDocs(q);
@@ -76,7 +78,31 @@ export const getProjectData = async (projectId: string): Promise<{
   };
 };
 
-export const updateProjectData = async (state: RootState['history']): Promise<Statuses> => {
+interface IUpdateProjectName {
+  id: string;
+  name: string;
+}
+
+export const updateProjectName = async ({ id, name }: IUpdateProjectName) => {
+  try {
+    await updateDoc(doc(db, FbCollectionNames.Projects, id), {
+      name,
+      updatedAt: new Date(),
+    });
+
+    return Statuses.Success;
+  } catch (error) {
+    notification.error({
+      message: 'Ошибка при переименовании проекта',
+      description: (error as Error).message,
+    });
+    return Statuses.Error;
+  }
+};
+
+export const updateProjectData = async (
+  state: RootState['history'],
+): Promise<Statuses> => {
   const id = state.projectDataId;
 
   if (!id) {
@@ -103,13 +129,6 @@ export const updateProjectData = async (state: RootState['history']): Promise<St
     });
     return Statuses.Error;
   }
-};
-
-export const updateProject = async (projectId: string, data: Partial<Project>) => {
-  await updateDoc(doc(db, FbCollectionNames.Projects, projectId), {
-    ...data,
-    updatedAt: new Date(),
-  });
 };
 
 export const deleteProject = async (projectId: string) => {

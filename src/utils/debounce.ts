@@ -1,25 +1,17 @@
-export const debounce = <T extends (...args: any[]) => any>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function debounce<T extends (...args: any[]) => void>(
   func: T,
-  wait: number,
-) => {
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  delay: number,
+): (...args: Parameters<T>) => void {
+  let timeoutId: NodeJS.Timeout;
 
-  const debounced = (...args: Parameters<T>) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
+  return function (...args: Parameters<T>) {
+    // Clear any existing timeout
+    clearTimeout(timeoutId);
 
+    // Set new timeout
     timeoutId = setTimeout(() => {
       func(...args);
-    }, wait);
+    }, delay);
   };
-
-  // Add cancel method to clear the timeout
-  debounced.cancel = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-  };
-
-  return debounced;
-};
+}

@@ -10,7 +10,7 @@ export const useLineWidthHotkeys = () => {
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.altKey) {
-      if (e.key === '+') {
+      if (e.key === '+' || e.key === '=') {
         d(lineWidthUp());
         e.preventDefault();
       }

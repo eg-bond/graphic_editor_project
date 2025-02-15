@@ -1,10 +1,14 @@
-import { FC, memo, useCallback } from 'react';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Popover, Slider, Tooltip } from 'antd';
 import { LineWidthIcon } from '@/components/Tools/ToolsIcon';
-import { useAppDispatch } from '@/redux/hooks.ts';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks.ts';
 import { setLineWidth } from '@/redux/tools';
-import { LINE_WIDTH_MIN, LINE_WIDTH_MAX } from '@/redux/tools/toolsSlice.ts';
 import { useLineWidthHotkeys } from '@/hooks/hotkeyHooks/useLineWidthHotkeys.ts';
+import {
+  LINE_WIDTH_MIN,
+  LINE_WIDTH_MAX,
+  DEFAULT_LINE_WIDTH,
+} from '@/redux/tools/toolsSlice.ts';
 
 const marks = (() => {
   const result: {
@@ -18,7 +22,14 @@ const marks = (() => {
 
 const LineWidthChanger1: FC = () => {
   const d = useAppDispatch();
+  const lineWidth = useAppSelector(state => state.tools.lineWidth);
+  const [value, setValue] = useState(DEFAULT_LINE_WIDTH);
   useLineWidthHotkeys();
+
+  useEffect(() => {
+    setValue(lineWidth);
+  }, [lineWidth]);
+
   const handleChange = useCallback((value: number) => {
     d(setLineWidth(value));
   }, [d]);
@@ -30,12 +41,13 @@ const LineWidthChanger1: FC = () => {
         trigger="click"
         content={(
           <Slider
+            className="w-[200px]"
+            onChange={setValue}
             onChangeComplete={handleChange}
             min={LINE_WIDTH_MIN}
             max={LINE_WIDTH_MAX}
-            className="w-[200px]"
             marks={marks}
-            defaultValue={5}
+            value={value}
           />
         )}
       >

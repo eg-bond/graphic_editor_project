@@ -32,8 +32,8 @@ const floodFill = (x: number, y: number, targetColor: number[], fillColor: numbe
 export const useFill = (
   canvas: HTMLCanvasElement | null,
 ) => {
-  const { saveCanvasData } = useSaveCanvasData(canvas);
   const toolColor = useAppSelector(state => state.tools.color);
+  const { saveCanvasData } = useSaveCanvasData(canvas);
 
   const startDrawing = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const ctx = canvas?.getContext('2d');

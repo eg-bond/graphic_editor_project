@@ -2,8 +2,11 @@ import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
-import { EMPTY_CANVAS_DATA, FIRST_HISTORY_ITEM, NEW_LAYER_NAME } from '@/utils/constants';
-import { updateProjectData } from '@/utils/firebaseUtils.ts';
+import {
+  EMPTY_CANVAS_DATA,
+  FIRST_HISTORY_ITEM,
+  NEW_LAYER_NAME,
+} from '@/utils/constants';
 
 export interface LayerT {
   id: number;
@@ -68,7 +71,6 @@ export const historySlice = createSlice({
       index: number;
     }>) => {
       state.activeItemIndex = action.payload.index;
-      updateProjectData(state);
     },
     setStateFromHistory: (state, action: PayloadAction<{
       layersList: LayerT[];
@@ -86,16 +88,15 @@ export const historySlice = createSlice({
       };
 
       const layers = [...state.items[state.activeItemIndex].layersList];
-      layers.push(newLayer);
+      layers.unshift(newLayer);
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Add,
         layersList: layers,
-        activeLayerIndex: layers.length - 1,
+        activeLayerIndex: 0,
         width: state.items[state.activeItemIndex].width,
         height: state.items[state.activeItemIndex].height,
       });
-      updateProjectData(state);
     },
     removeLayer: (state, action: PayloadAction<{
       index: number;
@@ -120,7 +121,6 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      updateProjectData(state);
     },
 
     activateLayer: (state, action: PayloadAction<{
@@ -144,7 +144,6 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      updateProjectData(state);
     },
 
     changeLayerVisibility: (state, action: PayloadAction<{
@@ -154,7 +153,7 @@ export const historySlice = createSlice({
       const layers = [...activeElement.layersList];
       let index;
 
-      if (!action.payload.index) {
+      if (action.payload.index === undefined) {
         index = activeElement.activeLayerIndex;
       } else {
         index = action.payload.index;
@@ -169,7 +168,6 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      updateProjectData(state);
     },
 
     changeLayerName: (state, action: PayloadAction<{
@@ -187,7 +185,6 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      updateProjectData(state);
     },
 
     addDrawing: (state, action: PayloadAction<{
@@ -205,7 +202,6 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-      updateProjectData(state);
     },
 
     moveLayer: (state, action: PayloadAction<{
@@ -229,8 +225,6 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
-
-      updateProjectData(state);
     },
 
     layerUp: (state) => {
@@ -259,8 +253,6 @@ export const historySlice = createSlice({
         width,
         height,
       });
-
-      updateProjectData(state);
     },
 
   },

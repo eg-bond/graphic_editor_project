@@ -13,16 +13,19 @@ export const useHistoryHotkeys = ({
   handleActivateHistoryItem,
 }: IUseHistoryHotkeys) => {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!e.ctrlKey || e.key.toLowerCase() !== 'z') return;
-    e.preventDefault();
+    if (!e.ctrlKey) return;
 
-    if (e.shiftKey) {
-      if (activeItemIndex < historyList.length - 1) {
-        handleActivateHistoryItem(activeItemIndex + 1);
-      }
-    } else {
-      if (activeItemIndex > 0) {
-        handleActivateHistoryItem(activeItemIndex - 1);
+    if (e.key.toLowerCase() === 'z' || e.key.toLowerCase() === 'я') {
+      e.preventDefault();
+
+      if (e.shiftKey) {
+        if (activeItemIndex < historyList.length - 1) {
+          handleActivateHistoryItem(activeItemIndex + 1);
+        }
+      } else {
+        if (activeItemIndex > 0) {
+          handleActivateHistoryItem(activeItemIndex - 1);
+        }
       }
     }
   }, [activeItemIndex, historyList.length, handleActivateHistoryItem]);

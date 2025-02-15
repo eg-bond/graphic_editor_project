@@ -7,10 +7,16 @@ import { useModal } from '@/hooks/useModal';
 import { AuthStatus } from '../AuthStatus';
 import { AppRoutes } from '@/types/appRoutes';
 import { useExportDrawing } from '@/hooks/useExportDrawing';
+import { Spin } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 
 export const Navigation = () => {
   const { exportDrawing } = useExportDrawing();
-  const { handleSave, notificationCtx } = useSaveProject();
+  const {
+    handleSave,
+    isSaving,
+    notificationCtx,
+  } = useSaveProject();
   const {
     open,
     onOpen,
@@ -52,7 +58,14 @@ export const Navigation = () => {
           <Link to={'/' + AppRoutes.Projects}>Все проекты</Link>
           {notificationCtx}
         </nav>
-        <AuthStatus />
+        <div className="flex">
+          {isSaving && (
+            <div className="text-white mr-4 flex items-center gap-2">
+              <Spin indicator={<SyncOutlined style={{ fontSize: 20, color: 'white' }} spin />} />
+            </div>
+          )}
+          <AuthStatus />
+        </div>
       </div>
       {open && (
         <CanvasResolutionModal open={open} onClose={onClose} />
