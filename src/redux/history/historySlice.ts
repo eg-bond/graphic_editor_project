@@ -2,8 +2,12 @@ import { HistoryItemKinds } from '@/types/historyTypes';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProjectData } from '@/types/localStorageTypes';
 import { addNewHistoryItemToState } from './helpers';
-import { EMPTY_CANVAS_DATA, FIRST_HISTORY_ITEM, NEW_LAYER_NAME } from '@/utils/constants';
 import { updateProjectData } from '@/utils/firebaseUtils.ts';
+import {
+  EMPTY_CANVAS_DATA,
+  FIRST_HISTORY_ITEM,
+  NEW_LAYER_NAME,
+} from '@/utils/constants';
 
 export interface LayerT {
   id: number;
@@ -169,6 +173,7 @@ export const historySlice = createSlice({
         width: activeElement.width,
         height: activeElement.height,
       });
+
       updateProjectData(state);
     },
 

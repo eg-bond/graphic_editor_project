@@ -8,8 +8,8 @@ import {
   getDocs,
   doc,
   deleteDoc,
-  updateDoc,
   orderBy,
+  runTransaction,
 } from 'firebase/firestore';
 import { FbCollectionNames } from '@/types/firebaseTypes';
 import { RootState } from '@/redux/store.ts';
@@ -41,6 +41,7 @@ export const createProject = async (
   }
 };
 
+// TODO: Мб тоже транзакцию сделать или что-то?
 export const getProjectsByUser = async (userId: string): Promise<Project[]> => {
   const q = query(
     collection(db, FbCollectionNames.Projects),
@@ -78,7 +79,9 @@ export const getProjectData = async (projectId: string): Promise<{
   };
 };
 
-export const updateProjectData = async (state: RootState['history']): Promise<Statuses> => {
+export const updateProjectData = async (
+  state: RootState['history'],
+): Promise<Statuses> => {
   const id = state.projectDataId;
 
   if (!id) {
@@ -92,9 +95,18 @@ export const updateProjectData = async (state: RootState['history']): Promise<St
   };
 
   try {
-    await updateDoc(doc(db, FbCollectionNames.ProjectData, id), {
-      ...newData,
-      updatedAt: new Date(),
+    await runTransaction(db, async (transaction) => {
+      const docRef = doc(db, FbCollectionNames.ProjectData, id);
+      const docSnap = await transaction.get(docRef);
+
+      if (!docSnap.exists()) {
+        throw new Error('Document does not exist!');
+      }
+
+      transaction.update(docRef, {
+        ...newData,
+        updatedAt: new Date(),
+      });
     });
 
     return Statuses.Success;
@@ -105,13 +117,6 @@ export const updateProjectData = async (state: RootState['history']): Promise<St
     });
     return Statuses.Error;
   }
-};
-
-export const updateProject = async (projectId: string, data: Partial<Project>) => {
-  await updateDoc(doc(db, FbCollectionNames.Projects, projectId), {
-    ...data,
-    updatedAt: new Date(),
-  });
 };
 
 export const deleteProject = async (projectId: string) => {
