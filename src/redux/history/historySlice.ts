@@ -88,12 +88,12 @@ export const historySlice = createSlice({
       };
 
       const layers = [...state.items[state.activeItemIndex].layersList];
-      layers.push(newLayer);
+      layers.unshift(newLayer);
 
       addNewHistoryItemToState(state, {
         kind: HistoryItemKinds.Add,
         layersList: layers,
-        activeLayerIndex: layers.length - 1,
+        activeLayerIndex: 0,
         width: state.items[state.activeItemIndex].width,
         height: state.items[state.activeItemIndex].height,
       });
