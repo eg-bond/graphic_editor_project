@@ -9,7 +9,7 @@ import {
   doc,
   deleteDoc,
   orderBy,
-  runTransaction,
+  updateDoc,
 } from 'firebase/firestore';
 import { FbCollectionNames } from '@/types/firebaseTypes';
 import { RootState } from '@/redux/store.ts';
@@ -41,7 +41,6 @@ export const createProject = async (
   }
 };
 
-// TODO: Мб тоже транзакцию сделать или что-то?
 export const getProjectsByUser = async (userId: string): Promise<Project[]> => {
   const q = query(
     collection(db, FbCollectionNames.Projects),
@@ -95,18 +94,9 @@ export const updateProjectData = async (
   };
 
   try {
-    await runTransaction(db, async (transaction) => {
-      const docRef = doc(db, FbCollectionNames.ProjectData, id);
-      const docSnap = await transaction.get(docRef);
-
-      if (!docSnap.exists()) {
-        throw new Error('Document does not exist!');
-      }
-
-      transaction.update(docRef, {
-        ...newData,
-        updatedAt: new Date(),
-      });
+    await updateDoc(doc(db, FbCollectionNames.ProjectData, id), {
+      ...newData,
+      updatedAt: new Date(),
     });
 
     return Statuses.Success;
