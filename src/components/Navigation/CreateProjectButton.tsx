@@ -21,7 +21,6 @@ const CreateProjectButton1: FC = () => {
   return (
     <div>
       <button onClick={() => {
-        console.log('uuus');
         onOpen();
       }}
       >

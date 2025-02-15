@@ -102,6 +102,7 @@ const ProjectsPage1: FC = () => {
                   key={project.id}
                   project={project}
                   index={i}
+                  setProjects={setProjects}
                   handleDelete={handleDelete}
                 />
               ))}

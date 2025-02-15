@@ -78,6 +78,28 @@ export const getProjectData = async (projectId: string): Promise<{
   };
 };
 
+interface IUpdateProjectName {
+  id: string;
+  name: string;
+}
+
+export const updateProjectName = async ({ id, name }: IUpdateProjectName) => {
+  try {
+    await updateDoc(doc(db, FbCollectionNames.Projects, id), {
+      name,
+      updatedAt: new Date(),
+    });
+
+    return Statuses.Success;
+  } catch (error) {
+    notification.error({
+      message: 'Ошибка при переименовании проекта',
+      description: (error as Error).message,
+    });
+    return Statuses.Error;
+  }
+};
+
 export const updateProjectData = async (
   state: RootState['history'],
 ): Promise<Statuses> => {
