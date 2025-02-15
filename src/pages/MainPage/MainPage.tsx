@@ -19,11 +19,11 @@ export const MainPage = () => {
       <img className="w-screen h-screen absolute bg-contain blur-md opacity-80" src="bg-1.png" alt="" />
       <main className="relative container mx-auto px-4">
         <div className="flex flex-col items-center justify-center min-h-[80vh] gap-4">
-          <h2 className="text-3xl font-semibold text-gray-700 mb-2">
+          <h2 className="text-4xl font-semibold mb-2">
             Графический редактор
           </h2>
 
-          <p className="text-center text-gray-600">
+          <p className="text-center font-medium">
             Создавайте и редактируйте изображения с легкостью!
             <br />
             Наш графический редактор предлагает мощные инструменты
@@ -33,7 +33,7 @@ export const MainPage = () => {
           </p>
 
           {/* Buttons Container */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="mt-4 flex flex-col sm:flex-row gap-4">
             <SignInNavBtn />
             <SignUpNavBtn />
           </div>

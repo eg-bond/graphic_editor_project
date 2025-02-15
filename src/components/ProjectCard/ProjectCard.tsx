@@ -100,7 +100,7 @@ export const ProjectCard = ({
               }
               size="large"
             >
-              Вход
+              Открыть
             </Button>
 
             <div className="w-[100px] z-20" onClick={stopPropagation}>

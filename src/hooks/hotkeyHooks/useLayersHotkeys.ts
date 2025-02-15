@@ -10,18 +10,18 @@ export const useLayersHotkeys = () => {
   const d = useAppDispatch();
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.ctrlKey) {
-      if (e.key === 'ArrowUp') {
-        d(layerUp());
-        e.preventDefault();
-      }
-      if (e.key === 'ArrowDown') {
-        d(layerDown());
-        e.preventDefault();
-      }
+    if (!e.altKey) return;
+
+    if (e.key === 'ArrowUp') {
+      d(layerUp());
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowDown') {
+      d(layerDown());
+      e.preventDefault();
     }
 
-    if (e.altKey && e.key.toLowerCase() === 'h') {
+    if (e.key.toLowerCase() === 'h' || e.key.toLowerCase() === 'р') {
       d(changeLayerVisibility({}));
       e.preventDefault();
     }

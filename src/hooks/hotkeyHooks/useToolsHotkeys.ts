@@ -6,6 +6,7 @@ export const useToolsHotkeys = () => {
   const d = useAppDispatch();
 
   const toolShortcuts = useMemo(() => new Map<string, ToolKinds>([
+    // Latin
     ['b', ToolKinds.Brush],
     ['e', ToolKinds.Eraser],
     ['l', ToolKinds.Line],
@@ -13,6 +14,16 @@ export const useToolsHotkeys = () => {
     ['r', ToolKinds.Rect],
     ['t', ToolKinds.Triangle],
     ['m', ToolKinds.Move],
+    ['f', ToolKinds.Fill],
+    // Cyrillic
+    ['и', ToolKinds.Brush],
+    ['у', ToolKinds.Eraser],
+    ['д', ToolKinds.Line],
+    ['с', ToolKinds.Circle],
+    ['к', ToolKinds.Rect],
+    ['е', ToolKinds.Triangle],
+    ['ь', ToolKinds.Move],
+    ['а', ToolKinds.Fill],
   ]), []);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {

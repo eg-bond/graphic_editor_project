@@ -25,12 +25,13 @@ interface ToolsSliceState {
 
 export const LINE_WIDTH_MIN = 1;
 export const LINE_WIDTH_MAX = 25;
+export const DEFAULT_LINE_WIDTH = 5;
 
 const initialState: ToolsSliceState = {
   tool: ToolKinds.Brush,
   color: DEFAULT_TOOLS_COLOR,
   secondaryColor: DEFAULT_TOOLS_SECONDARY_COLOR,
-  lineWidth: 5,
+  lineWidth: DEFAULT_LINE_WIDTH,
 };
 
 export const toolsSlice = createSlice({
