@@ -1,50 +1,73 @@
-# React + TypeScript + Vite
+## Стек
+1. React
+2. RTK
+3. TypeScript
+4. Tailwind CSS
+5. Ant design
+6. Code check - Eslint (без Prettier)
+7. Сборщик - Vite
+8. Тесты - Vitest + React Testing Library
+9. Формы - ant design
+10. Бэк? - нужен ли вообще?
+11. Если будет бэк то для запросов axios или react-query
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Git 
+#### Git flow
+- Основная ветка - **main**
+- От нее отводится ветка **develop** для влития выполненных задач
+- Разработка ведется в **feature-ветках**, отведенных от **develop**, 
+- Pull requests из **feature-ветки** обратно в **develop**.
+- Когда готов релиз вливаем **develop** в **main**. В **main** создается тег.
 
-Currently, two official plugins are available:
+#### Ветки
+Название новой ветки - **type/branch_name** 
+- **type** - аналогичен типу коммитов (смотри ниже)
+- **branch_name** - название ветки, на инглише, несколько слов разделяются подстрочником.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Пример: feat/some_new_feature, fix/some_bugfix, test/some_tests
 
-## Expanding the ESLint configuration
+#### Вид commit message
+>type(optional scope): commit message
+>
+>optional body
+>
+>optional footer
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+#### Типы коммитов
+1. **feat** - новая фича, добавление новой функциональности
+2. **fix** - фикс багов, ошибок и т.д.
+3. **refactor** - рефакторинг, изменения кода, не являющиеся добавлением новой фичи или устранением бага.
+4. **docs** - изменение документации (комментарии, readme)
+5. **test** - добавление или изменение теста
+6. **ci** - изменения в CI
+7. **perf** - изменения кода, улучшающие производительность
+8. **chore** - изменения в package.json, установка новых пакетов, изменения конфигурационных файлов (конфиги eslint, vite, gitignore, т.д), реорганизация структуры папок.
 
-- Configure the top-level `parserOptions` property like this:
+#### Pull requests
+- Перед созданием pull request делаем ребейз по актуальному состоянию **develop**, чтобы не потерять историю коммитов.
+- В описании pull request оставляем ссылки на **issues**, работа над которыми была произведена во вливаемой ветке.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Архитектура
+#### Структура приложения
+1. **assets** - содержит различные картинки, шрифты, json файлы и т.д.
+2. **components** - содержит компоненты, которые предполагается переиспользовать (кнопки, навигация, т.д.)
+3. **context** - различные контексты
+4. **database** (если будет) - база данных
+5. **helpers/utils** - различные utility функции-хелперы.
+6. **hooks** - кастомные хуки
+7. **pages** - страницы приложения
+8. **redux** - все, что связано со стейтом приложения
+9. **types** - типы и enum, которые предполагается переиспользовать.
+10. **test** - переиспользуемые сущности для тестов (моки, кастомные рендеры и т.д.).
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+#### Структура Redux
+Ссылки на уроки по Re-ducks:
+- https://lk.result.school/pl/teach/control/lesson/view?id=300860369
+- https://lk.result.school/pl/teach/control/lesson/view?id=300860370  
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Тесты
+Делаем хотя бы 1 тест на новый компонент, 1 тест на новую функцию (если компонент/функция совсем простой - можно не делать, по ситуации).
+
+## Созвоны
+По воскресеньям в 13.00 (МСК)

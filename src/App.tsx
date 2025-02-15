@@ -1,38 +1,32 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import { useAppDispatch } from './redux/hooks';
-import { logProto } from './redux/proto';
-import './App.css';
+import '@/App.css';
+import { Routing } from '@/components/Routing';
+import { useAuthContext } from './context/AuthContext';
+import { Flex, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const d = useAppDispatch();
+  const { loading } = useAuthContext();
+
+  if (loading) {
+    return (
+      <Flex
+        style={{ height: '100vh' }}
+        justify="center"
+        align="center"
+        gap="middle"
+      >
+        <Spin
+          className="text-cBlue"
+          indicator={<LoadingOutlined style={{ fontSize: 64 }} spin />}
+        />
+      </Flex>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href='https://vite.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1 className='text-3xl font-bold underline'>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount(count => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={() => d(logProto('new field'))}>redux test</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <Routing />
+    </div>
   );
 }
 
