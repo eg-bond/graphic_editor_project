@@ -11,5 +11,5 @@ export default defineConfig({
   server: {
     open: true,
   },
-  base: '/graphic_editor_project',
+  base: '/graphic_editor_project/',
 });
