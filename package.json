@@ -4,9 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://eg-bond.github.io/graphic_editor_project/",
-  "engines": {
-    "node": ">=20.0.0 =<20.18.2"
-  },
   "scripts": {
     "dev": "vite",
     "start": "vite",
