@@ -8,8 +8,7 @@
 7. Сборщик - Vite
 8. Тесты - Vitest + React Testing Library
 9. Формы - ant design
-10. Бэк? - нужен ли вообще?
-11. Если будет бэк то для запросов axios или react-query
+10. Бэк - firebase
 
 ## Git 
 #### Git flow
