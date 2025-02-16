@@ -1,9 +1,8 @@
 {
   "name": "graphic_editor_project",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
-  "homepage": "https://eg-bond.github.io/graphic_editor_project/",
   "scripts": {
     "dev": "vite",
     "start": "vite",
